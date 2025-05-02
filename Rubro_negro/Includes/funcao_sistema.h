@@ -1,7 +1,6 @@
 
 
-#ifndef SEGURANCA_H
-#define SEGURANCA_H
+#pragma once
 
 
 void limpar_buffer();
@@ -32,4 +31,3 @@ char digitar_um_caracter();
 
 void corrigir_espacos(char **str);
 
-#endif
