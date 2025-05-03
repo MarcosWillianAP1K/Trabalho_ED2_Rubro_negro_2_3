@@ -2,7 +2,18 @@
 
 #pragma once
 
-typedef struct CEPS
+typedef struct CEP
 {
-    char *CEP;
-}CEPS;
+    char *cep;
+}CEP;
+
+
+CEP *alocar_cep();
+
+CEP *criar_cep(char *cep);
+
+void imprimir_cep(CEP *cep);
+
+void liberar_cep(CEP **cep);
+
+

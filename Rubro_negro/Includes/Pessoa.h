@@ -13,3 +13,11 @@ typedef struct PESSOA
 
 
 
+PESSOA *alocar_pessoa();
+
+PESSOA *criar_pessoa(char *CPF, char *nome, char *CEP_natal, char *CEP_atual, char *data_nascimento);
+
+void imprimir_pessoa(PESSOA *pessoa);
+
+void liberar_pessoa(PESSOA **pessoa);
+
