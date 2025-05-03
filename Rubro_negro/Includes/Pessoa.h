@@ -1,3 +1,4 @@
+#include "../Includes/Data.h"
 
 #pragma once
 
@@ -7,7 +8,7 @@ typedef struct PESSOA
     char *nome;
     char *CEP_natal;
     char *CEP_atual;
-    char *data_nascimento;
+    DATA *data_nascimento;
 
 }PESSOA;
 
