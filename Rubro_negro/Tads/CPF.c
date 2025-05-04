@@ -6,25 +6,36 @@
 #include <ctype.h>
 
 
-
+void imprimir_cpf(char *cpf)
+{
+    if (cpf != NULL)
+    {
+        printf("CPF: %s\n", cpf);
+    }
+    else
+    {
+        printf("CPF: N/A\n");
+    }
+}
 
 char *corrigir_formatacao_cpf(char *cpf)
 {
     if (cpf != NULL)
     {
-        char *cpf_corrigido = (char *)malloc(12 * sizeof(char)); // 11 dígitos + 1 hífen + 1 terminador
+        char *cpf_corrigido = (char *)malloc(14 * sizeof(char)); // 11 dígitos + 1 hífen + 2 pontos + 1 terminador
         verificar_alocacao(cpf_corrigido);                       // Verifica se a alocação foi bem-sucedida
 
         cpf_corrigido[0] = '\0';
 
         short int tamanho = strlen(cpf);
-
+        int numeros_inseridos = 0; // Contador de números inseridos
         // Extrai apenas os dígitos
-        for (int i = 0; i < tamanho && i < 11; i++)
+        for (int i = 0; i < tamanho && numeros_inseridos < 11; i++)
         {
             if (isdigit(cpf[i]) && i != 3 && i != 7) // Ignora os pontos e o traço
             {
                 strncat(cpf_corrigido, &cpf[i], 1); // Adiciona o dígito ao CPF corrigido
+                numeros_inseridos++;                // Incrementa o contador de números inseridos
             }
             else if (i == 3 || i == 7) // Adiciona o ponto ou o traço na posição correta
             {

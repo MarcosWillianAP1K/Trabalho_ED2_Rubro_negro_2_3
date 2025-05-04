@@ -5,7 +5,28 @@
 #include <string.h>
 #include <ctype.h>
 
-char *corrigir_formatacao_cep(char *cep)
+void imprimir_CEP(char *cep)
+{
+    if (cep != NULL)
+    {
+        printf("CEP: %s\n", cep);
+    }
+    else
+    {
+        printf("CEP: N/A\n");
+    }
+}
+
+void liberar_CEP(char **cep)
+{
+    if (*cep != NULL)
+    {
+        free(*cep);
+        *cep = NULL;
+    }
+}
+
+char *corrigir_formatacao_CEP(char *cep)
 {
     if (cep != NULL)
     {
@@ -15,21 +36,21 @@ char *corrigir_formatacao_cep(char *cep)
         cep_corrigido[0] = '\0';
 
         short int tamanho = strlen(cep);
-
+        int numeros_inseridos = 0; // Contador de números inseridos
         // Extrai apenas os dígitos
-        for (int i = 0; i < tamanho && i < 9; i++)
+        for (int i = 0; i < tamanho && numeros_inseridos < 8; i++)
         {
             if (isdigit(cep[i]) && i != 5) // Ignora o hífen
             {
                 strncat(cep_corrigido, &cep[i], 1); // Adiciona o dígito ao CEP corrigido
+                numeros_inseridos++;                // Incrementa o contador de números inseridos
             }
             else if (i == 5) // Adiciona o hífen na posição correta
             {
                 strncat(cep_corrigido, "-", 1);
-            } 
-            
+            }
         }
-        
+
         free(cep);           // Libera o CEP original
         cep = cep_corrigido; // Atualiza o ponteiro para o CEP corrigido
     }
@@ -37,13 +58,13 @@ char *corrigir_formatacao_cep(char *cep)
     return cep;
 }
 
-int validar_cep(char *cep)
+int validar_CEP(char *cep)
 {
     int valido = 0;
-    if (cep  && strlen(cep) == 9 && cep[5] == '-')
+    if (cep && strlen(cep) == 10 && cep[5] == '-')
     {
         valido = 1; // CEP deve ter 8 dígitos e um hífen na posição correta
-        
+
         for (int i = 0; i < 9 && valido == 1; i++)
         {
             if (i != 5 && !isdigit(cep[i]))
@@ -51,8 +72,21 @@ int validar_cep(char *cep)
                 valido = 0; // CEP deve conter apenas dígitos e o hífen na formatação correta
             }
         }
-        
     }
 
     return valido;
+}
+
+char *digitar_CEP()
+{
+    char *cep = digitar_string();
+
+    cep = corrigir_formatacao_cep(cep);
+
+    if (validar_cep(cep) == 0)
+    {
+        cep = NULL;
+    }
+
+    return cep;
 }

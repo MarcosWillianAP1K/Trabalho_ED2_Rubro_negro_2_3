@@ -11,9 +11,9 @@ void imprimir_dados_pessoa (DADOS *dado)
     imprimir_pessoa(dado->pessoa);
 }
 
-void imprimir_dados_cep (DADOS *dado)
+void imprimir_dados_CEP (DADOS *dado)
 {
-    imprimir_cep(dado->cep);
+    imprimir_cep(dado->CEP);
 }
 
 
@@ -53,13 +53,13 @@ void liberar_dados_pessoa(DADOS **dado)
     }
 }
 
-void liberar_dados_cep(DADOS **dado)
+void liberar_dados_CEP(DADOS **dado)
 {
     if(dado != NULL)
     {
-        if((*dado)->cep != NULL)
+        if((*dado)->CEP != NULL)
         {
-            liberar_cep(&((*dado)->cep));
+            liberar_cep(&((*dado)->CEP));
         }
         liberar_dados(dado);
     }

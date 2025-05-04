@@ -27,4 +27,4 @@ void liberar_dados_cidade(DADOS **dado);
 
 void liberar_dados_pessoa(DADOS **dado);
 
-void liberar_dados_CEP(DADOS **dado);
+// void liberar_dados_CEP(DADOS **dado);
