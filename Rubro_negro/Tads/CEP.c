@@ -5,58 +5,54 @@
 #include <string.h>
 #include <ctype.h>
 
-CEP *alocar_cep()
+char *corrigir_formatacao_cep(char *cep)
 {
-    CEP *cep = (CEP *)malloc(sizeof(CEP));
+    if (cep != NULL)
+    {
+        char *cep_corrigido = (char *)malloc(10 * sizeof(char)); // 8 dígitos + 1 hífen + 1 terminador
+        verificar_alocacao(cep_corrigido);                       // Verifica se a alocação foi bem-sucedida
 
-    verificar_alocacao(cep);
+        cep_corrigido[0] = '\0';
 
-    cep->cep = NULL;
+        short int tamanho = strlen(cep);
+
+        // Extrai apenas os dígitos
+        for (int i = 0; i < tamanho && i < 9; i++)
+        {
+            if (isdigit(cep[i]) && i != 5) // Ignora o hífen
+            {
+                strncat(cep_corrigido, &cep[i], 1); // Adiciona o dígito ao CEP corrigido
+            }
+            else if (i == 5) // Adiciona o hífen na posição correta
+            {
+                strncat(cep_corrigido, "-", 1);
+            } 
+            
+        }
+        
+        free(cep);           // Libera o CEP original
+        cep = cep_corrigido; // Atualiza o ponteiro para o CEP corrigido
+    }
 
     return cep;
 }
 
-CEP *criar_cep(char *cep)
-{
-    CEP *cep_alocado = alocar_cep();
-
-    cep_alocado->cep = cep;
-
-    return cep_alocado;
-}
-
-void imprimir_cep(CEP *cep)
-{
-    if (cep != NULL)
-    {
-        printf("CEP: %s\n", cep->cep);
-    }
-}
-
-void liberar_cep(CEP **cep)
-{
-    if (*cep != NULL)
-    {
-        free((*cep)->cep);
-        free(*cep);
-        *cep = NULL;
-    }
-}
-
-int validar_cep(CEP *cep)
+int validar_cep(char *cep)
 {
     int valido = 0;
-    if (cep && cep->cep && strlen(cep->cep) == 9 && cep->cep[5] == '-')
+    if (cep  && strlen(cep) == 9 && cep[5] == '-')
     {
-        int formato_ok = 1;
-        for (int i = 0; i < 9 && formato_ok; i++)
+        valido = 1; // CEP deve ter 8 dígitos e um hífen na posição correta
+        
+        for (int i = 0; i < 9 && valido == 1; i++)
         {
-            if (i != 5 && !isdigit(cep->cep[i]))
+            if (i != 5 && !isdigit(cep[i]))
             {
-                formato_ok = 0;
+                valido = 0; // CEP deve conter apenas dígitos e o hífen na formatação correta
             }
         }
-        valido = formato_ok;
+        
     }
+
     return valido;
 }

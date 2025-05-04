@@ -1,49 +1,64 @@
 #include "../Includes/CPF.h"
+#include "../Includes/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 
 
 
-int validar_cpf(const char *cpf)
+char *corrigir_formatacao_cpf(char *cpf)
 {
-    int valido = 0;
-    if (cpf && strlen(cpf) == 11)
+    if (cpf != NULL)
     {
-        int todos_digitos = 1;
-        for (int i = 0; i < 11 && todos_digitos; i++)
+        char *cpf_corrigido = (char *)malloc(12 * sizeof(char)); // 11 dígitos + 1 hífen + 1 terminador
+        verificar_alocacao(cpf_corrigido);                       // Verifica se a alocação foi bem-sucedida
+
+        cpf_corrigido[0] = '\0';
+
+        short int tamanho = strlen(cpf);
+
+        // Extrai apenas os dígitos
+        for (int i = 0; i < tamanho && i < 11; i++)
         {
-            if (!isdigit(cpf[i]))
+            if (isdigit(cpf[i]) && i != 3 && i != 7) // Ignora os pontos e o traço
             {
-                todos_digitos = 0;
+                strncat(cpf_corrigido, &cpf[i], 1); // Adiciona o dígito ao CPF corrigido
+            }
+            else if (i == 3 || i == 7) // Adiciona o ponto ou o traço na posição correta
+            {
+                strncat(cpf_corrigido, ".", 1);
+            }
+            else if (i == 11) // Adiciona o traço na posição correta
+            {
+                strncat(cpf_corrigido, "-", 1);
             }
         }
-        valido = todos_digitos;
+
+        free(cpf);           // Libera o CPF original
+        cpf = cpf_corrigido; // Atualiza o ponteiro para o CPF corrigido
     }
+
+    return cpf;
+}
+
+int validar_cpf(char *cpf)
+{
+    int valido = 0;
+    if (cpf != NULL && strlen(cpf) == 11)
+    {
+        valido = 1; // CPF deve ter 11 dígitos
+
+        for (int i = 0; i < 11 && valido == 1; i++)
+        {
+            if (!isdigit(cpf[i]) || ((i == 3 || i == 7) && cpf[i] != '.') || (i == 11 && cpf[i] != '-'))
+            {
+                valido = 0; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
+            }
+        }
+    }
+
     return valido;
 }
 
-int capturar_cpf(char *cpf)
-{
-    int sucesso = 0;
-    char entrada[13]; // 11 dígitos + \n + \0
-    printf("Digite o CPF (11 dígitos, sem pontos ou traços): ");
-    if (fgets(entrada, sizeof(entrada), stdin))
-    {
-        entrada[strcspn(entrada, "\n")] = '\0';
-        if (validar_cpf(entrada))
-        {
-            strcpy(cpf, entrada);
-            sucesso = 1;
-        }
-        else
-        {
-            printf("Erro: CPF deve ter 11 dígitos numéricos!\n");
-        }
-    }
-    else
-    {
-        printf("Erro: falha na leitura!\n");
-    }
-    return sucesso;
-}
