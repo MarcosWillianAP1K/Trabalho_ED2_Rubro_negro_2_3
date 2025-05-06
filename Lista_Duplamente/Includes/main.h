@@ -9,5 +9,7 @@ typedef struct ESTADOS
     char *estado;
     int qnt_estados;
     float *tam_populacao;
+    struct ESTADOS *ant;
+    struct ESTADOS *prox;
     void *end_vp;
 } ESTADOS;
