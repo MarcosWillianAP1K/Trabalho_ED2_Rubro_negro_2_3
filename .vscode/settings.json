@@ -1,6 +1,10 @@
 {
     "files.associations": {
+        "*.dbclient-js": "javascript",
         "assert.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "lista_duplamente.h": "c",
+        "stdio.h": "c",
+        "funcao_sistema.h": "c"
     }
 }

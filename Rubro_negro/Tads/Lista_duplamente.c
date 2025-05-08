@@ -24,9 +24,24 @@ void liberar_no_duplamente(LISTA_DUPLAMENTE **raiz)
     {
         LISTA_DUPLAMENTE *temp = *raiz;
         *raiz = (*raiz)->prox;
-        liberar_estado(temp->estado);
+        liberar_estado(&temp->estado);
         free(temp);
     }
+}
+
+void liberar_lista(LISTA_DUPLAMENTE **raiz)
+{
+    LISTA_DUPLAMENTE *temp = *raiz;
+    LISTA_DUPLAMENTE *proximo;
+
+    while (temp != NULL)
+    {
+        proximo = temp->prox;
+        liberar_no_duplamente(&temp);
+        temp = proximo;
+    }
+
+    *raiz = NULL;
 }
 
 short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO *info)
@@ -110,7 +125,7 @@ LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO *info)
         }
         raiz = raiz->prox;
     }
-    return NULL;
+    return temp;
 }
 
 // Function to remove a node
@@ -148,6 +163,8 @@ short int removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO *info)
             retorno = 1;
         }
     }
+
+    return retorno;
 }
 
 // Function to display the list

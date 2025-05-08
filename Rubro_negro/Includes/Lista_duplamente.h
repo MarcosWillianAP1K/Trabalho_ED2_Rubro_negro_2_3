@@ -24,5 +24,5 @@ short int removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO *info);
 
 void exibirLista(LISTA_DUPLAMENTE *raiz);
 
-// void liberar_lista(LISTA_DUPLAMENTE **raiz);
+void liberar_lista(LISTA_DUPLAMENTE **raiz);
 

@@ -2,6 +2,7 @@
 #include "../Includes/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 ESTADO *alocar_estado()
 {
@@ -38,7 +39,7 @@ void imprimir_estado(ESTADO *estado)
         printf("Nome do Estado: %s\n", estado->nome_estado);
         printf("Nome da Capital: %s\n", estado->nome_capital);
         printf("Quantidade de Cidades: %d\n", estado->quantidade_cidade);
-        printf("Quantidade de População: %d\n", estado->quantidade_populacao);
+        printf("Quantidade de Populacao: %d\n", estado->quantidade_populacao);
     }
 }
 
