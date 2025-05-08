@@ -53,3 +53,15 @@ void liberar_estado(ESTADO **estado)
         *estado = NULL;
     }
 }
+
+short int comparar_nome_estado(ESTADO *estado1, ESTADO *estado2)
+{
+    short int resultado = 0;
+
+    if (estado1 != NULL && estado2 != NULL)
+    {
+        resultado = strcmp(estado1->nome_estado, estado2->nome_estado);
+    }
+
+    return resultado;
+}

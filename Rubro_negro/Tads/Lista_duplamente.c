@@ -1,0 +1,161 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../Includes/Lista_duplamente.h"
+#include "../Includes/funcao_sistema.h"
+
+// Function to create a new node
+LISTA_DUPLAMENTE *alocar_no_duplamente()
+{
+    LISTA_DUPLAMENTE *novo = (LISTA_DUPLAMENTE *)malloc(sizeof(LISTA_DUPLAMENTE));
+
+    verificar_alocacao(novo);
+
+    novo->estado = NULL;
+    novo->ant = NULL;
+    novo->prox = NULL;
+
+    return novo;
+}
+
+void liberar_no_duplamente(LISTA_DUPLAMENTE **raiz)
+{
+    if (raiz != NULL && *raiz != NULL)
+    {
+        LISTA_DUPLAMENTE *temp = *raiz;
+        *raiz = (*raiz)->prox;
+        liberar_estado(temp->estado);
+        free(temp);
+    }
+}
+
+short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO *info)
+{
+
+    short int retorno = 0;
+
+    if (raiz != NULL && info != NULL)
+    {
+        if (*raiz == NULL)
+        {
+            LISTA_DUPLAMENTE *novo = alocar_no_duplamente();
+            if (novo != NULL)
+            {
+                novo->estado = info;
+                *raiz = novo;
+                retorno = 1;
+            }
+        }
+        else
+        {
+            LISTA_DUPLAMENTE *temp = *raiz;
+            short int comparar_estado = comparar_nome_estado(temp->estado, info);
+
+            while (temp->prox != NULL && comparar_estado < 0 && comparar_estado != 0)
+            {
+                temp = temp->prox;
+                comparar_estado = comparar_nome_estado(temp->estado, info);
+            }
+
+            if (comparar_estado != 0)
+            {
+                LISTA_DUPLAMENTE *novo = alocar_no_duplamente();
+                novo->estado = info;
+
+                if (comparar_estado < 0)
+                {
+                    novo->prox = temp->prox;
+                    novo->ant = temp;
+                    temp->prox = novo;
+                    if (novo->prox != NULL)
+                    {
+                        novo->prox->ant = novo;
+                    }
+                }
+                else
+                {
+                    novo->prox = temp;
+                    novo->ant = temp->ant;
+                    if (temp->ant != NULL)
+                    {
+                        temp->ant->prox = novo;
+                    }
+                    else
+                    {
+                        *raiz = novo; // Atualiza a raiz se o novo nó for o primeiro
+                    }
+                    temp->ant = novo;
+                }
+
+                retorno = 1;
+            }
+        }
+    }
+
+    return retorno;
+}
+
+LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO *info)
+{
+    LISTA_DUPLAMENTE *temp = NULL;
+
+    while (raiz != NULL)
+    {
+        if (comparar_nome_estado(raiz->estado, info) == 0)
+        {
+            temp = raiz;
+            // Rapaz compensa fazer uma variavel auxiliar para indicar se o estado foi encontrado parando o loop?
+            // Ou compensa apenas deixar o break para parar o loop?
+            break;
+        }
+        raiz = raiz->prox;
+    }
+    return NULL;
+}
+
+// Function to remove a node
+short int removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO *info)
+{
+    short int retorno = 0;
+
+    if (raiz != NULL && *raiz != NULL && info != NULL)
+    {
+        LISTA_DUPLAMENTE *temp = *raiz;
+
+        while (temp != NULL && comparar_nome_estado(temp->estado, info) != 0)
+        {
+            temp = temp->prox;
+        }
+
+        if (temp != NULL)
+        {
+            if (temp->ant != NULL)
+            {
+                temp->ant->prox = temp->prox;
+            }
+            else
+            {
+                *raiz = temp->prox; // Atualiza a raiz se o nó a ser removido for o primeiro
+            }
+
+            if (temp->prox != NULL)
+            {
+                temp->prox->ant = temp->ant;
+            }
+
+            liberar_no_duplamente(&temp);
+
+            retorno = 1;
+        }
+    }
+}
+
+// Function to display the list
+void exibirLista(LISTA_DUPLAMENTE *raiz)
+{
+    while (raiz != NULL)
+    {
+        imprimir_estado(raiz->estado);
+        raiz = raiz->prox;
+    }
+}
