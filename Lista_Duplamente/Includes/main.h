@@ -13,3 +13,12 @@ typedef struct ESTADOS
     struct ESTADOS *prox;
     void *end_vp;
 } ESTADOS;
+
+ESTADOS *criarEstado();
+int inserir_estado(ESTADOS **r, char *nome);
+int inserir_estado_recursivo(ESTADOS **r, ESTADOS *novo);
+int buscar_com_filtro(ESTADOS *r, char *nome, int (*comparar)(char *, char *));
+int comparar_por_nome(char *nome1, char *nome2);
+void removerEstado(ESTADOS **r, char *nome);
+void exibirLista(ESTADOS *r);
+void liberarLista(ESTADOS **r);
