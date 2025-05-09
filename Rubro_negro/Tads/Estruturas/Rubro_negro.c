@@ -17,6 +17,28 @@ RUBRO_NEGRO *alocar_no()
     return no;
 }
 
+void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS **))
+{
+    if(no != NULL && *no != NULL && liberar != NULL)
+    {
+        liberar(&(*no)->info);
+        free(*no);
+        *no = NULL;
+    }
+}
+
+void liberar_rubro_negro(RUBRO_NEGRO **raiz, void (*liberar)(DADOS **))
+{
+    if(raiz != NULL && *raiz != NULL && liberar != NULL)
+    {
+        liberar_rubro_negro(&(*raiz)->esquerda, liberar);
+        liberar_rubro_negro(&(*raiz)->direita, liberar);
+
+        liberar_no_rubro_negro(raiz, liberar);
+    }
+
+}
+
 void de_ladinho_para_direita(RUBRO_NEGRO **raiz)
 {
     if (raiz != NULL && *raiz != NULL)
