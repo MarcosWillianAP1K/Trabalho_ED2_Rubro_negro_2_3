@@ -19,3 +19,7 @@ typedef struct RUBRO_NEGRO
 }RUBRO_NEGRO;
 
 RUBRO_NEGRO *alocar_no();
+
+COR cor(RUBRO_NEGRO *no);
+
+short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *));
