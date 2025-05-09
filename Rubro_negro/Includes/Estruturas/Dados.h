@@ -1,6 +1,6 @@
-#include "Pessoa.h"
-#include "CEP.h"
-#include "Cidade.h"
+#include "../Objetos/Cidade.h"
+#include "../Objetos/Pessoa.h"
+#include "../Objetos/CEP.h"
 
 
 #pragma once

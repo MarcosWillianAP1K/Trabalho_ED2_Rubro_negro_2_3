@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../Includes/Lista_duplamente.h"
-#include "../Includes/funcao_sistema.h"
+#include "../Includes/Estruturas/Lista_duplamente.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 
 // Function to create a new node
 LISTA_DUPLAMENTE *alocar_no_duplamente()

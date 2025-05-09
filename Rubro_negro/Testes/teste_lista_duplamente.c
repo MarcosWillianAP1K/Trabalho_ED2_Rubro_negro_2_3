@@ -1,6 +1,6 @@
 /* 
  * Comando para compilar:
- * gcc -Wall -o teste_lista teste_lista_duplamente.c ../Tads/Lista_duplamente.c ../Tads/Estado.c ../Tads/funcao_sistema.c -I../Includes
+ * gcc -Wall -o teste_lista teste_lista_duplamente.c ../Tads/Estruturas/Lista_duplamente.c ../Tads/Objetos/Estado.c ../Tads/Utilitarios/funcao_sistema.c -I../Includes
  * 
  * Explicacao dos parametros:
  * -Wall: Ativa todos os avisos de compilacao
@@ -17,8 +17,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "../Includes/Lista_duplamente.h"
-#include "../Includes/Estado.h"
+#include "../Includes/Estruturas/Lista_duplamente.h"
+#include "../Includes/Objetos/Estado.h"
 
 void testar_criacao_lista() {
     printf("Testando criacao do no da lista...\n");

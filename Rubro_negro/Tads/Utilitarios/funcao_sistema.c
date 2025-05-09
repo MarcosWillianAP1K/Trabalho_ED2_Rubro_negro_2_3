@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../includes/funcao_sistema.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 
 void limpar_buffer()
 {

@@ -1,5 +1,5 @@
-#include "../Includes/CEP.h"
-#include "../Includes/funcao_sistema.h"
+#include "../Includes/Objetos/CEP.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,4 +1,4 @@
-#include "../Includes/Dados.h"
+#include "../../Includes/Estruturas/Dados.h"
 #include <stdio.h>
 
 void imprimir_dados_cidade(DADOS *dado)
