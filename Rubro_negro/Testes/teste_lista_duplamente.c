@@ -1,6 +1,6 @@
 /* 
  * Comando para compilar:
- * gcc -Wall -o teste_lista teste_lista_duplamente.c ../Tads/Estruturas/Lista_duplamente.c ../Tads/Objetos/Estado.c ../Tads/Utilitarios/funcao_sistema.c -I../Includes
+ * gcc -Wall teste_lista_duplamente.c ../Tads/Estruturas/Lista_duplamente.c ../Tads/Objetos/Estado.c ../Tads/Utilitarios/funcao_sistema.c -I../Includes
  * 
  * Explicacao dos parametros:
  * -Wall: Ativa todos os avisos de compilacao

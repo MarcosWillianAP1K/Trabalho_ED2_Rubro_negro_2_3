@@ -1,5 +1,5 @@
-#include "../Includes/Pessoa.h"
-#include "../Includes/funcao_sistema.h"
+#include "../Includes/Objetos/Pessoa.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,7 +18,7 @@ PESSOA *alocar_pessoa()
 }
 
 
-PESSOA *criar_pessoa(char *CPF, char *nome, char *CEP_natal, char *CEP_atual, char *data_nascimento)
+PESSOA *criar_pessoa(char *CPF, char *nome, char *CEP_natal, char *CEP_atual, DATA *data_nascimento)
 {
     PESSOA *pessoa = alocar_pessoa();
 

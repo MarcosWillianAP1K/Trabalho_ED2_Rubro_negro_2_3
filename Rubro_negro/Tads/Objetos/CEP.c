@@ -81,9 +81,9 @@ char *digitar_CEP()
 {
     char *cep = digitar_string();
 
-    cep = corrigir_formatacao_cep(cep);
+    cep = corrigir_formatacao_CEP(cep);
 
-    if (validar_cep(cep) == 0)
+    if (validar_CEP(cep) == 0)
     {
         cep = NULL;
     }

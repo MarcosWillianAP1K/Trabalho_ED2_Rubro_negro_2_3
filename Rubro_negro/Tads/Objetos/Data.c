@@ -1,5 +1,5 @@
-#include "../Includes/Data.h"
-#include "../Includes/funcao_sistema.h"
+#include "../Includes/Objetos/Data.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

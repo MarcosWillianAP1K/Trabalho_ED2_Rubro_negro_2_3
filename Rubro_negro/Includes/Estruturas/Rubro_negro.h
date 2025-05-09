@@ -12,8 +12,8 @@ typedef enum COR
 typedef struct RUBRO_NEGRO
 {
     DADOS *info;
-    RUBRO_NEGRO *esquerda;
-    RUBRO_NEGRO *direita;
+    struct RUBRO_NEGRO *esquerda;
+    struct RUBRO_NEGRO *direita;
     COR cor;
 
 }RUBRO_NEGRO;

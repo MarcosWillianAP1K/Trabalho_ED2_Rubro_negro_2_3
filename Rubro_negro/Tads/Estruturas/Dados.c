@@ -1,5 +1,6 @@
 #include "../../Includes/Estruturas/Dados.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void imprimir_dados_cidade(DADOS *dado)
 {
@@ -13,7 +14,7 @@ void imprimir_dados_pessoa (DADOS *dado)
 
 void imprimir_dados_CEP (DADOS *dado)
 {
-    imprimir_cep(dado->CEP);
+    imprimir_CEP(dado->CEP);
 }
 
 
@@ -59,7 +60,7 @@ void liberar_dados_CEP(DADOS **dado)
     {
         if((*dado)->CEP != NULL)
         {
-            liberar_cep(&((*dado)->CEP));
+            liberar_CEP(&((*dado)->CEP));
         }
         liberar_dados(dado);
     }

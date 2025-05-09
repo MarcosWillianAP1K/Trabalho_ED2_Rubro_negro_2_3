@@ -5,6 +5,12 @@
         "main.h": "c",
         "lista_duplamente.h": "c",
         "stdio.h": "c",
-        "funcao_sistema.h": "c"
+        "funcao_sistema.h": "c",
+        "data.h": "c",
+        "cep.h": "c",
+        "pessoa.h": "c",
+        "cidade.h": "c",
+        "dados.h": "c",
+        "rubro_negro.h": "c"
     }
 }

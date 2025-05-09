@@ -1,5 +1,5 @@
-#include "../Includes/CPF.h"
-#include "../Includes/funcao_sistema.h"
+#include "../Includes/Objetos/CPF.h"
+#include "../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -73,3 +73,16 @@ int validar_cpf(char *cpf)
     return valido;
 }
 
+char *digitar_CPF()
+{
+    char *cpf = digitar_string();
+
+    cpf = corrigir_formatacao_cpf(cpf);
+
+    if (validar_cpf(cpf) == 0)
+    {
+        cpf = NULL;
+    }
+
+    return cpf;
+}

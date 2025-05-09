@@ -8,4 +8,8 @@ void imprimir_CEP(char *cep);
 
 void liberar_CEP(char **cep);
 
+char *corrigir_formatacao_CEP(char *cep);
 
+int validar_CEP(char *cep);
+
+char *digitar_CEP();
