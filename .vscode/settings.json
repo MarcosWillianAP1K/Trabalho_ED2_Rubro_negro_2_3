@@ -11,6 +11,8 @@
         "pessoa.h": "c",
         "cidade.h": "c",
         "dados.h": "c",
-        "rubro_negro.h": "c"
+        "rubro_negro.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c"
     }
 }

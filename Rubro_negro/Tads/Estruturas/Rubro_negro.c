@@ -1,5 +1,5 @@
-#include "../Includes/Estruturas/Rubro_negro.h"
-#include "../Includes/Utilitarios/funcao_sistema.h"
+#include "../../Includes/Estruturas/Rubro_negro.h"
+#include "../../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -93,11 +93,11 @@ void trocar_cor(RUBRO_NEGRO *no)
         {
             if (cor(no->esquerda) == VERMELHO)
             {
-                no->esquerda->cor == PRETO;
+                no->esquerda->cor = PRETO;
             }
             else
             {
-                no->esquerda->cor == VERMELHO;
+                no->esquerda->cor = VERMELHO;
             }
         }
 
@@ -105,11 +105,11 @@ void trocar_cor(RUBRO_NEGRO *no)
         {
             if (cor(no->direita) == VERMELHO)
             {
-                no->direita->cor == PRETO;
+                no->direita->cor = PRETO;
             }
             else
             {
-                no->direita->cor == VERMELHO;
+                no->direita->cor = VERMELHO;
             }
         }
     }
@@ -208,7 +208,7 @@ RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, short int (*compa
 {
     RUBRO_NEGRO *retorno = NULL;
 
-    if (raiz != NULL)
+    if (raiz != NULL && aux != NULL && comparar != NULL)
     {
         if (comparar(raiz->info, aux) == 0)
         {

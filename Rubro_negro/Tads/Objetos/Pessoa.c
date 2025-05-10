@@ -1,7 +1,8 @@
-#include "../Includes/Objetos/Pessoa.h"
-#include "../Includes/Utilitarios/funcao_sistema.h"
+#include "../../Includes/Objetos/Pessoa.h"
+#include "../../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 PESSOA *alocar_pessoa()
@@ -15,6 +16,8 @@ PESSOA *alocar_pessoa()
     pessoa->CEP_atual = NULL;
     pessoa->CEP_natal = NULL;
     pessoa->data_nascimento = NULL;
+
+    return pessoa;
 }
 
 
@@ -39,7 +42,7 @@ void imprimir_pessoa(PESSOA *pessoa)
         printf("Nome: %s\n", pessoa->nome);
         printf("CEP Natal: %s\n", pessoa->CEP_natal);
         printf("CEP Atual: %s\n", pessoa->CEP_atual);
-        printf("Data Nascimento: %s\n", pessoa->data_nascimento);
+        imprimir_data(pessoa->data_nascimento);
     }
 }
 

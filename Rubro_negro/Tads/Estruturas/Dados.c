@@ -1,5 +1,5 @@
 #include "../../Includes/Estruturas/Dados.h"
-#include "../Includes/Utilitarios/funcao_sistema.h"
+#include "../../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 

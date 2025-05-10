@@ -1,5 +1,5 @@
-#include "../Includes/Objetos/Data.h"
-#include "../Includes/Utilitarios/funcao_sistema.h"
+#include "../../Includes/Objetos/Data.h"
+#include "../../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -166,4 +166,10 @@ int digitar_data_nascimento(DATA *data)
 }
 
 
-
+void imprimir_data(DATA *data)
+{
+    if (data != NULL)
+    {
+        printf("Data: %02hd/%02hd/%04hd\n", data->dia, data->mes, data->ano);
+    }
+}

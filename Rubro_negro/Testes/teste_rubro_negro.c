@@ -84,7 +84,7 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("Cidade encontrada:\n");
         imprimir_dados_cidade(resultado->info);
     } else {
-        mensagem_erro("Cidade não encontrada!\n");
+        mensagem_erro("Cidade nao encontrada!\n");
     }
     
     // Free memory after search
@@ -101,7 +101,7 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("Cidade encontrada:\n");
         imprimir_dados_cidade(resultado->info);
     } else {
-        mensagem_erro("Cidade não encontrada!\n");
+        mensagem_erro("Cidade nao encontrada!\n");
     }
     
     // Free memory after search
@@ -213,7 +213,7 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("Pessoa encontrada:\n");
         imprimir_dados_pessoa(resultado->info);
     } else {
-        mensagem_erro("Pessoa não encontrada!\n");
+        mensagem_erro("Pessoa nao encontrada!\n");
     }
     
     // Free memory after search
@@ -238,7 +238,7 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("Pessoa encontrada:\n");
         imprimir_dados_pessoa(resultado->info);
     } else {
-        mensagem_erro("Pessoa não encontrada!\n");
+        mensagem_erro("Pessoa nao encontrada!\n");
     }
     
     // Free memory after search
@@ -310,7 +310,7 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("CEP encontrado:\n");
         imprimir_dados_CEP(resultado->info);
     } else {
-        mensagem_erro("CEP não encontrado!\n");
+        mensagem_erro("CEP nao encontrado!\n");
     }
     
     // Free memory after search
@@ -327,7 +327,7 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore) {
         mensagem_sucesso("CEP encontrado:\n");
         imprimir_dados_CEP(resultado->info);
     } else {
-        mensagem_erro("CEP não encontrado!\n");
+        mensagem_erro("CEP nao encontrado!\n");
     }
     
     // Free memory after search

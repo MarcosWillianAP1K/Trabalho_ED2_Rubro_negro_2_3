@@ -24,5 +24,5 @@ int validar_data_nascimento(DATA *data);
 
 int digitar_data_nascimento(DATA *data);
 
-
+void imprimir_data(DATA *data);
 
