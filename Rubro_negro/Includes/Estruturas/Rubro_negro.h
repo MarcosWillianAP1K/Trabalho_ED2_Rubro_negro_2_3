@@ -18,7 +18,7 @@ typedef struct RUBRO_NEGRO
 
 }RUBRO_NEGRO;
 
-RUBRO_NEGRO *alocar_no();
+RUBRO_NEGRO *alocar_no_rubro_negro();
 
 void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS **));
 

@@ -6,6 +6,41 @@
 
 
 
+DATA *alocar_data()
+{
+    DATA *data = (DATA *)malloc(sizeof(DATA));
+
+    verificar_alocacao(data);
+
+    data->dia = 0;
+    data->mes = 0;
+    data->ano = 0;
+
+    return data;
+}
+
+DATA *criar_data(short int dia, short int mes, short int ano)
+{
+    DATA *data = alocar_data();
+
+    data->dia = dia;
+    data->mes = mes;
+    data->ano = ano;
+
+    return data;
+}
+
+void liberar_data(DATA **data)
+{
+    if (data != NULL && *data != NULL)
+    {
+        free(*data);
+        *data = NULL;
+    }
+}
+
+
+
 short int digitar_dia()
 {
     short int n;
@@ -125,9 +160,9 @@ int validar_data_nascimento(DATA *data)
     return valida;
 }
 
-int digitar_data_nascimento(DATA *data)
+DATA *digitar_data_nascimento()
 {
-    int sucesso = 0;
+    DATA *data = alocar_data();
 
     data->dia = 0;
     data->mes = -1;
@@ -152,18 +187,19 @@ int digitar_data_nascimento(DATA *data)
 
     if (data->dia != -1)
     {
-        if (validar_data_nascimento(data))
+        if (!validar_data_nascimento(data))
         {
-            sucesso = 1;
-        }
-        else
-        {
-            sucesso = 0;
+            liberar_data(&data);
         }
     }
+    else
+    {
+        liberar_data(&data);
+    }
 
-    return sucesso;
+    return data;
 }
+
 
 
 void imprimir_data(DATA *data)

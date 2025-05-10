@@ -54,7 +54,7 @@ void liberar_pessoa(PESSOA **pessoa)
         free((*pessoa)->nome);
         free((*pessoa)->CEP_natal);
         free((*pessoa)->CEP_atual);
-        free((*pessoa)->data_nascimento);
+        liberar_data(&((*pessoa)->data_nascimento));
         free(*pessoa);
         *pessoa = NULL;
     }
@@ -63,4 +63,9 @@ void liberar_pessoa(PESSOA **pessoa)
 short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
 {
     return strcmp(pessoa1->nome, pessoa2->nome);
+}
+
+short int comparar_CPF_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
+{
+    return strcmp(pessoa1->CPF, pessoa2->CPF);
 }

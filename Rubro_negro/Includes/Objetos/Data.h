@@ -8,6 +8,13 @@ typedef struct DATA {
 } DATA;
 
 // Function prototypes
+
+DATA *alocar_data();
+
+DATA *criar_data(short int dia, short int mes, short int ano);
+
+void liberar_data(DATA **data);
+
 short int digitar_dia();
 
 short int digitar_mes();
@@ -22,7 +29,7 @@ int validar_data(DATA *data);
 
 int validar_data_nascimento(DATA *data);
 
-int digitar_data_nascimento(DATA *data);
+DATA *digitar_data_nascimento();
 
 void imprimir_data(DATA *data);
 

@@ -84,6 +84,11 @@ short int comparar_dados_nome_pessoa(DADOS *dado1, DADOS *dado2)
     return comparar_nome_pessoas(dado1->pessoa, dado2->pessoa);
 }
 
+short int comparar_dados_CPF_pessoa(DADOS *dado1, DADOS *dado2)
+{
+    return comparar_CPF_pessoas(dado1->pessoa, dado2->pessoa);
+}
+
 short int comparar_dados_CEP(DADOS *dado1, DADOS *dado2)
 {
     return comparar_CEPs(dado1->CEP, dado2->CEP);
