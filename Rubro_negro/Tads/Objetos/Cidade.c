@@ -33,7 +33,7 @@ void imprimir_cidade(CIDADE *cidade)
     if (cidade != NULL)
     {
         printf("Nome da Cidade: %s\n", cidade->nome);
-        printf("Quantidade de População: %d\n", cidade->quantidade_populacao);
+        printf("Quantidade de Populacao: %d\n", cidade->quantidade_populacao);
     }
 }
 
