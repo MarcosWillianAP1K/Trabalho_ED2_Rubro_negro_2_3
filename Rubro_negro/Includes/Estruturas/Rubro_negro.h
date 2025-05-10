@@ -27,3 +27,10 @@ void liberar_rubro_negro(RUBRO_NEGRO **raiz, void (*liberar)(DADOS **));
 COR cor(RUBRO_NEGRO *no);
 
 short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *));
+
+void imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *));
+
+void imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *));
+
+
+RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *));

@@ -22,3 +22,4 @@ void imprimir_pessoa(PESSOA *pessoa);
 
 void liberar_pessoa(PESSOA **pessoa);
 
+short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2);

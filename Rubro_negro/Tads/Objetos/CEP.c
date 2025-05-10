@@ -90,3 +90,8 @@ char *digitar_CEP()
 
     return cep;
 }
+
+short int comparar_CEPs(char *cep1, char *cep2)
+{
+    return strcmp(cep1, cep2);
+}

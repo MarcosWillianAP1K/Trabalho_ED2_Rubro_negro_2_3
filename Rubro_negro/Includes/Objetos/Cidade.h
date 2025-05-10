@@ -18,3 +18,4 @@ void imprimir_cidade(CIDADE *cidade);
 
 void liberar_cidade(CIDADE **cidade);
 
+short int comparar_nome_cidades(CIDADE *cidade1, CIDADE *cidade2);

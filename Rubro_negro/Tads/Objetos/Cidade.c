@@ -2,6 +2,7 @@
 #include "../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 CIDADE *alocar_cidade()
 {
@@ -45,4 +46,10 @@ void liberar_cidade(CIDADE **cidade)
         free(*cidade);
         *cidade = NULL;
     }
+}
+
+
+short int comparar_nome_cidades(CIDADE *cidade1, CIDADE *cidade2)
+{
+    return strcmp(cidade1->nome, cidade2->nome);
 }

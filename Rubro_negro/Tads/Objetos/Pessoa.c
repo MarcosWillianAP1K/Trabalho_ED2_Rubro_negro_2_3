@@ -56,3 +56,8 @@ void liberar_pessoa(PESSOA **pessoa)
         *pessoa = NULL;
     }
 }
+
+short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
+{
+    return strcmp(pessoa1->nome, pessoa2->nome);
+}
