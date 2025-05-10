@@ -201,11 +201,61 @@ DATA *digitar_data_nascimento()
 }
 
 
-
 void imprimir_data(DATA *data)
 {
     if (data != NULL)
     {
         printf("Data: %02hd/%02hd/%04hd\n", data->dia, data->mes, data->ano);
     }
+}
+
+
+short int comparar_data(DATA *data1, DATA *data2)
+{
+    short int resultado = 0;
+
+    if (data1 != NULL && data2 != NULL)
+    {
+        
+        if (data1->ano < data2->ano)
+        {
+            resultado = -1;
+        }
+        else if (data1->ano > data2->ano)
+        {
+            resultado = 1;
+        }
+        else
+        {
+            if (data1->mes < data2->mes)
+            {
+                resultado = -1;
+            }
+            else if (data1->mes > data2->mes)
+            {
+                resultado = 1;
+            }
+            else
+            {
+                if (data1->dia < data2->dia)
+                {
+                    resultado = -1;
+                }
+                else if (data1->dia > data2->dia)
+                {
+                    resultado = 1;
+                }
+            }
+        }
+    }
+    else if (data1 == NULL && data2 != NULL)
+    {
+        resultado = -1;
+    }
+    else if (data1 != NULL && data2 == NULL)
+    {
+        resultado = 1;
+    }
+
+    return resultado;
 }

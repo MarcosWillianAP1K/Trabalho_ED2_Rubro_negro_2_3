@@ -62,10 +62,40 @@ void liberar_pessoa(PESSOA **pessoa)
 
 short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
 {
-    return strcmp(pessoa1->nome, pessoa2->nome);
+    short int resultado = 0;
+
+    if (pessoa1 != NULL && pessoa2 != NULL)
+    {
+        resultado = strcmp(pessoa1->nome, pessoa2->nome);
+    }
+    else if (pessoa1 == NULL && pessoa2 != NULL)
+    {
+        resultado = -1;
+    }
+    else if (pessoa1 != NULL && pessoa2 == NULL)
+    {
+        resultado = 1;
+    }
+    
+    return resultado;
 }
 
 short int comparar_CPF_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
 {
-    return strcmp(pessoa1->CPF, pessoa2->CPF);
+    short int resultado = 0;
+
+    if (pessoa1 != NULL && pessoa2 != NULL)
+    {
+        resultado = strcmp(pessoa1->CPF, pessoa2->CPF);
+    }
+    else if (pessoa1 == NULL && pessoa2 != NULL)
+    {
+        resultado = -1;
+    }
+    else if (pessoa1 != NULL && pessoa2 == NULL)
+    {
+        resultado = 1;
+    }
+
+    return resultado;
 }

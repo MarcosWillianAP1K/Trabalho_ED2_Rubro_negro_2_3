@@ -33,3 +33,4 @@ DATA *digitar_data_nascimento();
 
 void imprimir_data(DATA *data);
 
+short int comparar_data(DATA *data1, DATA *data2);

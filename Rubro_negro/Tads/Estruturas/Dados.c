@@ -93,3 +93,9 @@ short int comparar_dados_CEP(DADOS *dado1, DADOS *dado2)
 {
     return comparar_CEPs(dado1->CEP, dado2->CEP);
 }
+
+short int comparar_dados_data_nascimento(DADOS *dado1, DADOS *dado2)
+{
+    return comparar_data(dado1->pessoa->data_nascimento, dado2->pessoa->data_nascimento);
+}
+

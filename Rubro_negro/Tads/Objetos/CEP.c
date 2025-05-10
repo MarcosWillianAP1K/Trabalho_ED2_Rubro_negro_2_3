@@ -93,5 +93,20 @@ char *digitar_CEP()
 
 short int comparar_CEPs(char *cep1, char *cep2)
 {
-    return strcmp(cep1, cep2);
+    short int resultado = 0;
+
+    if (cep1 != NULL && cep2 != NULL)
+    {
+        resultado = strcmp(cep1, cep2);
+    }
+    else if (cep1 == NULL && cep2 != NULL)
+    {
+        resultado = -1; // cep1 é menor que cep2
+    }
+    else if (cep1 != NULL && cep2 == NULL)
+    {
+        resultado = 1; // cep1 é maior que cep2
+    }
+    
+    return resultado;
 }
