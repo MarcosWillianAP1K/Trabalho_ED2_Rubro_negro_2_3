@@ -13,6 +13,7 @@
         "dados.h": "c",
         "rubro_negro.h": "c",
         "stdlib.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "func_interatividade.h": "c"
     }
 }
