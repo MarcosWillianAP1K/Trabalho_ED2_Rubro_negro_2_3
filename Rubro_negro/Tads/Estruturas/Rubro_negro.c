@@ -217,6 +217,15 @@ short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*compa
     return retorno;
 }
 
+short int inserir_rubro_negro_void(void **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *))
+{
+    short int retorno = 0;
+    RUBRO_NEGRO *arvore = *raiz;
+    retorno = inserir_rubro_negro(&arvore, info, comparar);
+    *raiz = arvore;
+
+    return retorno;
+}
 
 //========================REMOÇÃO========================
 

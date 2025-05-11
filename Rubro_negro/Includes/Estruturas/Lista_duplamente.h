@@ -1,8 +1,7 @@
+#include "../Objetos/Estado.h"
+
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "../Objetos/Estado.h"
 
 typedef struct LISTA_DUPLAMENTE
 {
