@@ -350,13 +350,13 @@ void imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)
 {
     if (raiz != NULL)
     {
-        imprimir_rubro_negro(raiz->esquerda, imprimir);
+        imprimir_filtro_rubro_negro(raiz->esquerda, aux, imprimir, comparar);
 
         if (comparar(raiz->info, aux) == 0)
         {
             imprimir(raiz->info);
         }
 
-        imprimir_rubro_negro(raiz->direita, imprimir);
+        imprimir_filtro_rubro_negro(raiz->direita, aux, imprimir, comparar);
     }
 }
