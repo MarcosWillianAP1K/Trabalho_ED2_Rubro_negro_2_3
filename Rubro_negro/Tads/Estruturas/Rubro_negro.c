@@ -334,29 +334,40 @@ DADOS *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)
 
 //========================IMPRIMIR========================
 
-void imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
+short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
 {
-    if (raiz != NULL)
+    short int retorno = 0;
+
+    if (raiz != NULL && imprimir != NULL)
     {
-        imprimir_rubro_negro(raiz->esquerda, imprimir);
+        retorno = imprimir_rubro_negro(raiz->esquerda, imprimir);
 
         imprimir(raiz->info);
 
-        imprimir_rubro_negro(raiz->direita, imprimir);
+        retorno = imprimir_rubro_negro(raiz->direita, imprimir);
+
+        retorno = 1;
     }
+
+    return retorno;
 }
 
-void imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *))
+short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *))
 {
-    if (raiz != NULL)
+    short int retorno = 0;
+
+    if (raiz != NULL && imprimir != NULL && comparar != NULL && aux != NULL)
     {
-        imprimir_filtro_rubro_negro(raiz->esquerda, aux, imprimir, comparar);
+        retorno |= imprimir_filtro_rubro_negro(raiz->esquerda, aux, imprimir, comparar);
 
         if (comparar(raiz->info, aux) == 0)
         {
             imprimir(raiz->info);
+            retorno = 1;
         }
 
-        imprimir_filtro_rubro_negro(raiz->direita, aux, imprimir, comparar);
+        retorno |= imprimir_filtro_rubro_negro(raiz->direita, aux, imprimir, comparar);
     }
+
+    return retorno;
 }

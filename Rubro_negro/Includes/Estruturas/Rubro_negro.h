@@ -32,8 +32,8 @@ short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*compa
 
 DADOS *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *)) ;
 
-void imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *));
+short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *));
 
-void imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *));
+short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *));
 
 

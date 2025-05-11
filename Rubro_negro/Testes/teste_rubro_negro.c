@@ -176,7 +176,12 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore)
 
     // Test printing entire tree
     print_amarelo("Imprimindo todas as cidades:\n");
-    imprimir_rubro_negro(arvore, imprimir_dados_cidade);
+    short int impressao_sucesso = imprimir_rubro_negro(arvore, imprimir_dados_cidade);
+    if (impressao_sucesso) {
+        mensagem_sucesso("Cidades impressas com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhuma cidade foi impressa (arvore vazia ou erro)!\n");
+    }
 
     // Test filtered printing - will print only cities starting with 'Rio de Janeiro'
     print_amarelo("\nImprimindo cidades com filtro ('Rio de Janeiro'):\n");
@@ -184,13 +189,15 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore)
     filtro_cidade_rio_de_janeiro->cidade = criar_cidade("Rio de Janeiro", 0, NULL);
     mensagem_sucesso("Filtro para cidades criado com sucesso!\n");
 
-    // This will traverse the whole tree, comparing each node with the filter
-    // using comparar_dados_nome_cidade. Only nodes that match will be printed.
-    imprimir_filtro_rubro_negro(arvore, filtro_cidade_rio_de_janeiro, imprimir_dados_cidade, comparar_dados_nome_cidade);
+    // Print filtered cities
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro_cidade_rio_de_janeiro, imprimir_dados_cidade, comparar_dados_nome_cidade);
+    if (impressao_sucesso) {
+        mensagem_sucesso("Cidades filtradas com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhuma cidade foi impressa (arvore vazia ou erro)!\n");
+    }
 
-
-    // Test searching for existing city
-    print_amarelo("\nBuscando cidade 'Rio de Janeiro':\n");
+    // using comparar_dados_nome_cidade. Only nodes that match will
     DADOS *busca = alocar_dados();
     busca->cidade = criar_cidade("Rio de Janeiro", 0, NULL);
     mensagem_sucesso("Dado para busca de cidade criado com sucesso!\n");
@@ -535,7 +542,12 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore)
 
     // Test printing entire tree
     print_amarelo("Imprimindo todas as pessoas:\n");
-    imprimir_rubro_negro(arvore, imprimir_dados_pessoa);
+    short int impressao_sucesso = imprimir_rubro_negro(arvore, imprimir_dados_pessoa);
+    if (impressao_sucesso) {
+        mensagem_sucesso("Pessoas impressas com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhuma pessoa foi impressa (arvore vazia ou erro)!\n");
+    }
 
     // Test filtered printing (by name Joao Silva)
     print_amarelo("\nImprimindo pessoas com filtro (Joao Silva):\n");
@@ -543,7 +555,13 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore)
     filtro->pessoa = criar_pessoa("", "Joao Silva", "", "", NULL);
     mensagem_sucesso("Filtro para pessoas criado com sucesso!\n");
 
-    imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_pessoa, comparar_dados_nome_pessoa);
+    // Print filtered people
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_pessoa, comparar_dados_nome_pessoa);
+    if (impressao_sucesso) {
+        mensagem_sucesso("Pessoas filtradas com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhuma pessoa foi impressa (arvore vazia ou erro)!\n");
+    }
 
     // Test searching for existing person
     print_amarelo("\nBuscando pessoa com CPF '987.654.321-00':\n");
@@ -893,7 +911,12 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore)
 
     // Test printing entire tree
     print_amarelo("Imprimindo todos os CEPs:\n");
-    imprimir_rubro_negro(arvore, imprimir_dados_CEP);
+    short int impressao_sucesso = imprimir_rubro_negro(arvore, imprimir_dados_CEP);
+    if (impressao_sucesso) {
+        mensagem_sucesso("CEPs impressos com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhum CEP foi impresso (arvore vazia ou erro)!\n");
+    }
 
     // Test filtered printing (CEPs starting with '01001-000')
     print_amarelo("\nImprimindo CEPs com filtro ('01001-000'):\n");
@@ -901,7 +924,12 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore)
     filtro->CEP = strdup("01001-000");
     mensagem_sucesso("Filtro para CEPs criado com sucesso!\n");
 
-    imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_CEP, comparar_dados_CEP);
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_CEP, comparar_dados_CEP);
+    if (impressao_sucesso) {
+        mensagem_sucesso("CEPs filtrados com sucesso!\n");
+    } else {
+        mensagem_erro("Nenhum CEP foi impresso (arvore vazia ou erro)!\n");
+    }
 
     // Test searching for existing CEP
     print_amarelo("\nBuscando CEP '02002-000':\n");
