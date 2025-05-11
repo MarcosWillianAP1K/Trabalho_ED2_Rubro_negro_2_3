@@ -341,6 +341,18 @@ DADOS *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)
 }
 
 
+DADOS *remover_rubro_negro_void(void **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *))
+{
+    DADOS *retorno = NULL;
+
+    RUBRO_NEGRO *arvore = *raiz;
+    retorno = remover_rubro_negro(&arvore, aux, comparar);
+    *raiz = arvore;
+
+    return retorno;
+}
+
+
 //========================IMPRIMIR========================
 
 short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
