@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "../../Includes/Utilitarios/funcao_sistema.h"
-#include "../../Includes/Interatividade/func_interatividade.h"
+#include "../../Includes/Interatividade/Interatividade.h"
 
 
 
 
-ESTADO *cadastro_estados_interativo(void)
+
+ESTADO *cadastro_estados_interativo()
 {
-    
     printf("Digite o nome do estado: ");
     char *nome_estado = digitar_string();
     
@@ -20,7 +20,7 @@ ESTADO *cadastro_estados_interativo(void)
     return estado;
 }
 
-void menu_principal(void)
+void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas)
 {
     char opcao;
 
@@ -73,9 +73,4 @@ void menu_principal(void)
     } while (opcao != '0');
 }
 
-int main()
-{
-    menu_principal();
 
-    return 0;
-}
