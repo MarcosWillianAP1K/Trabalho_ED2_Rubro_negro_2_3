@@ -5,7 +5,7 @@
 
 typedef struct LISTA_DUPLAMENTE
 {
-    ESTADO *estado;
+    ESTADO estado;
     struct LISTA_DUPLAMENTE *ant;
     struct LISTA_DUPLAMENTE *prox;
 } LISTA_DUPLAMENTE;

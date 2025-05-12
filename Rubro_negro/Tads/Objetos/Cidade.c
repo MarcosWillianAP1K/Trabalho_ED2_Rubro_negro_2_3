@@ -4,26 +4,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-CIDADE *alocar_cidade()
+// CIDADE *alocar_cidade()
+// {
+//     CIDADE *cidade = (CIDADE *)malloc(sizeof(CIDADE));
+
+//     verificar_alocacao(cidade);
+
+//     cidade->nome = NULL;
+//     cidade->quantidade_populacao = 0;
+//     cidade->raiz_arvore_CEPs = NULL;
+
+//     return cidade;
+// }
+
+CIDADE criar_cidade(char *nome, int quantidade_populacao, void *raiz_arvore_CEPs)
 {
-    CIDADE *cidade = (CIDADE *)malloc(sizeof(CIDADE));
+    CIDADE cidade;
 
-    verificar_alocacao(cidade);
-
-    cidade->nome = NULL;
-    cidade->quantidade_populacao = 0;
-    cidade->raiz_arvore_CEPs = NULL;
-
-    return cidade;
-}
-
-CIDADE *criar_cidade(char *nome, int quantidade_populacao, void *raiz_arvore_CEPs)
-{
-    CIDADE *cidade = alocar_cidade();
-
-    cidade->nome = nome;
-    cidade->quantidade_populacao = quantidade_populacao;
-    cidade->raiz_arvore_CEPs = raiz_arvore_CEPs;
+    cidade.nome = nome;
+    cidade.quantidade_populacao = quantidade_populacao;
+    cidade.raiz_arvore_CEPs = raiz_arvore_CEPs;
 
     return cidade;
 }
@@ -37,14 +37,12 @@ void imprimir_cidade(CIDADE *cidade)
     }
 }
 
-void liberar_cidade(CIDADE **cidade)
+void liberar_cidade(CIDADE *cidade)
 {
-    if (*cidade != NULL)
+    if (cidade != NULL)
     {
-        free((*cidade)->nome);
-        // free((*cidade)->raiz_arvore_CEPs);
-        free(*cidade);
-        *cidade = NULL;
+        free(cidade->nome);
+        // free(cidade->raiz_arvore_CEPs);
     }
 }
 

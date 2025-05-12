@@ -6,38 +6,38 @@
 
 
 
-DATA *alocar_data()
+// DATA *alocar_data()
+// {
+//     DATA *data = (DATA *)malloc(sizeof(DATA));
+
+//     verificar_alocacao(data);
+
+//     data->dia = 0;
+//     data->mes = 0;
+//     data->ano = 0;
+
+//     return data;
+// }
+
+DATA criar_data(short int dia, short int mes, short int ano)
 {
-    DATA *data = (DATA *)malloc(sizeof(DATA));
+    DATA data;
 
-    verificar_alocacao(data);
-
-    data->dia = 0;
-    data->mes = 0;
-    data->ano = 0;
+    data.dia = dia;
+    data.mes = mes;
+    data.ano = ano;
 
     return data;
 }
 
-DATA *criar_data(short int dia, short int mes, short int ano)
-{
-    DATA *data = alocar_data();
-
-    data->dia = dia;
-    data->mes = mes;
-    data->ano = ano;
-
-    return data;
-}
-
-void liberar_data(DATA **data)
-{
-    if (data != NULL && *data != NULL)
-    {
-        free(*data);
-        *data = NULL;
-    }
-}
+// void liberar_data(DATA *data)
+// {
+//     if (data != NULL && *data != NULL)
+//     {
+//         free(*data);
+//         *data = NULL;
+//     }
+// }
 
 
 
@@ -160,41 +160,28 @@ int validar_data_nascimento(DATA *data)
     return valida;
 }
 
-DATA *digitar_data_nascimento()
+DATA digitar_data_nascimento()
 {
-    DATA *data = alocar_data();
+    DATA data;
 
-    data->dia = 0;
-    data->mes = -1;
-    data->ano = -1;
+    data.dia = 0;
+    data.mes = -1;
+    data.ano = -1;
 
     // digite -1 para voltar
-    while (data->dia != -1 && data->mes == -1)
+    while (data.dia != -1 && data.mes == -1)
     {
-        data->dia = digitar_dia();
+        data.dia = digitar_dia();
 
-        data->mes = 0;
+        data.mes = 0;
 
-        while (data->dia != -1 && data->mes != -1 && data->ano == -1)
+        while (data.dia != -1 && data.mes != -1 && data.ano == -1)
         {
-            data->mes = digitar_mes();
+            data.mes = digitar_mes();
 
-            if (data->mes != -1)
-                data->ano = digitar_ano();
+            if (data.mes != -1)
+                data.ano = digitar_ano();
         }
-    }
-
-
-    if (data->dia != -1)
-    {
-        if (!validar_data_nascimento(data))
-        {
-            liberar_data(&data);
-        }
-    }
-    else
-    {
-        liberar_data(&data);
     }
 
     return data;

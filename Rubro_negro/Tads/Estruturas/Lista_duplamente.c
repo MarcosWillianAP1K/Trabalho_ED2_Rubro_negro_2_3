@@ -10,8 +10,7 @@ LISTA_DUPLAMENTE *alocar_no_duplamente()
     LISTA_DUPLAMENTE *novo = (LISTA_DUPLAMENTE *)malloc(sizeof(LISTA_DUPLAMENTE));
 
     verificar_alocacao(novo);
-
-    novo->estado = NULL;
+    
     novo->ant = NULL;
     novo->prox = NULL;
 
@@ -56,7 +55,7 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO *info)
             LISTA_DUPLAMENTE *novo = alocar_no_duplamente();
             if (novo != NULL)
             {
-                novo->estado = info;
+                novo->estado = *info;
                 *raiz = novo;
                 retorno = 1;
             }
@@ -64,18 +63,18 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO *info)
         else
         {
             LISTA_DUPLAMENTE *temp = *raiz;
-            short int comparar_estado = comparar_nome_estado(temp->estado, info);
+            short int comparar_estado = comparar_nome_estado(&temp->estado, info);
 
             while (temp->prox != NULL && comparar_estado < 0 && comparar_estado != 0)
             {
                 temp = temp->prox;
-                comparar_estado = comparar_nome_estado(temp->estado, info);
+                comparar_estado = comparar_nome_estado(&temp->estado, info);
             }
 
             if (comparar_estado != 0)
             {
                 LISTA_DUPLAMENTE *novo = alocar_no_duplamente();
-                novo->estado = info;
+                novo->estado = *info;
 
                 if (comparar_estado < 0)
                 {
@@ -116,7 +115,7 @@ LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO *info)
 
     while (raiz != NULL)
     {
-        if (comparar_nome_estado(raiz->estado, info) == 0)
+        if (comparar_nome_estado(&raiz->estado, info) == 0)
         {
             temp = raiz;
             // Rapaz compensa fazer uma variavel auxiliar para indicar se o estado foi encontrado parando o loop?
@@ -137,7 +136,7 @@ short int removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO *info)
     {
         LISTA_DUPLAMENTE *temp = *raiz;
 
-        while (temp != NULL && comparar_nome_estado(temp->estado, info) != 0)
+        while (temp != NULL && comparar_nome_estado(&temp->estado, info) != 0)
         {
             temp = temp->prox;
         }
@@ -172,7 +171,7 @@ void exibirLista(LISTA_DUPLAMENTE *raiz)
 {
     while (raiz != NULL)
     {
-        imprimir_estado(raiz->estado);
+        imprimir_estado(&raiz->estado);
         raiz = raiz->prox;
     }
 }

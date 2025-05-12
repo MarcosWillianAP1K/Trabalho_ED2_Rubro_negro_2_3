@@ -6,7 +6,7 @@
 
 
 
-ESTADO *cadastro_estados_interativo()
+ESTADO cadastro_estados_interativo()
 {
     printf("Digite o nome do estado: ");
     char *nome_estado = digitar_string();
@@ -15,7 +15,7 @@ ESTADO *cadastro_estados_interativo()
     char *nome_capital = digitar_string();
     
 
-    ESTADO *estado = criar_estado(nome_estado, nome_capital, 0, 0, NULL);
+    ESTADO estado = criar_estado(nome_estado, nome_capital, 0, 0, NULL);
 
     return estado;
 }

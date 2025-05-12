@@ -11,7 +11,7 @@ typedef enum COR
 
 typedef struct RUBRO_NEGRO
 {
-    DADOS *info;
+    DADOS info;
     struct RUBRO_NEGRO *esquerda;
     struct RUBRO_NEGRO *direita;
     COR cor;
@@ -20,9 +20,11 @@ typedef struct RUBRO_NEGRO
 
 RUBRO_NEGRO *alocar_no_rubro_negro();
 
-void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS **));
+void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS *));
 
-void liberar_rubro_negro(RUBRO_NEGRO **raiz, void (*liberar)(DADOS **));
+void liberar_rubro_negro(RUBRO_NEGRO **raiz, void (*liberar)(DADOS *));
+
+void liberar_rubro_negro_void(void **raiz, void (*liberar)(DADOS *));
 
 RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *));
 
@@ -32,9 +34,9 @@ short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*compa
 
 short int inserir_rubro_negro_void(void **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *));
 
-DADOS *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *)) ;
+RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *)) ;
 
-DADOS *remover_rubro_negro_void(void **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *));
+RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *));
 
 short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *));
 

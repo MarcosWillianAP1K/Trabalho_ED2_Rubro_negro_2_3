@@ -13,16 +13,10 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE *info, short int (*comparar)(D
 
     if (estado != NULL)
     {
-        DADOS *aux = alocar_dados();
-        aux->cidade = info;
+        DADOS aux;
+        aux.cidade = *info;
 
-        retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, aux, comparar);
-
-        if (retorno == 0)
-        {
-            // Não libera o cidade
-            liberar_dados(&aux);
-        }
+        retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, &aux, comparar);
     }
 
     return retorno;
@@ -34,16 +28,10 @@ short int cadastrar_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *
 
     if (cidade != NULL && cep != NULL)
     {
-        DADOS *aux = alocar_dados(cep);
-        aux->CEP = cep;
+        DADOS aux;
+        aux.CEP = cep;
 
-        retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
-
-        if (retorno == 0)
-        {
-            // Não libera o char
-            liberar_dados(&aux);
-        }
+        retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, &aux, comparar);
     }
 
     return retorno;
@@ -55,58 +43,40 @@ short int cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*compara
 
     if (raiz != NULL && info != NULL)
     {
-        DADOS *aux = alocar_dados(NULL);
-        aux->pessoa = info;
+        DADOS aux;
+        aux.pessoa = *info;
 
-        retorno = inserir_rubro_negro(raiz, aux, comparar);
-
-        if (retorno == 0)
-        {
-            // Não libera o pessoa
-            liberar_dados(&aux);
-        }
+        retorno = inserir_rubro_negro(raiz, &aux, comparar);
     }
 
     return retorno;
 }
 
-DADOS *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *))
 {
-    DADOS *retorno = NULL;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (cidade != NULL && cep != NULL)
     {
-        DADOS *aux = alocar_dados(cep);
-        aux->CEP = cep;
+        DADOS aux;
+        aux.CEP = cep;
 
-        retorno = remover_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
-
-        if (retorno == NULL)
-        {
-            // Não libera o char
-            liberar_dados(&aux);
-        }
+        retorno = remover_rubro_negro_void(&cidade->raiz_arvore_CEPs, &aux, comparar);
     }
 
     return retorno;
 }
 
-DADOS *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*comparar)(DADOS *, DADOS *))
 {
-    DADOS *retorno = NULL;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (info != NULL)
     {
-        DADOS *aux = alocar_dados(NULL);
-        aux->pessoa = info;
+        DADOS aux;
+        aux.pessoa = *info;
 
-        retorno = remover_rubro_negro(raiz, aux, comparar);
-
-        if (retorno == NULL)
-        {
-            // Não libera o pessoa
-            liberar_dados(&aux);
-        }
+        retorno = remover_rubro_negro(raiz, &aux, comparar);
     }
 
     return retorno;

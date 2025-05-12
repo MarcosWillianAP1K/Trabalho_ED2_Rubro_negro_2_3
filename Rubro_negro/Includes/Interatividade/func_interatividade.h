@@ -12,6 +12,6 @@ short int cadastrar_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *
 
 short int cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*comparar)(DADOS *, DADOS *));
 
-DADOS *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *));
+RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *));
 
-DADOS *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*comparar)(DADOS *, DADOS *));
+RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA *info, short int (*comparar)(DADOS *, DADOS *));
