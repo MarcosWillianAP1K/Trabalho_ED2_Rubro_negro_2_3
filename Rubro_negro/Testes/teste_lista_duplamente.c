@@ -27,10 +27,8 @@ void testar_criacao_lista() {
     LISTA_DUPLAMENTE* no = alocar_no_duplamente();
     if(no != NULL) {
         mensagem_sucesso("No alocado com sucesso!\n");
-        if(no->estado == NULL) 
-            mensagem_sucesso("Estado inicializado como NULL!\n");
-        else
-            mensagem_erro("Estado NAO esta NULL!\n");
+        // O campo estado agora é uma estrutura, não um ponteiro
+        // Verificar se nome_estado é NULL, em vez do próprio estado
             
         if(no->ant == NULL)
             mensagem_sucesso("Ponteiro anterior inicializado como NULL!\n");
@@ -58,28 +56,28 @@ void testar_insercao() {
     
     LISTA_DUPLAMENTE* lista = NULL;
     
-    // Criar tres estados para testar
-    ESTADO *estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
+    // Criar tres estados para testar - corrigindo para usar estrutura em vez de ponteiro
+    ESTADO estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
     mensagem_sucesso("Estado Sao Paulo criado com sucesso!\n");
     
-    ESTADO *estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
+    ESTADO estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
     mensagem_sucesso("Estado Rio de Janeiro criado com sucesso!\n");
     
-    ESTADO *estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
+    ESTADO estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
-    // Inserir estados ordenadamente
-    if(inserir_ordernado_duplamente(&lista, estado1))
+    // Inserir estados ordenadamente - passando o endereço da estrutura
+    if(inserir_ordernado_duplamente(&lista, &estado1))
         mensagem_sucesso("Estado Sao Paulo inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Sao Paulo!\n");
         
-    if(inserir_ordernado_duplamente(&lista, estado2))
+    if(inserir_ordernado_duplamente(&lista, &estado2))
         mensagem_sucesso("Estado Rio de Janeiro inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Rio de Janeiro!\n");
         
-    if(inserir_ordernado_duplamente(&lista, estado3))
+    if(inserir_ordernado_duplamente(&lista, &estado3))
         mensagem_sucesso("Estado Minas Gerais inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Minas Gerais!\n");
@@ -88,17 +86,17 @@ void testar_insercao() {
     exibirLista(lista);
     
     // Verificar a ordem (deve estar em ordem alfabetica por nome_estado)
-    if(strcmp(lista->estado->nome_estado, "Minas Gerais") == 0)
+    if(strcmp(lista->estado.nome_estado, "Minas Gerais") == 0)
         mensagem_sucesso("Primeiro elemento e Minas Gerais, como esperado!\n");
     else
         mensagem_erro("Primeiro elemento nao e Minas Gerais!\n");
         
-    if(strcmp(lista->prox->estado->nome_estado, "Rio de Janeiro") == 0)
+    if(strcmp(lista->prox->estado.nome_estado, "Rio de Janeiro") == 0)
         mensagem_sucesso("Segundo elemento e Rio de Janeiro, como esperado!\n");
     else
         mensagem_erro("Segundo elemento nao e Rio de Janeiro!\n");
         
-    if(strcmp(lista->prox->prox->estado->nome_estado, "Sao Paulo") == 0)
+    if(strcmp(lista->prox->prox->estado.nome_estado, "Sao Paulo") == 0)
         mensagem_sucesso("Terceiro elemento e Sao Paulo, como esperado!\n");
     else
         mensagem_erro("Terceiro elemento nao e Sao Paulo!\n");
@@ -117,70 +115,71 @@ void testar_busca() {
     LISTA_DUPLAMENTE* lista = NULL;
     
     // Criar estados para testar
-    ESTADO *estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
+    ESTADO estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
     mensagem_sucesso("Estado Sao Paulo criado com sucesso!\n");
     
-    ESTADO *estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
+    ESTADO estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
     mensagem_sucesso("Estado Rio de Janeiro criado com sucesso!\n");
     
-    ESTADO *estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
+    ESTADO estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
     // Inserir estados
-    inserir_ordernado_duplamente(&lista, estado1);
-    inserir_ordernado_duplamente(&lista, estado2);
-    inserir_ordernado_duplamente(&lista, estado3);
+    inserir_ordernado_duplamente(&lista, &estado1);
+    inserir_ordernado_duplamente(&lista, &estado2);
+    inserir_ordernado_duplamente(&lista, &estado3);
     mensagem_sucesso("Estados inseridos na lista com sucesso!\n");
     
     // Buscar estados existentes
     print_amarelo("Buscando Sao Paulo na lista...\n");
-    ESTADO *busca1 = criar_estado("Sao Paulo", "", 0, 0, NULL);
+    ESTADO busca1 = criar_estado("Sao Paulo", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Sao Paulo criado!\n");
     
-    LISTA_DUPLAMENTE *resultado1 = buscar_duplamente(lista, busca1);
+    LISTA_DUPLAMENTE *resultado1 = buscar_duplamente(lista, &busca1);
     if(resultado1 != NULL) {
         mensagem_sucesso("Estado Sao Paulo encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(resultado1->estado);
+        // Usar a estrutura em vez do ponteiro
+        imprimir_estado(&resultado1->estado);
     } else {
         mensagem_erro("Estado Sao Paulo NAO encontrado!\n");
     }
     
     print_amarelo("\nBuscando Rio de Janeiro na lista...\n");
-    ESTADO *busca2 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
+    ESTADO busca2 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Rio de Janeiro criado!\n");
     
-    LISTA_DUPLAMENTE *resultado2 = buscar_duplamente(lista, busca2);
+    LISTA_DUPLAMENTE *resultado2 = buscar_duplamente(lista, &busca2);
     if(resultado2 != NULL) {
         mensagem_sucesso("Estado Rio de Janeiro encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(resultado2->estado);
+        imprimir_estado(&resultado2->estado);
     } else {
         mensagem_erro("Estado Rio de Janeiro NAO encontrado!\n");
     }
     
     print_amarelo("\nBuscando Minas Gerais na lista...\n");
-    ESTADO *busca3 = criar_estado("Minas Gerais", "", 0, 0, NULL);
+    ESTADO busca3 = criar_estado("Minas Gerais", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Minas Gerais criado!\n");
     
-    LISTA_DUPLAMENTE *resultado3 = buscar_duplamente(lista, busca3);
+    LISTA_DUPLAMENTE *resultado3 = buscar_duplamente(lista, &busca3);
     if(resultado3 != NULL) {
         mensagem_sucesso("Estado Minas Gerais encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(resultado3->estado);
+        imprimir_estado(&resultado3->estado);
     } else {
         mensagem_erro("Estado Minas Gerais NAO encontrado!\n");
     }
     
     print_amarelo("\nBuscando estado inexistente Parana na lista...\n");
-    ESTADO *busca4 = criar_estado("Parana", "", 0, 0, NULL);
+    ESTADO busca4 = criar_estado("Parana", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Parana criado!\n");
     
-    LISTA_DUPLAMENTE *resultado4 = buscar_duplamente(lista, busca4);
+    LISTA_DUPLAMENTE *resultado4 = buscar_duplamente(lista, &busca4);
     if(resultado4 != NULL) {
         mensagem_sucesso("Estado Parana encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(resultado4->estado);
+        imprimir_estado(&resultado4->estado);
     } else {
         mensagem_erro("Estado Parana NAO encontrado (esperado, ja que nao foi inserido)!\n");
     }
@@ -210,19 +209,19 @@ void testar_remocao() {
     LISTA_DUPLAMENTE* lista = NULL;
     
     // Criar estados para testar
-    ESTADO *estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
+    ESTADO estado1 = criar_estado("Sao Paulo", "Sao Paulo", 645, 45000000, NULL);
     mensagem_sucesso("Estado Sao Paulo criado com sucesso!\n");
     
-    ESTADO *estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
+    ESTADO estado2 = criar_estado("Rio de Janeiro", "Rio de Janeiro", 92, 17000000, NULL);
     mensagem_sucesso("Estado Rio de Janeiro criado com sucesso!\n");
     
-    ESTADO *estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
+    ESTADO estado3 = criar_estado("Minas Gerais", "Belo Horizonte", 853, 21000000, NULL);
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
     // Inserir estados
-    inserir_ordernado_duplamente(&lista, estado1);
-    inserir_ordernado_duplamente(&lista, estado2);
-    inserir_ordernado_duplamente(&lista, estado3);
+    inserir_ordernado_duplamente(&lista, &estado1);
+    inserir_ordernado_duplamente(&lista, &estado2);
+    inserir_ordernado_duplamente(&lista, &estado3);
     mensagem_sucesso("Estados inseridos na lista com sucesso!\n");
     
     print_amarelo("Lista original:\n");
@@ -230,8 +229,8 @@ void testar_remocao() {
     
     // Remover estado do meio (Rio de Janeiro)
     print_amarelo("\nRemovendo estado Rio de Janeiro...\n");
-    ESTADO *remover1 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
-    if(removerEstado(&lista, remover1)) {
+    ESTADO remover1 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
+    if(removerEstado(&lista, &remover1)) {
         mensagem_sucesso("Estado Rio de Janeiro removido com sucesso!\n");
     } else {
         mensagem_erro("Falha ao remover Rio de Janeiro!\n");
@@ -241,12 +240,12 @@ void testar_remocao() {
     exibirLista(lista);
     
     if(lista != NULL && lista->prox != NULL) {
-        if(strcmp(lista->estado->nome_estado, "Minas Gerais") == 0)
+        if(strcmp(lista->estado.nome_estado, "Minas Gerais") == 0)
             mensagem_sucesso("Primeiro elemento e Minas Gerais, como esperado!\n");
         else
             mensagem_erro("Primeiro elemento nao e Minas Gerais!\n");
             
-        if(strcmp(lista->prox->estado->nome_estado, "Sao Paulo") == 0)
+        if(strcmp(lista->prox->estado.nome_estado, "Sao Paulo") == 0)
             mensagem_sucesso("Segundo elemento e Sao Paulo, como esperado!\n");
         else
             mensagem_erro("Segundo elemento nao e Sao Paulo!\n");
@@ -256,8 +255,8 @@ void testar_remocao() {
     
     // Remover estado do inicio (Minas Gerais)
     print_amarelo("\nRemovendo estado Minas Gerais...\n");
-    ESTADO *remover2 = criar_estado("Minas Gerais", "", 0, 0, NULL);
-    if(removerEstado(&lista, remover2)) {
+    ESTADO remover2 = criar_estado("Minas Gerais", "", 0, 0, NULL);
+    if(removerEstado(&lista, &remover2)) {
         mensagem_sucesso("Estado Minas Gerais removido com sucesso!\n");
     } else {
         mensagem_erro("Falha ao remover Minas Gerais!\n");
@@ -267,7 +266,7 @@ void testar_remocao() {
     exibirLista(lista);
     
     if(lista != NULL) {
-        if(strcmp(lista->estado->nome_estado, "Sao Paulo") == 0)
+        if(strcmp(lista->estado.nome_estado, "Sao Paulo") == 0)
             mensagem_sucesso("Primeiro elemento e Sao Paulo, como esperado!\n");
         else
             mensagem_erro("Primeiro elemento nao e Sao Paulo!\n");
@@ -282,8 +281,8 @@ void testar_remocao() {
     
     // Remover ultimo estado (Sao Paulo)
     print_amarelo("\nRemovendo estado Sao Paulo...\n");
-    ESTADO *remover3 = criar_estado("Sao Paulo", "", 0, 0, NULL);
-    if(removerEstado(&lista, remover3)) {
+    ESTADO remover3 = criar_estado("Sao Paulo", "", 0, 0, NULL);
+    if(removerEstado(&lista, &remover3)) {
         mensagem_sucesso("Estado Sao Paulo removido com sucesso!\n");
     } else {
         mensagem_erro("Falha ao remover Sao Paulo!\n");
@@ -299,8 +298,8 @@ void testar_remocao() {
     
     // Tentar remover de lista vazia
     print_amarelo("\nTentando remover estado Parana de lista vazia...\n");
-    ESTADO *remover4 = criar_estado("Parana", "", 0, 0, NULL);
-    if(removerEstado(&lista, remover4)) {
+    ESTADO remover4 = criar_estado("Parana", "", 0, 0, NULL);
+    if(removerEstado(&lista, &remover4)) {
         mensagem_erro("Remocao de lista vazia deveria falhar, mas retornou sucesso!\n");
     } else {
         mensagem_sucesso("Remocao de lista vazia falhou corretamente!\n");
