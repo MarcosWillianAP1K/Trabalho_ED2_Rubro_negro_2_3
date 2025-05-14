@@ -32,15 +32,12 @@ ESTADO criar_estado(char *nome_estado, char *nome_capital, short int quantidade_
     return estado;
 }
 
-void imprimir_estado(ESTADO *estado)
+void imprimir_estado(ESTADO estado)
 {
-    if (estado != NULL)
-    {
-        printf("Nome do Estado: %s\n", estado->nome_estado);
-        printf("Nome da Capital: %s\n", estado->nome_capital);
-        printf("Quantidade de Cidades: %d\n", estado->quantidade_cidade);
-        printf("Quantidade de Populacao: %d\n", estado->quantidade_populacao);
-    }
+    printf("Nome do Estado: %s\n", estado.nome_estado);
+    printf("Nome da Capital: %s\n", estado.nome_capital);
+    printf("Quantidade de Cidades: %d\n", estado.quantidade_cidade);
+    printf("Quantidade de Populacao: %d\n", estado.quantidade_populacao);
 }
 
 void liberar_estado(ESTADO *estado)
@@ -53,19 +50,19 @@ void liberar_estado(ESTADO *estado)
     }
 }
 
-short int comparar_nome_estado(ESTADO *estado1, ESTADO *estado2)
+short int comparar_nome_estado(ESTADO estado1, ESTADO estado2)
 {
     short int resultado = 0;
 
-    if (estado1 != NULL && estado2 != NULL)
+    if (estado1.nome_estado != NULL && estado2.nome_estado != NULL)
     {
-        resultado = strcmp(estado1->nome_estado, estado2->nome_estado);
+        resultado = strcmp(estado1.nome_estado, estado2.nome_estado);
     }
-    else if (estado1 == NULL && estado2 != NULL)
+    else if (estado1.nome_estado == NULL && estado2.nome_estado != NULL)
     {
         resultado = -1;
     }
-    else if (estado1 != NULL && estado2 == NULL)
+    else if (estado1.nome_estado != NULL && estado2.nome_estado == NULL)
     {
         resultado = 1;
     }

@@ -1,6 +1,7 @@
 
 #pragma once
 
+
 typedef struct DATA {
     short int dia;
     short int mes;
@@ -25,12 +26,14 @@ int eh_bissexto(int ano);
 
 int dias_no_mes(int mes, int ano);
 
-int validar_data(DATA *data);
+int validar_data(DATA data);
 
-int validar_data_nascimento(DATA *data);
+int validar_data_nascimento(DATA data);
 
 DATA digitar_data_nascimento();
 
-void imprimir_data(DATA *data);
+void imprimir_data(DATA data);
 
-short int comparar_data(DATA *data1, DATA *data2);
+short int comparar_data(DATA data1, DATA data2);
+
+

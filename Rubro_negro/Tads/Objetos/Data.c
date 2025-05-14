@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 // DATA *alocar_data()
 // {
 //     DATA *data = (DATA *)malloc(sizeof(DATA));
@@ -38,8 +36,6 @@ DATA criar_data(short int dia, short int mes, short int ano)
 //         *data = NULL;
 //     }
 // }
-
-
 
 short int digitar_dia()
 {
@@ -114,15 +110,15 @@ int dias_no_mes(int mes, int ano)
     return dias;
 }
 
-int validar_data(DATA *data)
+int validar_data(DATA data)
 {
     int valida = 0;
 
-    if (data->mes >= 1 && data->mes <= 12)
+    if (data.mes >= 1 && data.mes <= 12)
     {
         valida = 1;
     }
-    else if (data->dia >= 1 && data->dia <= dias_no_mes(data->mes, data->ano))
+    else if (data.dia >= 1 && data.dia <= dias_no_mes(data.mes, data.ano))
     {
         valida = 1;
     }
@@ -130,7 +126,7 @@ int validar_data(DATA *data)
     return valida;
 }
 
-int validar_data_nascimento(DATA *data)
+int validar_data_nascimento(DATA data)
 {
     int valida = 0;
 
@@ -140,17 +136,17 @@ int validar_data_nascimento(DATA *data)
 
     if (validar_data(data))
     {
-        if (data->ano < tempo_atual.tm_year + 1900)
+        if (data.   ano < tempo_atual.tm_year + 1900)
         {
             valida = 1;
         }
-        else if (data->ano == tempo_atual.tm_year + 1900)
+        else if (data.ano == tempo_atual.tm_year + 1900)
         {
-            if (data->mes < tempo_atual.tm_mon + 1)
+            if (data.mes < tempo_atual.tm_mon + 1)
             {
                 valida = 1;
             }
-            else if (data->mes == tempo_atual.tm_mon + 1 && data->dia <= tempo_atual.tm_mday)
+            else if (data.mes == tempo_atual.tm_mon + 1 && data.dia <= tempo_atual.tm_mday)
             {
                 valida = 1;
             }
@@ -187,61 +183,45 @@ DATA digitar_data_nascimento()
     return data;
 }
 
-
-void imprimir_data(DATA *data)
+void imprimir_data(DATA data)
 {
-    if (data != NULL)
-    {
-        printf("Data: %02hd/%02hd/%04hd\n", data->dia, data->mes, data->ano);
-    }
+
+    printf("Data: %02hd/%02hd/%04hd\n", data.dia, data.mes, data.ano);
 }
 
-
-short int comparar_data(DATA *data1, DATA *data2)
+short int comparar_data(DATA data1, DATA data2)
 {
     short int resultado = 0;
 
-    if (data1 != NULL && data2 != NULL)
+    if (data1.ano < data2.ano)
     {
-        
-        if (data1->ano < data2->ano)
+        resultado = -1;
+    }
+    else if (data1.ano > data2.ano)
+    {
+        resultado = 1;
+    }
+    else
+    {
+        if (data1.mes < data2.mes)
         {
             resultado = -1;
         }
-        else if (data1->ano > data2->ano)
+        else if (data1.mes > data2.mes)
         {
             resultado = 1;
         }
         else
         {
-            if (data1->mes < data2->mes)
+            if (data1.dia < data2.dia)
             {
                 resultado = -1;
             }
-            else if (data1->mes > data2->mes)
+            else if (data1.dia > data2.dia)
             {
                 resultado = 1;
             }
-            else
-            {
-                if (data1->dia < data2->dia)
-                {
-                    resultado = -1;
-                }
-                else if (data1->dia > data2->dia)
-                {
-                    resultado = 1;
-                }
-            }
         }
-    }
-    else if (data1 == NULL && data2 != NULL)
-    {
-        resultado = -1;
-    }
-    else if (data1 != NULL && data2 == NULL)
-    {
-        resultado = 1;
     }
 
     return resultado;

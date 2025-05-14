@@ -28,13 +28,10 @@ CIDADE criar_cidade(char *nome, int quantidade_populacao, void *raiz_arvore_CEPs
     return cidade;
 }
 
-void imprimir_cidade(CIDADE *cidade)
+void imprimir_cidade(CIDADE cidade)
 {
-    if (cidade != NULL)
-    {
-        printf("Nome da Cidade: %s\n", cidade->nome);
-        printf("Quantidade de Populacao: %d\n", cidade->quantidade_populacao);
-    }
+    printf("Nome da Cidade: %s\n", cidade.nome);
+    printf("Quantidade de Populacao: %d\n", cidade.quantidade_populacao);
 }
 
 void liberar_cidade(CIDADE *cidade)
@@ -46,8 +43,25 @@ void liberar_cidade(CIDADE *cidade)
     }
 }
 
-
-short int comparar_nome_cidades(CIDADE *cidade1, CIDADE *cidade2)
+short int comparar_nome_cidades(CIDADE cidade1, CIDADE cidade2)
 {
-    return strcmp(cidade1->nome, cidade2->nome);
+    short int resultado = 0;
+
+    if (cidade1.nome != NULL && cidade2.nome != NULL)
+    {
+        resultado = strcmp(cidade1.nome, cidade2.nome);
+    }
+    else if (cidade1.nome == NULL && cidade2.nome == NULL)
+    {
+        resultado = 0;
+    }
+    else if (cidade1.nome == NULL)
+    {
+        resultado = -1;
+    }
+    else
+    {
+        resultado = 1;
+    }
+    return resultado;
 }

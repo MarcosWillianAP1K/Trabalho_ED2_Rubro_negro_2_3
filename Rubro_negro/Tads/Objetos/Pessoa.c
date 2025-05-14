@@ -34,16 +34,15 @@ PESSOA criar_pessoa(char *CPF, char *nome, char *CEP_natal, char *CEP_atual, DAT
     return pessoa;
 }
 
-void imprimir_pessoa(PESSOA *pessoa)
+void imprimir_pessoa(PESSOA pessoa)
 {
-    if (pessoa != NULL)
-    {
-        printf("CPF: %s\n", pessoa->CPF);
-        printf("Nome: %s\n", pessoa->nome);
-        printf("CEP Natal: %s\n", pessoa->CEP_natal);
-        printf("CEP Atual: %s\n", pessoa->CEP_atual);
-        imprimir_data(&pessoa->data_nascimento);
-    }
+   
+        printf("CPF: %s\n", pessoa.CPF);
+        printf("Nome: %s\n", pessoa.nome);
+        printf("CEP Natal: %s\n", pessoa.CEP_natal);
+        printf("CEP Atual: %s\n", pessoa.CEP_atual);
+        imprimir_data(pessoa.data_nascimento);
+    
 }
 
 void liberar_pessoa(PESSOA *pessoa)
@@ -57,19 +56,19 @@ void liberar_pessoa(PESSOA *pessoa)
     }
 }
 
-short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
+short int comparar_nome_pessoas(PESSOA pessoa1, PESSOA pessoa2)
 {
     short int resultado = 0;
 
-    if (pessoa1 != NULL && pessoa2 != NULL)
+    if (pessoa1.nome != NULL && pessoa2.nome != NULL)
     {
-        resultado = strcmp(pessoa1->nome, pessoa2->nome);
+        resultado = strcmp(pessoa1.nome, pessoa2.nome);
     }
-    else if (pessoa1 == NULL && pessoa2 != NULL)
+    else if (pessoa1.nome == NULL && pessoa2.nome != NULL)
     {
         resultado = -1;
     }
-    else if (pessoa1 != NULL && pessoa2 == NULL)
+    else if (pessoa1.nome != NULL && pessoa2.nome == NULL)
     {
         resultado = 1;
     }
@@ -77,19 +76,19 @@ short int comparar_nome_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
     return resultado;
 }
 
-short int comparar_CPF_pessoas(PESSOA *pessoa1, PESSOA *pessoa2)
+short int comparar_CPF_pessoas(PESSOA pessoa1, PESSOA pessoa2)
 {
     short int resultado = 0;
 
-    if (pessoa1 != NULL && pessoa2 != NULL)
+    if (pessoa1.CPF != NULL && pessoa2.CPF != NULL)
     {
-        resultado = strcmp(pessoa1->CPF, pessoa2->CPF);
+        resultado = strcmp(pessoa1.CPF, pessoa2.CPF);
     }
-    else if (pessoa1 == NULL && pessoa2 != NULL)
+    else if (pessoa1.CPF == NULL && pessoa2.CPF != NULL)
     {
         resultado = -1;
     }
-    else if (pessoa1 != NULL && pessoa2 == NULL)
+    else if (pessoa1.CPF != NULL && pessoa2.CPF == NULL)
     {
         resultado = 1;
     }

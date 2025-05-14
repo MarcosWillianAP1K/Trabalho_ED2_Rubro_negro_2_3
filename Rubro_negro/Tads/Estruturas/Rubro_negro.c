@@ -49,13 +49,13 @@ void liberar_rubro_negro_void(void **raiz, void (*liberar)(DADOS *))
 
 //========================BUSCA========================
 
-RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
-    if (raiz != NULL && aux != NULL && comparar != NULL)
+    if (raiz != NULL  && comparar != NULL)
     {
-        if (comparar(&raiz->info, aux) == 0)
+        if (comparar(raiz->info, aux) == 0)
         {
             retorno = raiz;
         }
@@ -179,23 +179,23 @@ void balancear(RUBRO_NEGRO **raiz)
 
 //========================INSERÇÃO========================
 
-short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *))
+short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
 
     if (*raiz == NULL)
     {
         *raiz = alocar_no_rubro_negro();
-        (*raiz)->info = *info;
+        (*raiz)->info = info;
         retorno = 1;
     }
     else
     {
-        if (comparar(&(*raiz)->info, info) > 0)
+        if (comparar((*raiz)->info, info) > 0)
         {
             retorno = inserir_rubro_negro_recursivo(&(*raiz)->esquerda, info, comparar);
         }
-        else if (comparar(&(*raiz)->info, info) < 0)
+        else if (comparar((*raiz)->info, info) < 0)
         {
             retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
         }
@@ -209,11 +209,11 @@ short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *info, short i
     return retorno;
 }
 
-short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *))
+short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
 
-    if (raiz != NULL && info != NULL && comparar != NULL)
+    if (raiz != NULL && comparar != NULL)
     {
         retorno = inserir_rubro_negro_recursivo(raiz, info, comparar);
         (*raiz)->cor = PRETO;
@@ -222,7 +222,7 @@ short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS *info, short int (*compa
     return retorno;
 }
 
-short int inserir_rubro_negro_void(void **raiz, DADOS *info, short int (*comparar)(DADOS *, DADOS *))
+short int inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
     RUBRO_NEGRO *arvore = *raiz;
@@ -283,11 +283,11 @@ void remover_no_Menor(RUBRO_NEGRO **raiz)
     balancear(raiz);
 }
 
-RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
-    if (comparar(aux, &(*raiz)->info) < 0)
+    if (comparar(aux, (*raiz)->info) < 0)
     {
         if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->esquerda->esquerda) == PRETO)
             move2EsquerdaVERMELHO(raiz);
@@ -299,7 +299,7 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *aux, short
         if (cor((*raiz)->esquerda) == VERMELHO)
             de_ladinho_para_direita(raiz);
 
-        if (comparar(aux, &(*raiz)->info) == 0 && (*raiz)->direita == NULL)
+        if (comparar(aux, (*raiz)->info) == 0 && (*raiz)->direita == NULL)
         {
             retorno = *raiz;
             *raiz = NULL;
@@ -310,7 +310,7 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *aux, short
         if (cor((*raiz)->direita) == PRETO && cor((*raiz)->direita->esquerda) == PRETO)
             move2DireitaVERMELHO(raiz);
 
-        if (comparar(aux, &(*raiz)->info) == 0)
+        if (comparar(aux, (*raiz)->info) == 0)
         {
             RUBRO_NEGRO *aux = procura_Menor((*raiz)->direita);
             //Precisa criar um copia do no para retornar.
@@ -334,7 +334,7 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS *aux, short
 }
 
 // Retorna o dado do no removido, precisando liberar fora da função
-RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -350,7 +350,7 @@ RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS *aux, short int (*com
 }
 
 
-RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS *aux, short int (*comparar)(DADOS *, DADOS *))
+RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -364,7 +364,7 @@ RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS *aux, short int (*compa
 
 //========================IMPRIMIR========================
 
-short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
+short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS ))
 {
     short int retorno = 0;
 
@@ -372,7 +372,7 @@ short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
     {
         retorno = imprimir_rubro_negro(raiz->esquerda, imprimir);
 
-        imprimir(&raiz->info);
+        imprimir(raiz->info);
 
         retorno = imprimir_rubro_negro(raiz->direita, imprimir);
 
@@ -382,17 +382,17 @@ short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS *))
     return retorno;
 }
 
-short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS *aux, void (*imprimir)(DADOS *), short int (*comparar)(DADOS *, DADOS *))
+short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, void (*imprimir)(DADOS ), short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
 
-    if (raiz != NULL && imprimir != NULL && comparar != NULL && aux != NULL)
+    if (raiz != NULL && imprimir != NULL && comparar != NULL)
     {
         retorno |= imprimir_filtro_rubro_negro(raiz->esquerda, aux, imprimir, comparar);
 
-        if (comparar(&raiz->info, aux) == 0)
+        if (comparar(raiz->info, aux) == 0)
         {
-            imprimir(&raiz->info);
+            imprimir(raiz->info);
             retorno = 1;
         }
 
