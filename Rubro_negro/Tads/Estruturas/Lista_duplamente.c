@@ -91,9 +91,7 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
                     novo->prox = temp;
                     novo->ant = temp->ant;
                     if (temp->ant != NULL)
-                    {
-                        temp->ant->prox = novo;
-                    }
+                      temp->ant->prox = novo;
                     else
                     {
                         *raiz = novo; // Atualiza a raiz se o novo nó for o primeiro
@@ -111,16 +109,15 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
 
 LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info)
 {
+    int comparacao = 0;
     LISTA_DUPLAMENTE *temp = NULL;
 
-    while (raiz != NULL)
+    while (raiz != NULL && comparacao != 0)
     {
         if (comparar_nome_estado(raiz->estado, info) == 0)
         {
             temp = raiz;
-            // Rapaz compensa fazer uma variavel auxiliar para indicar se o estado foi encontrado parando o loop?
-            // Ou compensa apenas deixar o break para parar o loop?
-            break;
+           comparacao = 1;
         }
         raiz = raiz->prox;
     }
@@ -144,18 +141,13 @@ LISTA_DUPLAMENTE *removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO info)
         if (temp != NULL)
         {
             if (temp->ant != NULL)
-            {
-                temp->ant->prox = temp->prox;
-            }
+              temp->ant->prox = temp->prox;
             else
-            {
-                *raiz = temp->prox; // Atualiza a raiz se o nó a ser removido for o primeiro
-            }
+                *raiz = temp->prox;
 
             if (temp->prox != NULL)
-            {
-                temp->prox->ant = temp->ant;
-            }
+              temp->prox->ant = temp->ant;
+        
 
             retorno = temp;
         }
