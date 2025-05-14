@@ -14,6 +14,7 @@
         "rubro_negro.h": "c",
         "stdlib.h": "c",
         "string.h": "c",
-        "func_interatividade.h": "c"
+        "func_interatividade.h": "c",
+        "estado.h": "c"
     }
 }

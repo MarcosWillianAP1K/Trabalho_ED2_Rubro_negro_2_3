@@ -75,18 +75,18 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DA
     return retorno;
 }
 
-short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
+short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
 
-    if (cidade != NULL && cep != NULL)
+    if (cep != NULL)
     {
         if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
         {
             DADOS aux;
             aux.CEP = cep;
 
-            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
+            retorno = inserir_rubro_negro_void(&cidade.raiz_arvore_CEPs, aux, comparar);
         }
     }
 

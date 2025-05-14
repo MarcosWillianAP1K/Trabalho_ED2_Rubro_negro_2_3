@@ -10,7 +10,7 @@ short int cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info);
 
 short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DADOS , DADOS ));
 
-short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ));
+short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ));
 
 short int cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS , DADOS ));
 

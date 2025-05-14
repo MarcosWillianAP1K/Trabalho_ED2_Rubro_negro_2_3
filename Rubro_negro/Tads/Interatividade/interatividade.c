@@ -2,22 +2,137 @@
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 #include "../../Includes/Interatividade/Interatividade.h"
 
+ESTADO cadastro_estados_interativo(RUBRO_NEGRO *raiz_rubro, LISTA_DUPLAMENTE *raiz)
+{
+    int cad = 0;
 
+    printf("Digite o nome do estado: ");
+    char *nome_estado = digitar_string();
 
+    printf("Digite o nome da cidade (capital): ");
+    char *nome_capital = digitar_string();
 
+    printf("Digite a quantidade de habitantes da capital: ");
+    short int num_habitantes = digitar_short_int();
 
-ESTADO cadastro_estados_interativo()
+    printf("Digite o CEP: ");
+    char *CEP = digitar_CEP();
+
+    ESTADO estado = criar_estado(nome_estado, nome_capital, 0, 0, NULL);
+    CIDADE cidade = criar_cidade(nome_capital,num_habitantes, NULL);
+
+    if (cadastrar_estado(&raiz, estado) != 1)
+    {
+        print_amarelo("Estado nao encontrado na arvore!");
+        cad = 1;
+        // liberar_cidade(&nome_capital);
+        // liberar_estado(&nome_estado);
+    }
+    else if (cadastrar_cidade(nome_estado, cidade, comparar_nome_estado) != 1)
+    {
+        print_amarelo("Cidade nao encontrada no rubro negro!");
+        cad =1;
+    } else if(cadastrar_CEP(raiz, )){
+
+    }
+
+    // if (estado_node == NULL)
+
+    // CIDADE *capital_ptr = buscar_cidade(estado_node->estado, nome_capital);
+    // if (capital_ptr == NULL)
+    //   print_amarelo("Capital nao encontrada na arvore de cidades!");
+
+    // printf("Digite a quantidade de habitantes da capital: ");
+    // short int num_habitantes = digitar_short_int();
+    // capital_ptr->quantidade_populacao = num_habitantes;
+
+    // RUBRO_NEGRO *busca_cidade_rubro = buscar_rubro_negro(raiz_rubro, cidade, comparar_nome_cidades);
+    // if (busca_cidade_rubro == NULL)
+    //   print_amarelo("Cidade raiz nao encontrada no rubro negro!");
+
+    // printf("Digite o CEP: ");
+    // char *CEP = digitar_CEP();
+
+    // if (cadastrar_CEP(estado_node, busca_cidade_rubro->info.cidade, CEP, comparar_CEPs) != 1)
+    // {
+    //     print_amarelo("CEP JA EXISTENTE!");
+    // }
+    // else
+    // {
+    //     cidade.CEP = CEP;
+    //     estado_node->estado.quantidade_populacao += num_habitantes;
+    //     estado_node->estado.quantidade_cidade++;
+    //     cad = 1;
+    // }
+
+    // liberar_CEP(&CEP);
+    // liberar_cidade(&nome_capital);
+    // liberar_estado(&nome_estado);
+    // return estado;
+}
+
+LISTA_DUPLAMENTE cadastro_cidade_interativo(LISTA_DUPLAMENTE *raiz)
 {
     printf("Digite o nome do estado: ");
     char *nome_estado = digitar_string();
-    
-    printf("Digite o nome da capital: ");
-    char *nome_capital = digitar_string();
-    
+    ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+    LISTA_DUPLAMENTE *aux = buscar_duplamente(raiz, estado);
 
-    ESTADO estado = criar_estado(nome_estado, nome_capital, 0, 0, NULL);
+    if (aux != NULL)
+    {
+        printf("Digite o nome da cidade: ");
+        char *nome_cidade = digitar_string();
 
-    return estado;
+        printf("Digite a quantidade de populacao: ");
+        int quant_populacao = digitar_short_int();
+        CIDADE cidade = criar_cidade(nome_cidade, quant_populacao, NULL);
+        if (cadastrar_cidade(&aux->estado, cidade, comparar_nome_cidades) != 1)
+        {
+            print_amarelo("CIDADE JA EXISTENTE!");
+        }
+        else
+        {
+            cidade.nome = nome_cidade;
+            cidade.quantidade_populacao = quant_populacao;
+            print_verde("Cidade cadastrada com sucesso!\n");
+        }
+    }
+    else
+    {
+        print_amarelo("ESTADO NAO ENCONTRADO!");
+    }
+}
+
+LISTA_DUPLAMENTE cadastro_cps_cidades_interativos(LISTA_DUPLAMENTE *raiz, RUBRO_NEGRO *raiz_rubro)
+{
+    int encontrado = 0;
+    printf("Digite o nome do estado: ");
+    char *nome_estado = digitar_string();
+    ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+    LISTA_DUPLAMENTE *aux = buscar_duplamente(raiz, estado);
+
+    if (aux != NULL)
+    {
+        printf("Digite o nome da cidade: ");
+        char *nome_cidade = digitar_string();
+        DADOS cidade;
+        cidade.cidade = criar_cidade(nome_cidade, 0, NULL);
+        RUBRO_NEGRO *busca_cidade_rubro = buscar_rubro_negro(raiz_rubro, cidade, comparar_nome_cidades);
+        if (busca_cidade_rubro != NULL)
+        {
+            printf("Digite o CEP: ");
+            char *CEP = digitar_CEP();
+
+            if (cadastrar_CEP(aux, busca_cidade_rubro->info.cidade, CEP, comparar_CEPs) != 1)
+            {
+                print_amarelo("CEP JA EXISTENTE!");
+                encontrado = 1;
+            }
+            else
+                cidade.CEP = CEP;
+            liberar_CEP(&CEP);
+        }
+    }
 }
 
 void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas)
@@ -44,33 +159,29 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
         printf("(7) Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?\n");
         printf("\nEscolha uma opcao: ");
 
-
         scanf(" %c", &opcao);
 
         switch (opcao)
         {
         case 'a':
-            cadastro_estados_interativo();
-           
+            cadastro_estados_interativo(&Lista_estados, &Raiz_pessoas);
+
             break;
         case 'b':
-            
+
             break;
         case 'c':
-           
+
             break;
         case 'd':
-           
+
             break;
         case 'e':
-            
+
             break;
         case 'f':
-            
+
             break;
-        
         }
     } while (opcao != '0');
 }
-
-
