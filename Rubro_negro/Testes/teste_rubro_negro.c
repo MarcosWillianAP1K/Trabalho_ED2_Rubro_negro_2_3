@@ -78,81 +78,81 @@ void testar_insercao_cidades(RUBRO_NEGRO **arvore)
     // Track if all insertions are successful
     int all_success = 1;
 
-    // Insert original cities into the tree - passando o endereço da estrutura
-    if (!inserir_rubro_negro(arvore, &dado1, comparar_dados_nome_cidade))
+    // Insert original cities into the tree - removendo o operador de endereço "&"
+    if (!inserir_rubro_negro(arvore, dado1, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Sao Paulo!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado2, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado2, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Rio de Janeiro!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado3, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado3, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Belo Horizonte!\n");
         all_success = 0;
     }
 
     // Insert additional cities into the tree
-    if (!inserir_rubro_negro(arvore, &dado4, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado4, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Salvador!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado5, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado5, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Fortaleza!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado6, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado6, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Brasilia!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado7, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado7, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Curitiba!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado8, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado8, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Manaus!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado9, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado9, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Recife!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado10, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado10, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Porto Alegre!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado11, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado11, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Belem!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado12, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado12, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Goiania!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado13, comparar_dados_nome_cidade))
+    if (!inserir_rubro_negro(arvore, dado13, comparar_dados_nome_cidade))
     {
         mensagem_erro("Falha ao inserir Guarulhos!\n");
         all_success = 0;
@@ -190,7 +190,7 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore)
     mensagem_sucesso("Filtro para cidades criado com sucesso!\n");
 
     // Print filtered cities
-    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, &filtro_cidade_rio_de_janeiro, imprimir_dados_cidade, comparar_dados_nome_cidade);
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro_cidade_rio_de_janeiro, imprimir_dados_cidade, comparar_dados_nome_cidade);
     if (impressao_sucesso) {
         mensagem_sucesso("Cidades filtradas com sucesso!\n");
     } else {
@@ -202,11 +202,11 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore)
     busca.cidade = criar_cidade("Rio de Janeiro", 0, NULL);
     mensagem_sucesso("Dado para busca de cidade criado com sucesso!\n");
 
-    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, busca, comparar_dados_nome_cidade);
     if (resultado != NULL)
     {
         mensagem_sucesso("Cidade encontrada:\n");
-        imprimir_dados_cidade(&resultado->info);
+        imprimir_dados_cidade(resultado->info);
     }
     else
     {
@@ -222,11 +222,11 @@ void testar_impressao_e_busca_cidades(RUBRO_NEGRO *arvore)
     print_amarelo("\nBuscando cidade inexistente 'Campinas':\n");
     busca.cidade = criar_cidade("Campinas", 0, NULL);
 
-    resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_nome_cidade);
+    resultado = buscar_rubro_negro(arvore, busca, comparar_dados_nome_cidade);
     if (resultado != NULL)
     {
         mensagem_erro("Cidade encontrada (inesperado)!\n");
-        imprimir_dados_cidade(&resultado->info);
+        imprimir_dados_cidade(resultado->info);
     }
     else
     {
@@ -272,14 +272,14 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     mensagem_sucesso("Dados para teste de remocao de cidades criados com sucesso!\n");
 
-    // Test removing first existing city
+    // Test removing first existing city - removendo o operador de endereço "&"
     print_amarelo("Removendo cidade 'Rio de Janeiro':\n");
-    RUBRO_NEGRO *cidade_removida1 = remover_rubro_negro(arvore, &cidade_remover1, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *cidade_removida1 = remover_rubro_negro(arvore, cidade_remover1, comparar_dados_nome_cidade);
     if (cidade_removida1 != NULL)
     {
         mensagem_sucesso("Cidade removida com sucesso!\n");
         print_amarelo("Informacoes da cidade removida:\n");
-        imprimir_dados_cidade(&(cidade_removida1->info));
+        imprimir_dados_cidade(cidade_removida1->info);
         liberar_no_rubro_negro(&cidade_removida1, liberar_dados_cidade);
     }
     else
@@ -289,12 +289,12 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     // Test removing second existing city
     print_amarelo("\nRemovendo cidade 'Belo Horizonte':\n");
-    RUBRO_NEGRO *cidade_removida2 = remover_rubro_negro(arvore, &cidade_remover2, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *cidade_removida2 = remover_rubro_negro(arvore, cidade_remover2, comparar_dados_nome_cidade);
     if (cidade_removida2 != NULL)
     {
         mensagem_sucesso("Cidade removida com sucesso!\n");
         print_amarelo("Informacoes da cidade removida:\n");
-        imprimir_dados_cidade(&cidade_removida2->info);
+        imprimir_dados_cidade(cidade_removida2->info);
         liberar_no_rubro_negro(&cidade_removida2, liberar_dados_cidade);
     }
     else
@@ -304,12 +304,12 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     // Test removing third existing city
     print_amarelo("\nRemovendo cidade 'Salvador':\n");
-    RUBRO_NEGRO *cidade_removida3 = remover_rubro_negro(arvore, &cidade_remover3, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *cidade_removida3 = remover_rubro_negro(arvore, cidade_remover3, comparar_dados_nome_cidade);
     if (cidade_removida3 != NULL)
     {
         mensagem_sucesso("Cidade removida com sucesso!\n");
         print_amarelo("Informacoes da cidade removida:\n");
-        imprimir_dados_cidade(&cidade_removida3->info);
+        imprimir_dados_cidade(cidade_removida3->info);
         liberar_no_rubro_negro(&cidade_removida3, liberar_dados_cidade);
     }
     else
@@ -319,12 +319,12 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     // Test removing fourth existing city
     print_amarelo("\nRemovendo cidade 'Recife':\n");
-    RUBRO_NEGRO *cidade_removida4 = remover_rubro_negro(arvore, &cidade_remover4, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *cidade_removida4 = remover_rubro_negro(arvore, cidade_remover4, comparar_dados_nome_cidade);
     if (cidade_removida4 != NULL)
     {
         mensagem_sucesso("Cidade removida com sucesso!\n");
         print_amarelo("Informacoes da cidade removida:\n");
-        imprimir_dados_cidade(&cidade_removida4->info);
+        imprimir_dados_cidade(cidade_removida4->info);
         liberar_no_rubro_negro(&cidade_removida4, liberar_dados_cidade);
     }
     else
@@ -338,12 +338,12 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     // Try to remove first non-existent city
     print_amarelo("\nTentando remover cidade inexistente 'Campinas':\n");
-    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, &cidade_inexistente1, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, cidade_inexistente1, comparar_dados_nome_cidade);
     if (resultado_inexistente1 != NULL)
     {
         mensagem_erro("Cidade removida (inesperado)!\n");
         print_amarelo("Informacoes da cidade inexistente removida (comportamento anormal):\n");
-        imprimir_dados_cidade(&resultado_inexistente1->info);
+        imprimir_dados_cidade(resultado_inexistente1->info);
         liberar_no_rubro_negro(&resultado_inexistente1, liberar_dados_cidade);
     }
     else
@@ -353,12 +353,12 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     // Try to remove second non-existent city
     print_amarelo("\nTentando remover cidade inexistente 'Florianopolis':\n");
-    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, &cidade_inexistente2, comparar_dados_nome_cidade);
+    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, cidade_inexistente2, comparar_dados_nome_cidade);
     if (resultado_inexistente2 != NULL)
     {
         mensagem_erro("Cidade removida (inesperado)!\n");
         print_amarelo("Informacoes da cidade inexistente removida (comportamento anormal):\n");
-        imprimir_dados_cidade(&resultado_inexistente2->info);
+        imprimir_dados_cidade(resultado_inexistente2->info);
         liberar_no_rubro_negro(&resultado_inexistente2, liberar_dados_cidade);
     }
     else
@@ -446,80 +446,80 @@ void testar_insercao_pessoas(RUBRO_NEGRO **arvore)
     int all_success = 1;
 
     // Insert into the tree using CPF comparison instead of name
-    if (!inserir_rubro_negro(arvore, &dado1, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado1, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 123.456.789-00!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado2, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado2, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 987.654.321-00!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado3, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado3, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 111.222.333-44!\n");
         all_success = 0;
     }
 
     // Insert additional people
-    if (!inserir_rubro_negro(arvore, &dado4, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado4, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 222.333.444-55!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado5, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado5, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 333.444.555-66!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado6, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado6, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 444.555.666-77!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado7, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado7, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 555.666.777-88!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado8, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado8, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 666.777.888-99!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado9, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado9, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 777.888.999-00!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado10, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado10, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 888.999.000-11!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado11, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado11, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 999.000.111-22 (Joao Silva 2)!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado12, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado12, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 000.111.222-33 (Maria Santos 2)!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado13, comparar_dados_CPF_pessoa))
+    if (!inserir_rubro_negro(arvore, dado13, comparar_dados_CPF_pessoa))
     {
         mensagem_erro("Falha ao inserir pessoa com CPF 111.222.333-55 (Joao Silva 3)!\n");
         all_success = 0;
@@ -559,7 +559,7 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore)
     mensagem_sucesso("Filtro para pessoas criado com sucesso!\n");
 
     // Print filtered people
-    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, &filtro, imprimir_dados_pessoa, comparar_dados_nome_pessoa);
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_pessoa, comparar_dados_nome_pessoa);
     if (impressao_sucesso) {
         mensagem_sucesso("Pessoas filtradas com sucesso!\n");
     } else {
@@ -572,11 +572,11 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore)
     busca.pessoa = criar_pessoa("987.654.321-00", "", "", "", aux);
     mensagem_sucesso("Dado para busca de pessoa criado com sucesso!\n");
 
-    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, busca, comparar_dados_CPF_pessoa);
     if (resultado != NULL)
     {
         mensagem_sucesso("Pessoa encontrada:\n");
-        imprimir_dados_pessoa(&resultado->info);
+        imprimir_dados_pessoa(resultado->info);
     }
     else
     {
@@ -591,11 +591,11 @@ void testar_impressao_e_busca_pessoas(RUBRO_NEGRO *arvore)
     print_amarelo("\nBuscando pessoa inexistente com CPF '000.000.000-00':\n");
     busca.pessoa = criar_pessoa("000.000.000-00", "", "", "", aux);
 
-    resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_CPF_pessoa);
+    resultado = buscar_rubro_negro(arvore, busca, comparar_dados_CPF_pessoa);
     if (resultado != NULL)
     {
         mensagem_erro("Pessoa encontrada (inesperado)!\n");
-        imprimir_dados_pessoa(&resultado->info);
+        imprimir_dados_pessoa(resultado->info);
     }
     else
     {
@@ -643,12 +643,12 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
 
     // Test removing first person
     print_amarelo("Removendo pessoa com CPF '987.654.321-00':\n");
-    RUBRO_NEGRO *pessoa_removida1 = remover_rubro_negro(arvore, &pessoa_remover1, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *pessoa_removida1 = remover_rubro_negro(arvore, pessoa_remover1, comparar_dados_CPF_pessoa);
     if (pessoa_removida1 != NULL)
     {
         mensagem_sucesso("Pessoa removida com sucesso!\n");
         print_amarelo("Informacoes da pessoa removida:\n");
-        imprimir_dados_pessoa(&pessoa_removida1->info);
+        imprimir_dados_pessoa(pessoa_removida1->info);
         liberar_no_rubro_negro(&pessoa_removida1, liberar_dados_pessoa);
     }
     else
@@ -658,12 +658,12 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
 
     // Test removing second person
     print_amarelo("\nRemovendo pessoa com CPF '111.222.333-44':\n");
-    RUBRO_NEGRO *pessoa_removida2 = remover_rubro_negro(arvore, &pessoa_remover2, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *pessoa_removida2 = remover_rubro_negro(arvore, pessoa_remover2, comparar_dados_CPF_pessoa);
     if (pessoa_removida2 != NULL)
     {
         mensagem_sucesso("Pessoa removida com sucesso!\n");
         print_amarelo("Informacoes da pessoa removida:\n");
-        imprimir_dados_pessoa(&pessoa_removida2->info);
+        imprimir_dados_pessoa(pessoa_removida2->info);
         liberar_no_rubro_negro(&pessoa_removida2, liberar_dados_pessoa);
     }
     else
@@ -673,12 +673,12 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
 
     // Test removing third person
     print_amarelo("\nRemovendo pessoa com CPF '222.333.444-55':\n");
-    RUBRO_NEGRO *pessoa_removida3 = remover_rubro_negro(arvore, &pessoa_remover3, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *pessoa_removida3 = remover_rubro_negro(arvore, pessoa_remover3, comparar_dados_CPF_pessoa);
     if (pessoa_removida3 != NULL)
     {
         mensagem_sucesso("Pessoa removida com sucesso!\n");
         print_amarelo("Informacoes da pessoa removida:\n");
-        imprimir_dados_pessoa(&pessoa_removida3->info);
+        imprimir_dados_pessoa(pessoa_removida3->info);
         liberar_no_rubro_negro(&pessoa_removida3, liberar_dados_pessoa);
     }
     else
@@ -688,12 +688,12 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
 
     // Test removing fourth person
     print_amarelo("\nRemovendo pessoa com CPF '333.444.555-66':\n");
-    RUBRO_NEGRO *pessoa_removida4 = remover_rubro_negro(arvore, &pessoa_remover4, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *pessoa_removida4 = remover_rubro_negro(arvore, pessoa_remover4, comparar_dados_CPF_pessoa);
     if (pessoa_removida4 != NULL)
     {
         mensagem_sucesso("Pessoa removida com sucesso!\n");
         print_amarelo("Informacoes da pessoa removida:\n");
-        imprimir_dados_pessoa(&pessoa_removida4->info);
+        imprimir_dados_pessoa(pessoa_removida4->info);
         liberar_no_rubro_negro(&pessoa_removida4, liberar_dados_pessoa);
     }
     else
@@ -708,7 +708,7 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
     // Try to remove first non-existent person
     // Primeiro verificamos se realmente não existe
     print_amarelo("\nVerificando se pessoa com CPF '000.000.000-00' realmente nao existe:\n");
-    RUBRO_NEGRO *busca_inexistente1 = buscar_rubro_negro(*arvore, &pessoa_inexistente1, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *busca_inexistente1 = buscar_rubro_negro(*arvore, pessoa_inexistente1, comparar_dados_CPF_pessoa);
     if (busca_inexistente1 == NULL) {
         mensagem_sucesso("Confirmado: Pessoa com CPF '000.000.000-00' realmente nao existe na arvore!\n");
     } else {
@@ -716,7 +716,7 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
     }
     
     print_amarelo("\nTentando remover pessoa inexistente com CPF '000.000.000-00':\n");
-    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, &pessoa_inexistente1, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, pessoa_inexistente1, comparar_dados_CPF_pessoa);
     if (resultado_inexistente1 != NULL)
     {
         mensagem_erro("Pessoa removida (inesperado)!\n");
@@ -730,7 +730,7 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
     // Try to remove second non-existent person
     // Primeiro verificamos se realmente não existe
     print_amarelo("\nVerificando se pessoa com CPF '999.999.999-99' realmente nao existe:\n");
-    RUBRO_NEGRO *busca_inexistente2 = buscar_rubro_negro(*arvore, &pessoa_inexistente2, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *busca_inexistente2 = buscar_rubro_negro(*arvore, pessoa_inexistente2, comparar_dados_CPF_pessoa);
     if (busca_inexistente2 == NULL) {
         mensagem_sucesso("Confirmado: Pessoa com CPF '999.999.999-99' realmente nao existe na arvore!\n");
     } else {
@@ -738,12 +738,12 @@ void testar_remocao_pessoas(RUBRO_NEGRO **arvore)
     }
     
     print_amarelo("\nTentando remover pessoa inexistente com CPF '999.999.999-99':\n");
-    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, &pessoa_inexistente2, comparar_dados_CPF_pessoa);
+    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, pessoa_inexistente2, comparar_dados_CPF_pessoa);
     if (resultado_inexistente2 != NULL)
     {
         mensagem_erro("Pessoa removida (inesperado)!\n");
         print_amarelo("Informacoes da pessoa inexistente removida (comportamento anormal):\n");
-        imprimir_dados_pessoa(&resultado_inexistente2->info);
+        imprimir_dados_pessoa(resultado_inexistente2->info);
         liberar_no_rubro_negro(&resultado_inexistente2, liberar_dados_pessoa);
     }
     else
@@ -816,81 +816,81 @@ void testar_insercao_ceps(RUBRO_NEGRO **arvore)
     // Track if all insertions are successful
     int all_success = 1;
 
-    // Insert original CEPs into the tree - passando o endereço da estrutura
-    if (!inserir_rubro_negro(arvore, &dado1, comparar_dados_CEP))
+    // Insert original CEPs into the tree - removendo o operador de endereço "&"
+    if (!inserir_rubro_negro(arvore, dado1, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 01001-000!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado2, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado2, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 02002-000!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado3, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado3, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 03003-000!\n");
         all_success = 0;
     }
 
     // Insert additional CEPs into the tree
-    if (!inserir_rubro_negro(arvore, &dado4, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado4, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 04004-000!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado5, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado5, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 05005-000!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado6, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado6, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 10101-010!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado7, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado7, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 20202-020!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado8, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado8, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 30303-030!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado9, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado9, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 40404-040!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado10, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado10, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 50505-050!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado11, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado11, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 60606-060!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado12, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado12, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 70707-070!\n");
         all_success = 0;
     }
 
-    if (!inserir_rubro_negro(arvore, &dado13, comparar_dados_CEP))
+    if (!inserir_rubro_negro(arvore, dado13, comparar_dados_CEP))
     {
         mensagem_erro("Falha ao inserir CEP 88888-888!\n");
         all_success = 0;
@@ -927,7 +927,7 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore)
     filtro.CEP = strdup("01001-000");
     mensagem_sucesso("Filtro para CEPs criado com sucesso!\n");
 
-    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, &filtro, imprimir_dados_CEP, comparar_dados_CEP);
+    impressao_sucesso = imprimir_filtro_rubro_negro(arvore, filtro, imprimir_dados_CEP, comparar_dados_CEP);
     if (impressao_sucesso) {
         mensagem_sucesso("CEPs filtrados com sucesso!\n");
     } else {
@@ -940,11 +940,11 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore)
     busca.CEP = strdup("02002-000");
     mensagem_sucesso("Dado para busca de CEP criado com sucesso!\n");
 
-    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_CEP);
+    RUBRO_NEGRO *resultado = buscar_rubro_negro(arvore, busca, comparar_dados_CEP);
     if (resultado != NULL)
     {
         mensagem_sucesso("CEP encontrado:\n");
-        imprimir_dados_CEP(&resultado->info);
+        imprimir_dados_CEP(resultado->info);
     }
     else
     {
@@ -959,11 +959,11 @@ void testar_impressao_e_busca_ceps(RUBRO_NEGRO *arvore)
     print_amarelo("\nBuscando CEP inexistente '99999-999':\n");
     busca.CEP = strdup("99999-999");
 
-    resultado = buscar_rubro_negro(arvore, &busca, comparar_dados_CEP);
+    resultado = buscar_rubro_negro(arvore, busca, comparar_dados_CEP);
     if (resultado != NULL)
     {
         mensagem_erro("CEP encontrado (inesperado)!\n");
-        imprimir_dados_CEP(&resultado->info);
+        imprimir_dados_CEP(resultado->info);
     }
     else
     {
@@ -1009,14 +1009,14 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     mensagem_sucesso("Dados para teste de remocao de CEPs criados com sucesso!\n");
 
-    // Test removing first existing CEP - passando o endereço da estrutura
+    // Test removing first existing CEP - removendo o operador de endereço "&"
     print_amarelo("Removendo CEP '02002-000':\n");
-    RUBRO_NEGRO *cep_removido1 = remover_rubro_negro(arvore, &cep_remover1, comparar_dados_CEP);
+    RUBRO_NEGRO *cep_removido1 = remover_rubro_negro(arvore, cep_remover1, comparar_dados_CEP);
     if (cep_removido1 != NULL)
     {
         mensagem_sucesso("CEP removido com sucesso!\n");
         print_amarelo("Informacoes do CEP removido:\n");
-        imprimir_dados_CEP(&cep_removido1->info);
+        imprimir_dados_CEP(cep_removido1->info);
         liberar_no_rubro_negro(&cep_removido1, liberar_dados_CEP);
     }
     else
@@ -1026,12 +1026,12 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     // Test removing second existing CEP
     print_amarelo("\nRemovendo CEP '03003-000':\n");
-    RUBRO_NEGRO *cep_removido2 = remover_rubro_negro(arvore, &cep_remover2, comparar_dados_CEP);
+    RUBRO_NEGRO *cep_removido2 = remover_rubro_negro(arvore, cep_remover2, comparar_dados_CEP);
     if (cep_removido2 != NULL)
     {
         mensagem_sucesso("CEP removido com sucesso!\n");
         print_amarelo("Informacoes do CEP removido:\n");
-        imprimir_dados_CEP(&cep_removido2->info);
+        imprimir_dados_CEP(cep_removido2->info);
         liberar_no_rubro_negro(&cep_removido2, liberar_dados_CEP);
     }
     else
@@ -1041,12 +1041,12 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     // Test removing third existing CEP
     print_amarelo("\nRemovendo CEP '04004-000':\n");
-    RUBRO_NEGRO *cep_removido3 = remover_rubro_negro(arvore, &cep_remover3, comparar_dados_CEP);
+    RUBRO_NEGRO *cep_removido3 = remover_rubro_negro(arvore, cep_remover3, comparar_dados_CEP);
     if (cep_removido3 != NULL)
     {
         mensagem_sucesso("CEP removido com sucesso!\n");
         print_amarelo("Informacoes do CEP removido:\n");
-        imprimir_dados_CEP(&cep_removido3->info);
+        imprimir_dados_CEP(cep_removido3->info);
         liberar_no_rubro_negro(&cep_removido3, liberar_dados_CEP);
     }
     else
@@ -1056,12 +1056,12 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     // Test removing fourth existing CEP
     print_amarelo("\nRemovendo CEP '10101-010':\n");
-    RUBRO_NEGRO *cep_removido4 = remover_rubro_negro(arvore, &cep_remover4, comparar_dados_CEP);
+    RUBRO_NEGRO *cep_removido4 = remover_rubro_negro(arvore, cep_remover4, comparar_dados_CEP);
     if (cep_removido4 != NULL)
     {
         mensagem_sucesso("CEP removido com sucesso!\n");
         print_amarelo("Informacoes do CEP removido:\n");
-        imprimir_dados_CEP(&cep_removido4->info);
+        imprimir_dados_CEP(cep_removido4->info);
         liberar_no_rubro_negro(&cep_removido4, liberar_dados_CEP);
     }
     else
@@ -1075,12 +1075,12 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     // Try to remove first non-existent CEP
     print_amarelo("\nTentando remover CEP inexistente '99999-999':\n");
-    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, &cep_inexistente1, comparar_dados_CEP);
+    RUBRO_NEGRO *resultado_inexistente1 = remover_rubro_negro(arvore, cep_inexistente1, comparar_dados_CEP);
     if (resultado_inexistente1 != NULL)
     {
         mensagem_erro("CEP removido (inesperado)!\n");
         print_amarelo("Informacoes do CEP inexistente removido (comportamento anormal):\n");
-        imprimir_dados_CEP(&resultado_inexistente1->info);
+        imprimir_dados_CEP(resultado_inexistente1->info);
         liberar_no_rubro_negro(&resultado_inexistente1, liberar_dados_CEP);
     }
     else
@@ -1090,12 +1090,12 @@ void testar_remocao_ceps(RUBRO_NEGRO **arvore)
 
     // Try to remove second non-existent CEP
     print_amarelo("\nTentando remover CEP inexistente '00000-000':\n");
-    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, &cep_inexistente2, comparar_dados_CEP);
+    RUBRO_NEGRO *resultado_inexistente2 = remover_rubro_negro(arvore, cep_inexistente2, comparar_dados_CEP);
     if (resultado_inexistente2 != NULL)
     {
         mensagem_erro("CEP removido (inesperado)!\n");
         print_amarelo("Informacoes do CEP inexistente removido (comportamento anormal):\n");
-        imprimir_dados_CEP(&resultado_inexistente2->info);
+        imprimir_dados_CEP(resultado_inexistente2->info);
         liberar_no_rubro_negro(&resultado_inexistente2, liberar_dados_CEP);
     }
     else

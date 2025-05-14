@@ -67,17 +67,17 @@ void testar_insercao() {
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
     // Inserir estados ordenadamente - passando o endereço da estrutura
-    if(inserir_ordernado_duplamente(&lista, &estado1))
+    if(inserir_ordernado_duplamente(&lista, estado1))
         mensagem_sucesso("Estado Sao Paulo inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Sao Paulo!\n");
-        
-    if(inserir_ordernado_duplamente(&lista, &estado2))
+
+    if(inserir_ordernado_duplamente(&lista, estado2))
         mensagem_sucesso("Estado Rio de Janeiro inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Rio de Janeiro!\n");
-        
-    if(inserir_ordernado_duplamente(&lista, &estado3))
+
+    if(inserir_ordernado_duplamente(&lista, estado3))
         mensagem_sucesso("Estado Minas Gerais inserido com sucesso!\n");
     else
         mensagem_erro("Falha ao inserir Minas Gerais!\n");
@@ -125,9 +125,9 @@ void testar_busca() {
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
     // Inserir estados
-    inserir_ordernado_duplamente(&lista, &estado1);
-    inserir_ordernado_duplamente(&lista, &estado2);
-    inserir_ordernado_duplamente(&lista, &estado3);
+    inserir_ordernado_duplamente(&lista, estado1);
+    inserir_ordernado_duplamente(&lista, estado2);
+    inserir_ordernado_duplamente(&lista, estado3);
     mensagem_sucesso("Estados inseridos na lista com sucesso!\n");
     
     // Buscar estados existentes
@@ -135,12 +135,12 @@ void testar_busca() {
     ESTADO busca1 = criar_estado("Sao Paulo", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Sao Paulo criado!\n");
     
-    LISTA_DUPLAMENTE *resultado1 = buscar_duplamente(lista, &busca1);
+    LISTA_DUPLAMENTE *resultado1 = buscar_duplamente(lista, busca1);  // Corrigindo para passar o endereço
     if(resultado1 != NULL) {
         mensagem_sucesso("Estado Sao Paulo encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
         // Usar a estrutura em vez do ponteiro
-        imprimir_estado(&resultado1->estado);
+        imprimir_estado(resultado1->estado);  // Passando o endereço
     } else {
         mensagem_erro("Estado Sao Paulo NAO encontrado!\n");
     }
@@ -148,12 +148,12 @@ void testar_busca() {
     print_amarelo("\nBuscando Rio de Janeiro na lista...\n");
     ESTADO busca2 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Rio de Janeiro criado!\n");
-    
-    LISTA_DUPLAMENTE *resultado2 = buscar_duplamente(lista, &busca2);
+
+    LISTA_DUPLAMENTE *resultado2 = buscar_duplamente(lista, busca2);  // Corrigindo para passar o endereço
     if(resultado2 != NULL) {
         mensagem_sucesso("Estado Rio de Janeiro encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(&resultado2->estado);
+        imprimir_estado(resultado2->estado);
     } else {
         mensagem_erro("Estado Rio de Janeiro NAO encontrado!\n");
     }
@@ -162,11 +162,11 @@ void testar_busca() {
     ESTADO busca3 = criar_estado("Minas Gerais", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Minas Gerais criado!\n");
     
-    LISTA_DUPLAMENTE *resultado3 = buscar_duplamente(lista, &busca3);
+    LISTA_DUPLAMENTE *resultado3 = buscar_duplamente(lista, busca3);  // Corrigindo para passar o endereço
     if(resultado3 != NULL) {
         mensagem_sucesso("Estado Minas Gerais encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(&resultado3->estado);
+        imprimir_estado(resultado3->estado);
     } else {
         mensagem_erro("Estado Minas Gerais NAO encontrado!\n");
     }
@@ -175,11 +175,11 @@ void testar_busca() {
     ESTADO busca4 = criar_estado("Parana", "", 0, 0, NULL);
     mensagem_sucesso("Dado para busca de Parana criado!\n");
     
-    LISTA_DUPLAMENTE *resultado4 = buscar_duplamente(lista, &busca4);
+    LISTA_DUPLAMENTE *resultado4 = buscar_duplamente(lista, busca4);
     if(resultado4 != NULL) {
         mensagem_sucesso("Estado Parana encontrado!\n");
         print_amarelo("Informacoes do estado encontrado:\n");
-        imprimir_estado(&resultado4->estado);
+        imprimir_estado(resultado4->estado);
     } else {
         mensagem_erro("Estado Parana NAO encontrado (esperado, ja que nao foi inserido)!\n");
     }
@@ -191,10 +191,10 @@ void testar_busca() {
     
     liberar_estado(&busca2);
     mensagem_sucesso("Memoria para busca de Rio de Janeiro liberada!\n");
-    
+
     liberar_estado(&busca3);
     mensagem_sucesso("Memoria para busca de Minas Gerais liberada!\n");
-    
+
     liberar_estado(&busca4);
     mensagem_sucesso("Memoria para busca de Parana liberada!\n");
     
@@ -219,9 +219,9 @@ void testar_remocao() {
     mensagem_sucesso("Estado Minas Gerais criado com sucesso!\n");
     
     // Inserir estados
-    inserir_ordernado_duplamente(&lista, &estado1);
-    inserir_ordernado_duplamente(&lista, &estado2);
-    inserir_ordernado_duplamente(&lista, &estado3);
+    inserir_ordernado_duplamente(&lista, estado1);
+    inserir_ordernado_duplamente(&lista, estado2);
+    inserir_ordernado_duplamente(&lista, estado3);
     mensagem_sucesso("Estados inseridos na lista com sucesso!\n");
     
     print_amarelo("Lista original:\n");
@@ -230,8 +230,11 @@ void testar_remocao() {
     // Remover estado do meio (Rio de Janeiro)
     print_amarelo("\nRemovendo estado Rio de Janeiro...\n");
     ESTADO remover1 = criar_estado("Rio de Janeiro", "", 0, 0, NULL);
-    if(removerEstado(&lista, &remover1)) {
+    LISTA_DUPLAMENTE* no_removido1 = removerEstado(&lista, remover1);
+    if(no_removido1 != NULL) {
         mensagem_sucesso("Estado Rio de Janeiro removido com sucesso!\n");
+        // Liberar o nó removido
+        liberar_no_duplamente(&no_removido1);
     } else {
         mensagem_erro("Falha ao remover Rio de Janeiro!\n");
     }
@@ -256,8 +259,11 @@ void testar_remocao() {
     // Remover estado do inicio (Minas Gerais)
     print_amarelo("\nRemovendo estado Minas Gerais...\n");
     ESTADO remover2 = criar_estado("Minas Gerais", "", 0, 0, NULL);
-    if(removerEstado(&lista, &remover2)) {
+    LISTA_DUPLAMENTE* no_removido2 = removerEstado(&lista, remover2);
+    if(no_removido2 != NULL) {
         mensagem_sucesso("Estado Minas Gerais removido com sucesso!\n");
+        // Liberar o nó removido
+        liberar_no_duplamente(&no_removido2);
     } else {
         mensagem_erro("Falha ao remover Minas Gerais!\n");
     }
@@ -282,8 +288,11 @@ void testar_remocao() {
     // Remover ultimo estado (Sao Paulo)
     print_amarelo("\nRemovendo estado Sao Paulo...\n");
     ESTADO remover3 = criar_estado("Sao Paulo", "", 0, 0, NULL);
-    if(removerEstado(&lista, &remover3)) {
+    LISTA_DUPLAMENTE* no_removido3 = removerEstado(&lista, remover3);
+    if(no_removido3 != NULL) {
         mensagem_sucesso("Estado Sao Paulo removido com sucesso!\n");
+        // Liberar o nó removido
+        liberar_no_duplamente(&no_removido3);
     } else {
         mensagem_erro("Falha ao remover Sao Paulo!\n");
     }
@@ -299,8 +308,11 @@ void testar_remocao() {
     // Tentar remover de lista vazia
     print_amarelo("\nTentando remover estado Parana de lista vazia...\n");
     ESTADO remover4 = criar_estado("Parana", "", 0, 0, NULL);
-    if(removerEstado(&lista, &remover4)) {
+    LISTA_DUPLAMENTE* no_removido4 = removerEstado(&lista, remover4);
+    if(no_removido4 != NULL) {
         mensagem_erro("Remocao de lista vazia deveria falhar, mas retornou sucesso!\n");
+        // Liberar o nó removido mesmo em caso de erro
+        liberar_no_duplamente(&no_removido4);
     } else {
         mensagem_sucesso("Remocao de lista vazia falhou corretamente!\n");
     }
