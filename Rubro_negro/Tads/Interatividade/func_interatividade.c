@@ -47,9 +47,8 @@ short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep)
     short int retorno = 0;
 
     if (raiz_estado != NULL && cep != NULL)
-    {
-        retorno = percorrer_estado(raiz_estado, cep);
-    }
+      retorno = percorrer_estado(raiz_estado, cep);
+    
 
     return retorno;
 }
