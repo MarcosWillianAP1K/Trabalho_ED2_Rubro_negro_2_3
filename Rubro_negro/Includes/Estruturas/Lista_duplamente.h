@@ -19,7 +19,7 @@ LISTA_DUPLAMENTE *inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO i
 
 LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info);
 
-LISTA_DUPLAMENTE *removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO info);
+LISTA_DUPLAMENTE *remover_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info);
 
 void exibirLista(LISTA_DUPLAMENTE *raiz);
 

@@ -1,7 +1,9 @@
 #include "../../Includes/Interatividade/Func_interatividade.h"
+#include "../../Includes/Utilitarios/funcao_sistema.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 //===============VERIFICAÇÕES===============
 
@@ -75,11 +77,11 @@ RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)
     return retorno;
 }
 
-RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
-    if (cep != NULL)
+    if (cep != NULL && cidade != NULL)
     {
 
         if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
@@ -87,7 +89,7 @@ RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *
             DADOS aux;
             aux.CEP = cep;
 
-            retorno = inserir_rubro_negro_void(&cidade.raiz_arvore_CEPs, aux, comparar);
+            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
         }
     }
 
@@ -288,4 +290,68 @@ int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(RUBRO_NEGRO *raiz_pess
     }
 
     return quantidade;
+}
+
+void mostrar_CEPs(RUBRO_NEGRO *raiz)
+{
+    if (raiz != NULL)
+    {
+        mostrar_CEPs(raiz->esquerda);
+        imprimir_CEP(raiz->info.CEP);
+        mostrar_CEPs(raiz->direita);
+    }
+}
+
+void mostrar_cidades(RUBRO_NEGRO *raiz)
+{
+    if (raiz != NULL)
+    {
+        mostrar_cidades(raiz->esquerda);
+        print_amarelo("\n\n=================CIDADE==================\n");
+        imprimir_cidade(raiz->info.cidade);
+
+        print_amarelo("\n\n=================CEPS==================\n");
+        mostrar_CEPs(raiz->info.cidade.raiz_arvore_CEPs);
+        mostrar_cidades(raiz->direita);
+    }
+}
+
+void mostrar_estados(LISTA_DUPLAMENTE *lista)
+{
+    while (lista != NULL)
+    {
+        print_amarelo("\n==================ESTADO==================\n");
+        imprimir_estado(lista->estado);
+        printf("\n\n");
+        mostrar_cidades(lista->estado.raiz_arvore_cidade);
+        lista = lista->prox;
+    }
+}
+
+void mostrar_pessoas(RUBRO_NEGRO *raiz)
+{
+    if (raiz != NULL)
+    {
+        mostrar_pessoas(raiz->esquerda);
+        imprimir_pessoa(raiz->info.pessoa);
+        mostrar_pessoas(raiz->direita);
+    }
+}
+
+void mostrar_tudo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
+{
+    if (lista != NULL)
+    {
+        mostrar_estados(lista);
+    }
+
+    printf("\n\n");
+
+    if (raiz_pessoa != NULL)
+    {
+        print_amarelo("=================PESSOAS==================");
+        mostrar_pessoas(raiz_pessoa);
+    printf("\n\n");
+
+    }
 }

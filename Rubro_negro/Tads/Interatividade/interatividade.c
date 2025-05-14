@@ -2,48 +2,63 @@
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 #include "../../Includes/Interatividade/Interatividade.h"
 
-void cadastro_estados_interativo(LISTA_DUPLAMENTE *lista)
+void cadastro_estados_interativo(LISTA_DUPLAMENTE **lista)
 {
     short int sucesso = 0;
 
     printf("Digite o nome do estado: ");
     char *nome_estado = digitar_string();
 
-    printf("Digite o nome da cidade (capital): ");
-    char *nome_capital = digitar_string();
+    ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
 
-    printf("Digite a quantidade de habitantes da capital: ");
-    short int num_habitantes = digitar_short_int();
+    LISTA_DUPLAMENTE *estado_inserido = cadastrar_estado(lista, estado);
 
-    printf("Digite o CEP: ");
-    char *CEP = digitar_CEP();
-
-    ESTADO estado = criar_estado(nome_estado, nome_capital, 0, 0, NULL);
-    DADOS capital;
-    capital.cidade = criar_cidade(nome_capital,num_habitantes, NULL);
-    
-    corrigir_formatacao_CEP(CEP);
-
-    short int retorno = cadastrar_CEP(lista, capital.cidade, CEP, comparar_dados_CEP);
-    printf("Retorno: %d\n", retorno);
-    if(retorno == 1)
+    if (estado_inserido != NULL)
     {
-        
+        printf("Digite o nome da cidade (capital): ");
+        char *nome_capital = digitar_string();
 
-        
+        printf("Digite a quantidade de habitantes da capital: ");
+        int habitantes = digitar_short_int();
+
+        CIDADE capital = criar_cidade(nome_capital, habitantes, NULL);
+
+        estado_inserido->estado.quantidade_populacao += habitantes;
+        estado_inserido->estado.quantidade_cidade++;
+        estado_inserido->estado.nome_capital = nome_capital;
+
+        RUBRO_NEGRO *capital_inserida = cadastrar_cidade(&estado_inserido->estado, capital, comparar_dados_nome_cidade);
+
+        if (capital_inserida != NULL)
+        {
+            printf("Digite o CEP: ");
+            char *CEP = digitar_CEP();
+
+            if (cadastrar_CEP(*lista, &capital_inserida->info.cidade, CEP, comparar_dados_CEP) != NULL)
+            {
+                mensagem_sucesso("Estado, capital e CEP cadastrados com sucesso!");
+            }
+            else
+            {
+                mensagem_erro("CEP ja existente!");
+                liberar_CEP(&CEP);
+                liberar_no_rubro_negro(&capital_inserida, liberar_dados_cidade);
+                LISTA_DUPLAMENTE *remover = remover_duplamente(lista, estado);
+                liberar_no_duplamente(&remover);
+            }
+        }
+        else
+        {
+            mensagem_erro("Falha na insercao da capital!");
+            liberar_cidade(&capital);
+            LISTA_DUPLAMENTE *remover = remover_duplamente(lista, estado);
+            liberar_no_duplamente(&remover);
+        }
     }
     else
     {
-        print_amarelo("CEP ja existente!");
+        liberar_estado(&estado);
     }
-    
-    pausar_tela();
-
-
-    
-    
-
-    
 }
 
 // LISTA_DUPLAMENTE cadastro_cidade_interativo(LISTA_DUPLAMENTE *raiz)
@@ -132,15 +147,18 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
         printf("(5) Qual cidade natal de uma pessoa dado o CEP da cidade?\n");
         printf("(6) Quantas pessoas nascidas em uma determinada cidade não moram na cidade natal?\n");
         printf("(7) Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?\n");
+        printf("(8) Mostrar tudo\n");
         printf("\nEscolha uma opcao: ");
 
         scanf(" %c", &opcao);
 
+        limpar_tela();
+
         switch (opcao)
         {
         case 'a':
-            cadastro_estados_interativo(*Lista_estados);
-
+            cadastro_estados_interativo(Lista_estados);
+            pausar_tela();
             break;
         case 'b':
 
@@ -156,6 +174,25 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             break;
         case 'f':
 
+            break;
+        case '1':
+            break;
+        case '2':
+            
+            break;
+        case '3':
+            break;
+        case '4':
+            break;
+        case '5':
+            break;
+        case '6':
+            break;
+        case '7':
+            break;
+        case '8':
+            mostrar_tudo(*Lista_estados, *Raiz_pessoas);
+            pausar_tela();
             break;
         }
     } while (opcao != '0');

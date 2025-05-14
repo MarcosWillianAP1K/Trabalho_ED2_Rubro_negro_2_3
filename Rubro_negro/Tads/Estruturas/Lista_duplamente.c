@@ -125,7 +125,7 @@ LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info)
 }
 
 // Function to remove a node
-LISTA_DUPLAMENTE *removerEstado(LISTA_DUPLAMENTE **raiz, ESTADO info)
+LISTA_DUPLAMENTE *remover_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
 {
     LISTA_DUPLAMENTE *retorno = NULL;
 
