@@ -2,19 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-<<<<<<< HEAD
-short int cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info)
-=======
 //===============VERIFICAÇÕES===============
 
-short int pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, DADOS *cep)
->>>>>>> 7ad178b32996585c6472c5d4d21bd51464867347
+short int pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, char *cep)
 {
     short int retorno = 0;
 
     if(raiz_cidade)
     {
-        if(buscar_rubro_negro(raiz_cidade->info.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP) == NULL)
+        DADOS aux;
+        aux.CEP = cep;
+
+        if(buscar_rubro_negro(raiz_cidade->info.cidade.raiz_arvore_CEPs, aux, comparar_dados_CEP) == NULL)
         {
             retorno = pecorrer_cidade(raiz_cidade->esquerda, cep);
 
@@ -28,7 +27,7 @@ short int pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, DADOS *cep)
     return retorno;  
 }
 
-short int percorrer_estado(LISTA_DUPLAMENTE *raiz_estado, DADOS *cep)
+short int percorrer_estado(LISTA_DUPLAMENTE *raiz_estado, char *cep)
 {
     short int retorno = 0;
 
@@ -43,11 +42,11 @@ short int percorrer_estado(LISTA_DUPLAMENTE *raiz_estado, DADOS *cep)
     return retorno;  
 }
 
-short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, DADOS *cep)
+short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep)
 {
     short int retorno = 0;
 
-    if (raiz_estado != NULL)
+    if (raiz_estado != NULL && cep != NULL)
     {
         retorno = percorrer_estado(raiz_estado, cep);
     }
@@ -57,7 +56,7 @@ short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, DADOS *cep)
 
 //===============CADASTROS===============
 
-short int cadastrar_estado(LISTA_DUPLAMENTE **raiz_estado, ESTADO *info)
+short int cadastrar_estado(LISTA_DUPLAMENTE **raiz_estado, ESTADO info)
 {
     return inserir_ordernado_duplamente(raiz_estado, info);
 }
@@ -77,27 +76,19 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DA
     return retorno;
 }
 
-<<<<<<< HEAD
-short int cadastrar_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS, DADOS))
-=======
-short int cadastrar_CEP(LISTA_DUPLAMENTE *raiz_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *))
->>>>>>> 7ad178b32996585c6472c5d4d21bd51464867347
+short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
 {
     short int retorno = 0;
 
     if (cidade != NULL && cep != NULL)
     {
-        DADOS aux;
-        aux.CEP = cep;
-
-<<<<<<< HEAD
-        retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
-=======
-        if (verificar_se_ja_existe_CEP(raiz_estado, &aux) == 0)
+        if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
         {
-            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, &aux, comparar);
+            DADOS aux;
+            aux.CEP = cep;
+
+            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
         }
->>>>>>> 7ad178b32996585c6472c5d4d21bd51464867347
     }
 
     return retorno;
@@ -115,14 +106,10 @@ short int cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar
     return retorno;
 }
 
-<<<<<<< HEAD
-RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS, DADOS))
-=======
 
 //===============REMOÇÕES===============
 
-RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS *, DADOS *))
->>>>>>> 7ad178b32996585c6472c5d4d21bd51464867347
+RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -137,7 +124,7 @@ RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS 
     return retorno;
 }
 
-RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS , DADOS ))
 {
     RUBRO_NEGRO *retorno = NULL;
 
