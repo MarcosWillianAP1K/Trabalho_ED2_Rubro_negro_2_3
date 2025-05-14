@@ -75,16 +75,13 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DA
     return retorno;
 }
 
-<<<<<<< HEAD
 short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
-=======
-short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS, DADOS))
->>>>>>> fcf0ceeccca5953dde4f473177d2f178f5e81531
 {
     short int retorno = 0;
 
     if (cep != NULL)
     {
+
         if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
         {
             DADOS aux;
@@ -267,8 +264,8 @@ int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(RUBRO_N
         if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info.pessoa.CEP_atual) != 0 && buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
             quantidade++;
 
-        quantidade += quant_de_pessoas_de_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda, cidade);
-        quantidade += quant_de_pessoas_de_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->direita, cidade);
+        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda, cidade);
+        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->direita, cidade);
     }
 
     return quantidade;

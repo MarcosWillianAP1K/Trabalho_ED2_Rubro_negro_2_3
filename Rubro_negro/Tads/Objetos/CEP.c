@@ -81,9 +81,6 @@ char *digitar_CEP()
 
     cep = corrigir_formatacao_CEP(cep);
 
-    if (validar_CEP(cep) == 0)
-      cep = NULL;
-
     return cep;
 }
 
