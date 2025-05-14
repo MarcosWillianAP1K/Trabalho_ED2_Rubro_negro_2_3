@@ -31,6 +31,7 @@ void liberar_dados_pessoa(DADOS *dado);
 void liberar_dados_CEP(DADOS *dado);
 
 
+
 short int comparar_dados_nome_cidade(DADOS dado1, DADOS dado2);
 
 short int comparar_dados_nome_pessoa(DADOS dado1, DADOS dado2);

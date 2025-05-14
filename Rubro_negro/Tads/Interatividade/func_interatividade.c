@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 //===============VERIFICAÇÕES===============
 
 short int pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, char *cep)
@@ -57,53 +56,75 @@ short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep)
 
 //===============CADASTROS===============
 
-LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz_estado, ESTADO info)
-{
-    return inserir_ordernado_duplamente(raiz_estado, info);
-}
-
-RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DADOS, DADOS))
-{
-    RUBRO_NEGRO *retorno = NULL;
-
-    if (estado != NULL)
-    {
-        DADOS aux;
-        aux.cidade = info;
-
-        retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, aux, comparar);
-    }
-
-    return retorno;
-}
-
-RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
-{
-    RUBRO_NEGRO *retorno = NULL;
-
-    if (cep != NULL && cidade != NULL)
-    {
-
-        if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
-        {
-            DADOS aux;
-            aux.CEP = cep;
-
-            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
-        }
-    }
-
-    return retorno;
-}
-
-RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info)
 {
     RUBRO_NEGRO *retorno = NULL;
 
     DADOS aux;
     aux.pessoa = info;
 
-    retorno = inserir_rubro_negro(raiz, aux, comparar);
+    retorno = inserir_rubro_negro(raiz, aux, comparar_dados_CPF_pessoa);
+
+    return retorno;
+}
+
+RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep)
+{
+    RUBRO_NEGRO *retorno = NULL;
+
+    if (cep != NULL && cidade != NULL)
+    {
+        if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
+        {
+            DADOS aux;
+            aux.CEP = cep;
+
+            retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar_dados_CEP);
+        }
+    }
+
+    return retorno;
+}
+
+RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, LISTA_DUPLAMENTE *lista_estado_opcional, char *cep_opcional)
+{
+    RUBRO_NEGRO *retorno = NULL;
+
+    if (estado != NULL)
+    {
+        RUBRO_NEGRO *no_cep = NULL;
+
+        if (cep_opcional != NULL)
+            no_cep = cadastrar_CEP(lista_estado_opcional, &info, cep_opcional);
+        
+
+        DADOS aux;
+        aux.cidade = info;
+
+        retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
+
+        if (no_cep != NULL && retorno == NULL)
+            liberar_no_rubro_negro(&no_cep, NULL);
+    }
+
+    return retorno;
+}
+
+// Pode inserir um estado ja inserindo uma cidade/Capital, Ideal quando se cadastrar o estado pela primeira vez.
+LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info, CIDADE *cidade_opcional, char *cep_opcional)
+{
+    LISTA_DUPLAMENTE *retorno = NULL;
+    RUBRO_NEGRO *no_cidade = NULL;
+
+    if (cidade_opcional != NULL)
+        no_cidade = cadastrar_cidade(&info, *cidade_opcional, *lista_estado, cep_opcional);
+
+    retorno = inserir_ordernado_duplamente(lista_estado, info);
+
+    if (cidade_opcional != NULL && retorno == NULL)
+        liberar_no_rubro_negro(&no_cidade, NULL);
+    //Libera apenas o no, não a informação.(no caso as alocações de string mantem)
+
 
     return retorno;
 }
@@ -351,7 +372,6 @@ void mostrar_tudo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
     {
         print_amarelo("=================PESSOAS==================");
         mostrar_pessoas(raiz_pessoa);
-    printf("\n\n");
-
+        printf("\n\n");
     }
 }

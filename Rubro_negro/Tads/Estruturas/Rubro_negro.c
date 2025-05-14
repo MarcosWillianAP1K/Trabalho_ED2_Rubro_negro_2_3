@@ -21,9 +21,11 @@ RUBRO_NEGRO *alocar_no_rubro_negro()
 
 void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS *))
 {
-    if (no != NULL && *no != NULL && liberar != NULL)
+    if (no != NULL && *no != NULL)
     {
-        liberar(&(*no)->info);
+        if (liberar != NULL)
+            liberar(&(*no)->info);
+        
         free(*no);
         *no = NULL;
     }

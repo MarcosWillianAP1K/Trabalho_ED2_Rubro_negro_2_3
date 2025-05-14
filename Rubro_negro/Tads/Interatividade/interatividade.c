@@ -8,56 +8,35 @@ void cadastro_estados_interativo(LISTA_DUPLAMENTE **lista)
 
     printf("Digite o nome do estado: ");
     char *nome_estado = digitar_string();
+    corrigir_espacos(nome_estado);
 
-    ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+    printf("Digite o nome da capital: ");
+    char *nome_capital = digitar_string();
+    corrigir_espacos(nome_capital);
 
-    LISTA_DUPLAMENTE *estado_inserido = cadastrar_estado(lista, estado);
+    printf("Digite a quantidade de populacao: ");
+    int quant_populacao = digitar_short_int();
 
-    if (estado_inserido != NULL)
+    printf("Digite 1 CEP inicial: ");
+    char *cep_inicial = digitar_CEP();
+    corrigir_espacos(cep_inicial);
+
+    corrigir_formatacao_CEP(cep_inicial);
+
+    ESTADO estado = criar_estado(nome_estado, nome_capital, quant_populacao, 0, NULL);
+    CIDADE cidade = criar_cidade(nome_capital, quant_populacao, NULL);
+    
+    
+    if(cadastrar_estado(lista, estado, &cidade, cep_inicial) != NULL)
     {
-        printf("Digite o nome da cidade (capital): ");
-        char *nome_capital = digitar_string();
-
-        printf("Digite a quantidade de habitantes da capital: ");
-        int habitantes = digitar_short_int();
-
-        CIDADE capital = criar_cidade(nome_capital, habitantes, NULL);
-
-        estado_inserido->estado.quantidade_populacao += habitantes;
-        estado_inserido->estado.quantidade_cidade++;
-        estado_inserido->estado.nome_capital = nome_capital;
-
-        RUBRO_NEGRO *capital_inserida = cadastrar_cidade(&estado_inserido->estado, capital, comparar_dados_nome_cidade);
-
-        if (capital_inserida != NULL)
-        {
-            printf("Digite o CEP: ");
-            char *CEP = digitar_CEP();
-
-            if (cadastrar_CEP(*lista, &capital_inserida->info.cidade, CEP, comparar_dados_CEP) != NULL)
-            {
-                mensagem_sucesso("Estado, capital e CEP cadastrados com sucesso!");
-            }
-            else
-            {
-                mensagem_erro("CEP ja existente!");
-                liberar_CEP(&CEP);
-                liberar_no_rubro_negro(&capital_inserida, liberar_dados_cidade);
-                LISTA_DUPLAMENTE *remover = remover_duplamente(lista, estado);
-                liberar_no_duplamente(&remover);
-            }
-        }
-        else
-        {
-            mensagem_erro("Falha na insercao da capital!");
-            liberar_cidade(&capital);
-            LISTA_DUPLAMENTE *remover = remover_duplamente(lista, estado);
-            liberar_no_duplamente(&remover);
-        }
+        mensagem_sucesso("Estado cadastrado com sucesso!\n");
     }
     else
     {
         liberar_estado(&estado);
+        liberar_cidade(&cidade);
+        liberar_CEP(&cep_inicial);
+        mensagem_erro("Falha ao cadastrar estado!\n");
     }
 }
 
