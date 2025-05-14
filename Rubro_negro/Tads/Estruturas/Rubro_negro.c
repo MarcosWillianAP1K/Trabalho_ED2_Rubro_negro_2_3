@@ -179,15 +179,15 @@ void balancear(RUBRO_NEGRO **raiz)
 
 //========================INSERÇÃO========================
 
-short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (*raiz == NULL)
     {
         *raiz = alocar_no_rubro_negro();
         (*raiz)->info = info;
-        retorno = 1;
+        retorno = *raiz;
     }
     else
     {
@@ -200,7 +200,7 @@ short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short in
             retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
         }
 
-        if (retorno == 1)
+        if (retorno != NULL)
         {
             balancear(raiz);
         }
@@ -209,9 +209,9 @@ short int inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short in
     return retorno;
 }
 
-short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (raiz != NULL && comparar != NULL)
     {
@@ -222,9 +222,9 @@ short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*compar
     return retorno;
 }
 
-short int inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
     RUBRO_NEGRO *arvore = *raiz;
     retorno = inserir_rubro_negro(&arvore, info, comparar);
     *raiz = arvore;

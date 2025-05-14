@@ -15,7 +15,7 @@ LISTA_DUPLAMENTE *alocar_no_duplamente();
 
 void liberar_no_duplamente(LISTA_DUPLAMENTE **raiz);
 
-short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info);
+LISTA_DUPLAMENTE *inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info);
 
 LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info);
 

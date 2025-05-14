@@ -30,9 +30,9 @@ RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, short int (*compar
 
 COR cor(RUBRO_NEGRO *no);
 
-short int inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ));
+RUBRO_NEGRO *inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ));
 
-short int inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ));
+RUBRO_NEGRO *inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ));
 
 RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ));
 

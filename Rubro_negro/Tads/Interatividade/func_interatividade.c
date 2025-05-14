@@ -55,14 +55,14 @@ short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep)
 
 //===============CADASTROS===============
 
-short int cadastrar_estado(LISTA_DUPLAMENTE **raiz_estado, ESTADO info)
+LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz_estado, ESTADO info)
 {
     return inserir_ordernado_duplamente(raiz_estado, info);
 }
 
-short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DADOS, DADOS))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (estado != NULL)
     {
@@ -75,9 +75,9 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE info, short int (*comparar)(DA
     return retorno;
 }
 
-short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep, short int (*comparar)(DADOS , DADOS ))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
 
     if (cep != NULL)
     {
@@ -94,9 +94,9 @@ short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE cidade, char *cep
     return retorno;
 }
 
-short int cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS, DADOS))
 {
-    short int retorno = 0;
+    RUBRO_NEGRO *retorno = NULL;
 
     DADOS aux;
     aux.pessoa = info;

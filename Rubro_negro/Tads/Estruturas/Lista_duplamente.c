@@ -43,10 +43,10 @@ void liberar_lista(LISTA_DUPLAMENTE **raiz)
     *raiz = NULL;
 }
 
-short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
+LISTA_DUPLAMENTE *inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
 {
 
-    short int retorno = 0;
+    LISTA_DUPLAMENTE *retorno = NULL;
 
     if (raiz != NULL)
     {
@@ -57,7 +57,7 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
             {
                 novo->estado = info;
                 *raiz = novo;
-                retorno = 1;
+                retorno = novo;
             }
         }
         else
@@ -99,7 +99,7 @@ short int inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
                     temp->ant = novo;
                 }
 
-                retorno = 1;
+                retorno = novo;
             }
         }
     }
