@@ -112,7 +112,7 @@ LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info)
     int comparacao = 0;
     LISTA_DUPLAMENTE *temp = NULL;
 
-    while (raiz != NULL && comparacao != 0)
+    while (raiz != NULL && comparacao == 0)
     {
         if (comparar_nome_estado(raiz->estado, info) == 0)
         {

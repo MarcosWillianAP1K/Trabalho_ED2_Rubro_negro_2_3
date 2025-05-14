@@ -37,10 +37,9 @@ void imprimir_cidade(CIDADE cidade)
 void liberar_cidade(CIDADE *cidade)
 {
     if (cidade != NULL)
-    {
-        free(cidade->nome);
+      free(cidade->nome);
         // free(cidade->raiz_arvore_CEPs);
-    }
+
 }
 
 short int comparar_nome_cidades(CIDADE cidade1, CIDADE cidade2)
@@ -48,20 +47,12 @@ short int comparar_nome_cidades(CIDADE cidade1, CIDADE cidade2)
     short int resultado = 0;
 
     if (cidade1.nome != NULL && cidade2.nome != NULL)
-    {
-        resultado = strcmp(cidade1.nome, cidade2.nome);
-    }
+      resultado = strcmp(cidade1.nome, cidade2.nome);
     else if (cidade1.nome == NULL && cidade2.nome == NULL)
-    {
-        resultado = 0;
-    }
+           resultado = 0;
     else if (cidade1.nome == NULL)
-    {
-        resultado = -1;
-    }
-    else
-    {
-        resultado = 1;
-    }
+           resultado = -1;
+    else resultado = 1;
+    
     return resultado;
 }

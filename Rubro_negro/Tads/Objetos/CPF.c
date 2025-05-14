@@ -38,13 +38,10 @@ char *corrigir_formatacao_cpf(char *cpf)
                 numeros_inseridos++;                // Incrementa o contador de números inseridos
             }
             else if (i == 3 || i == 7) // Adiciona o ponto ou o traço na posição correta
-            {
-                strncat(cpf_corrigido, ".", 1);
-            }
+                   strncat(cpf_corrigido, ".", 1);
             else if (i == 11) // Adiciona o traço na posição correta
-            {
-                strncat(cpf_corrigido, "-", 1);
-            }
+                   strncat(cpf_corrigido, "-", 1);
+
         }
 
         free(cpf);           // Libera o CPF original
@@ -64,9 +61,8 @@ int validar_cpf(char *cpf)
         for (int i = 0; i < 11 && valido == 1; i++)
         {
             if (!isdigit(cpf[i]) || ((i == 3 || i == 7) && cpf[i] != '.') || (i == 11 && cpf[i] != '-'))
-            {
-                valido = 0; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
-            }
+              valido = 0; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
+            
         }
     }
 
@@ -80,9 +76,6 @@ char *digitar_CPF()
     cpf = corrigir_formatacao_cpf(cpf);
 
     if (validar_cpf(cpf) == 0)
-    {
-        cpf = NULL;
-    }
-
+      cpf = NULL;
     return cpf;
 }
