@@ -4,7 +4,7 @@
 
 #pragma once
 
-short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep);
+short int verificar_se_existe_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep);
 
 LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info);
 

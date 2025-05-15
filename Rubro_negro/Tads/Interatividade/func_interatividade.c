@@ -44,12 +44,12 @@ short int percorrer_estado(LISTA_DUPLAMENTE *raiz_estado, char *cep)
     return retorno;
 }
 
-short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep)
+short int verificar_se_existe_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
 {
     short int retorno = 0;
 
-    if (raiz_estado != NULL && cep != NULL)
-        retorno = percorrer_estado(raiz_estado, cep);
+    if (lista_estado != NULL && cep != NULL)
+        retorno = percorrer_estado(lista_estado, cep);
 
     return retorno;
 }
@@ -74,7 +74,7 @@ RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char 
 
     if (cep != NULL && cidade != NULL)
     {
-        if (verificar_se_ja_existe_CEP(lista_estado, cep) == 0)
+        if (verificar_se_existe_CEP(lista_estado, cep) == 0)
         {
             DADOS aux;
             aux.CEP = cep;

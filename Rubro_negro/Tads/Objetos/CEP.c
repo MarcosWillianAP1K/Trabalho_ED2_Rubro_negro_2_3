@@ -79,6 +79,8 @@ char *digitar_CEP()
 {
     char *cep = digitar_string();
 
+    corrigir_espacos(&cep);
+
     cep = corrigir_formatacao_CEP(cep);
 
     return cep;

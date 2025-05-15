@@ -73,6 +73,8 @@ char *digitar_CPF()
 {
     char *cpf = digitar_string();
 
+    corrigir_espacos(&cpf);
+
     cpf = corrigir_formatacao_cpf(cpf);
 
     // if (validar_cpf(cpf) == 0)
