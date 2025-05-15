@@ -6,9 +6,9 @@
 
 short int verificar_se_ja_existe_CEP(LISTA_DUPLAMENTE *raiz_estado, char *cep);
 
-LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info, CIDADE *cidade_opcional, char *cep_opcional);
+LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info);
 
-RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, LISTA_DUPLAMENTE *lista_estado_opcional, char *cep_opcional);
+RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info);
 
 RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *cep);
 

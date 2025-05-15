@@ -75,7 +75,7 @@ char *digitar_CPF()
 
     cpf = corrigir_formatacao_cpf(cpf);
 
-    if (validar_cpf(cpf) == 0)
-      cpf = NULL;
+    // if (validar_cpf(cpf) == 0)
+    //   cpf = NULL;
     return cpf;
 }

@@ -86,45 +86,27 @@ RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char 
     return retorno;
 }
 
-RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info, LISTA_DUPLAMENTE *lista_estado_opcional, char *cep_opcional)
+RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info)
 {
     RUBRO_NEGRO *retorno = NULL;
 
     if (estado != NULL)
     {
-        RUBRO_NEGRO *no_cep = NULL;
-
-        if (cep_opcional != NULL)
-            no_cep = cadastrar_CEP(lista_estado_opcional, &info, cep_opcional);
-        
-
         DADOS aux;
         aux.cidade = info;
-
+        
         retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
-
-        if (no_cep != NULL && retorno == NULL)
-            liberar_no_rubro_negro(&no_cep, NULL);
     }
 
     return retorno;
 }
 
 // Pode inserir um estado ja inserindo uma cidade/Capital, Ideal quando se cadastrar o estado pela primeira vez.
-LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info, CIDADE *cidade_opcional, char *cep_opcional)
+LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info)
 {
     LISTA_DUPLAMENTE *retorno = NULL;
-    RUBRO_NEGRO *no_cidade = NULL;
-
-    if (cidade_opcional != NULL)
-        no_cidade = cadastrar_cidade(&info, *cidade_opcional, *lista_estado, cep_opcional);
 
     retorno = inserir_ordernado_duplamente(lista_estado, info);
-
-    if (cidade_opcional != NULL && retorno == NULL)
-        liberar_no_rubro_negro(&no_cidade, NULL);
-    //Libera apenas o no, não a informação.(no caso as alocações de string mantem)
-
 
     return retorno;
 }
@@ -333,6 +315,7 @@ void mostrar_cidades(RUBRO_NEGRO *raiz)
 
         print_amarelo("\n\n=================CEPS==================\n");
         mostrar_CEPs(raiz->info.cidade.raiz_arvore_CEPs);
+        printf("\n\n");
         mostrar_cidades(raiz->direita);
     }
 }
