@@ -594,6 +594,9 @@ void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(
     }
 }
 
+
+//===================MENUS===================
+
 void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas)
 {
     char opcao;
