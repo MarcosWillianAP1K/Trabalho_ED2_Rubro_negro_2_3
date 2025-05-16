@@ -270,7 +270,7 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
 {
     if (lista != NULL)
     {
-        printf("Procure o estado.\nnDigite o nome do estado: ");
+        printf("Procure o estado.\nDigite o nome do estado: ");
         char *nome_estado = digitar_string();
         corrigir_espacos(&nome_estado);
 
@@ -333,6 +333,33 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
     }
 }
 
+void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
+{
+    if (Raiz_pessoas != NULL)
+    {
+        printf("Digite o CPF da pessoa a ser removida: ");
+        char *cpf = digitar_CPF();
+
+        DATA data = criar_data(0,0,0);
+        PESSOA pessoa_a_remover = criar_pessoa(cpf, NULL, NULL, NULL, data);
+
+        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover) != NULL)
+        {
+            mensagem_sucesso("Pessoa removida com sucesso!");
+        }
+        else
+        {
+            mensagem_erro("CPF NAO ENCONTRADO!");
+        }
+
+        free(cpf);
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
+    }
+}
+
 void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas)
 {
     char opcao;
@@ -341,6 +368,7 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
     {
         limpar_tela();
         printf("===== MENU =====\n");
+        printf("(0) Sair\n");
         printf("(a) Cadastrar um Estado e seus respectivos dados.\n");
         printf("(b) Cadastrar uma Cidade e seus respectivos dados.\n");
         printf("(c) Cadastrar os CEPs de uma Cidade.\n");
@@ -385,8 +413,13 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             pausar_tela();
             break;
         case 'f':
-
+            remover_pessoa_interativo(Raiz_pessoas);
             break;
+
+        case '0':
+            print_verde("\nSaindo do programa...\n\n");
+            break;
+
         case '1':
             break;
         case '2':

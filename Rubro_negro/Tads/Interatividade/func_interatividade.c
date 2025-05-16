@@ -11,7 +11,7 @@
 
 void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
 {
-    if (raiz_cidade != NULL)
+    if (raiz_cidade != NULL && *raiz_cidade != NULL)
     {
         delete_cidade_CEP(&(*raiz_cidade)->esquerda);
         delete_cidade_CEP(&(*raiz_cidade)->direita);
@@ -19,6 +19,7 @@ void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
         RUBRO_NEGRO *raiz_cep = (*raiz_cidade)->info.cidade.raiz_arvore_CEPs;
         (*raiz_cidade)->info.cidade.raiz_arvore_CEPs = NULL;
 
+        printf("Liberando arvore rubro-negra de CEPs...\n");
         liberar_rubro_negro(&raiz_cep, liberar_dados_CEP);
 
         liberar_no_rubro_negro(raiz_cidade, liberar_dados_cidade);
@@ -27,7 +28,7 @@ void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
 
 void delete_estado(LISTA_DUPLAMENTE **lista_estado)
 {
-    if (lista_estado != NULL)
+    if (lista_estado != NULL && *lista_estado != NULL)
     {
         LISTA_DUPLAMENTE *aux = *lista_estado;
         LISTA_DUPLAMENTE *temp;
@@ -38,6 +39,7 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
             aux = aux->prox;
 
             RUBRO_NEGRO *raiz_cidade = temp->estado.raiz_arvore_cidade;
+            printf("Liberando arvore rubro-negra de cidades...\n");
             delete_cidade_CEP(&raiz_cidade);
             temp->estado.raiz_arvore_cidade = NULL;
             liberar_no_duplamente(&temp);
@@ -47,13 +49,16 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
 
 void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
 {
-    if (lista_estado != NULL)
+    if (lista_estado != NULL && *lista_estado != NULL)
     {
+        printf("Liberando lista de estados...\n");
         delete_estado(lista_estado);
+        *lista_estado = NULL;
     }
 
-    if (raiz_pessoa != NULL)
+    if (raiz_pessoa != NULL && *raiz_pessoa != NULL)
     {
+        printf("Liberando arvore rubro-negra de pessoas...\n");
         // Libera a árvore rubro-negra de pessoas
         liberar_rubro_negro(raiz_pessoa, liberar_dados_pessoa);
     }
@@ -123,10 +128,10 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(RUBRO_NEGRO *raiz_pessoa
             valor_comparacao = comparar_CEPs(raiz_pessoas->info.pessoa.CEP_atual, CEP);
 
         if (valor_comparacao != 0)
-            valor_comparacao = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->esquerda, CEP);
+            retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->esquerda, CEP);
 
-        if (valor_comparacao != 0)
-            valor_comparacao = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->direita, CEP);
+        if (valor_comparacao != 0 && retorno == 0)
+            retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->direita, CEP);
 
         if (valor_comparacao == 0)
             retorno = 1;
