@@ -4,6 +4,61 @@
 #include <stdlib.h>
 #include <string.h>
 
+//===============DELETE_ALL===============
+
+
+
+
+void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
+{
+    if (raiz_cidade != NULL)
+    {
+        delete_cidade_CEP(&(*raiz_cidade)->esquerda);
+        delete_cidade_CEP(&(*raiz_cidade)->direita);
+
+        RUBRO_NEGRO *raiz_cep = (*raiz_cidade)->info.cidade.raiz_arvore_CEPs;
+        (*raiz_cidade)->info.cidade.raiz_arvore_CEPs = NULL;
+
+        liberar_rubro_negro(&raiz_cep, liberar_dados_CEP);
+
+        liberar_no_rubro_negro(raiz_cidade, liberar_dados_cidade);
+    }
+}
+
+void delete_estado(LISTA_DUPLAMENTE **lista_estado)
+{
+    if (lista_estado != NULL)
+    {
+        LISTA_DUPLAMENTE *aux = *lista_estado;
+        LISTA_DUPLAMENTE *temp;
+
+        while (aux != NULL)
+        {
+            temp = aux;
+            aux = aux->prox;
+
+            RUBRO_NEGRO *raiz_cidade = temp->estado.raiz_arvore_cidade;
+            delete_cidade_CEP(&raiz_cidade);
+            temp->estado.raiz_arvore_cidade = NULL;
+            liberar_no_duplamente(&temp);
+        }
+    }
+}
+
+void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
+{
+    if (lista_estado != NULL)
+    {
+        delete_estado(lista_estado);
+    }
+
+    if (raiz_pessoa != NULL)
+    {
+        // Libera a árvore rubro-negra de pessoas
+        liberar_rubro_negro(raiz_pessoa, liberar_dados_pessoa);
+    }
+}
+
 //===============VERIFICAÇÕES===============
 
 short int pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, char *cep)
@@ -54,6 +109,32 @@ short int verificar_se_existe_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
     return retorno;
 }
 
+short int verificar_se_existe_pessoa_associada_a_um_CEP(RUBRO_NEGRO *raiz_pessoas, char *CEP)
+{
+    short int retorno = 0;
+
+    if (raiz_pessoas != NULL && CEP != NULL)
+    {
+        short int valor_comparacao;
+
+        valor_comparacao = comparar_CEPs(raiz_pessoas->info.pessoa.CEP_natal, CEP);
+
+        if (valor_comparacao != 0)
+            valor_comparacao = comparar_CEPs(raiz_pessoas->info.pessoa.CEP_atual, CEP);
+
+        if (valor_comparacao != 0)
+            valor_comparacao = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->esquerda, CEP);
+
+        if (valor_comparacao != 0)
+            valor_comparacao = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->direita, CEP);
+
+        if (valor_comparacao == 0)
+            retorno = 1;
+    }
+
+    return retorno;
+}
+
 //===============CADASTROS===============
 
 RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info)
@@ -93,7 +174,7 @@ RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info)
     {
         DADOS aux;
         aux.cidade = info;
-        
+
         retorno = inserir_rubro_negro_void(&estado->raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
     }
 
@@ -112,7 +193,7 @@ LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info)
 
 //===============REMOÇÕES===============
 
-RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep)
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -121,20 +202,20 @@ RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS,
         DADOS aux;
         aux.CEP = cep;
 
-        retorno = remover_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar);
+        retorno = remover_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar_dados_CEP);
     }
 
     return retorno;
 }
 
-RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS, DADOS))
+RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info)
 {
     RUBRO_NEGRO *retorno = NULL;
 
     DADOS aux;
     aux.pessoa = info;
 
-    retorno = remover_rubro_negro(raiz, aux, comparar);
+    retorno = remover_rubro_negro(raiz, aux, comparar_dados_CPF_pessoa);
 
     return retorno;
 }

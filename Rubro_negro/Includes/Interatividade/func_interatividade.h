@@ -4,7 +4,11 @@
 
 #pragma once
 
+void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa);
+
 short int verificar_se_existe_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep);
+
+short int verificar_se_existe_pessoa_associada_a_um_CEP(RUBRO_NEGRO *pessoas, char *CEP);
 
 LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **raiz, ESTADO info);
 
@@ -14,9 +18,9 @@ RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char 
 
 RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info);
 
-RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep, short int (*comparar)(DADOS , DADOS ));
+RUBRO_NEGRO *remover_CEP(CIDADE *cidade, char *cep);
 
-RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info, short int (*comparar)(DADOS , DADOS ));
+RUBRO_NEGRO *remover_pessoa(RUBRO_NEGRO **raiz, PESSOA info);
 
 LISTA_DUPLAMENTE *procurar_estado_mais_populoso(LISTA_DUPLAMENTE *lista_estado);
 

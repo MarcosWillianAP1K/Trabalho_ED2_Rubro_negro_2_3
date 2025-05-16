@@ -153,7 +153,7 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
         if (no_estado != NULL)
         {
 
-            printf("Procure o cidade.\nDigite o nome da cidade: ");
+            printf("Procure a cidade.\nDigite o nome da cidade: ");
             char *nome_cidade = digitar_string();
             corrigir_espacos(&nome_cidade);
 
@@ -221,7 +221,7 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
         {
             data_nascimento = digitar_data_nascimento();
             valida = validar_data_nascimento(data_nascimento);
-            
+
             if (valida != 1)
                 print_vermelho("Digite uma data valida!\n\n");
         }
@@ -259,6 +259,73 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
 
             liberar_pessoa(&pessoa);
         }
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+    }
+}
+
+void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
+{
+    if (lista != NULL)
+    {
+        printf("Procure o estado.\nnDigite o nome do estado: ");
+        char *nome_estado = digitar_string();
+        corrigir_espacos(&nome_estado);
+
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+        LISTA_DUPLAMENTE *no_estado = buscar_duplamente(lista, estado);
+
+        if (no_estado != NULL)
+        {
+
+            printf("Procure a cidade.\nDigite o nome da cidade: ");
+            char *nome_cidade = digitar_string();
+            corrigir_espacos(&nome_cidade);
+
+            DADOS buscar_cidade;
+            buscar_cidade.cidade = criar_cidade(nome_cidade, 0, NULL);
+            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
+
+            if (no_cidade != NULL)
+            {
+                printf("Digite o CEP a ser removido (xxxxx-xxx): ");
+                char *CEP = digitar_CEP();
+
+                if (verificar_se_existe_pessoa_associada_a_um_CEP(Raiz_pessoas, CEP) == 0)
+                {
+
+                    RUBRO_NEGRO *no_removido = remover_CEP(&no_cidade->info.cidade, CEP);
+
+                    if (no_removido != NULL)
+                    {
+                        mensagem_sucesso("CEP REMOVIDO COM SUCESSO!");
+                        liberar_no_rubro_negro(&no_removido, liberar_dados_CEP);
+                    }
+                    else
+                    {
+                        mensagem_erro("CEP NAO ENCONTRADO!");
+                    }
+                }
+                else
+                {
+                    mensagem_erro("HA PESSOAS ASSOCIADAS A ESSE CEP!");
+                }
+                liberar_CEP(&CEP);
+            }
+            else
+            {
+
+                mensagem_erro("CIDADE NAO ENCONTRADA!");
+            }
+            free(nome_cidade);
+        }
+        else
+        {
+            mensagem_erro("ESTADO NAO ENCONTRADA!");
+        }
+        free(nome_estado);
     }
     else
     {
@@ -314,7 +381,8 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             pausar_tela();
             break;
         case 'e':
-
+            remover_CEP_interativo(*Lista_estados, *Raiz_pessoas);
+            pausar_tela();
             break;
         case 'f':
 
