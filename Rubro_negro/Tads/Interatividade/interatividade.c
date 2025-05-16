@@ -3,6 +3,8 @@
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 #include "../../Includes/Interatividade/Interatividade.h"
 
+//=================CADASTROS E REMOÇÕES=================
+
 void cadastrar_estados_interativo(LISTA_DUPLAMENTE **lista)
 {
     // PARTE DO CADASTRO
@@ -340,7 +342,7 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
         printf("Digite o CPF da pessoa a ser removida: ");
         char *cpf = digitar_CPF();
 
-        DATA data = criar_data(0,0,0);
+        DATA data = criar_data(0, 0, 0);
         PESSOA pessoa_a_remover = criar_pessoa(cpf, NULL, NULL, NULL, data);
 
         if (remover_pessoa(Raiz_pessoas, pessoa_a_remover) != NULL)
@@ -356,6 +358,238 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
     }
     else
     {
+        mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
+    }
+}
+
+//================CONSULTAS================
+
+void qual_estado_mais_populoso(LISTA_DUPLAMENTE *Lista_estados)
+{
+    if (Lista_estados != NULL)
+    {
+        LISTA_DUPLAMENTE *estado = procurar_estado_mais_populoso(Lista_estados);
+        printf("O estado mais populoso eh: %s\nCom: %d habitantes\n", estado->estado.nome_estado, estado->estado.quantidade_populacao);
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+    }
+}
+
+void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
+{
+    if (Lista_estados != NULL)
+    {
+        printf("Digite o nome do estado: ");
+        char *nome_estado = digitar_string();
+        corrigir_espacos(&nome_estado);
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+        LISTA_DUPLAMENTE *no_estado = buscar_duplamente(Lista_estados, estado);
+
+        if (no_estado != NULL)
+        {
+            DADOS buscar_cidade;
+            buscar_cidade.cidade = criar_cidade(no_estado->estado.nome_capital, 0, NULL);
+
+            RUBRO_NEGRO *no_capital = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
+
+            if (no_capital != NULL)
+            {
+                printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
+            }
+            else
+            {
+                printf("Capital nao encontrada ou nao cadastrada para o estado %s\n\n", nome_estado);
+            }
+        }
+        free(nome_estado);
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+    }
+}
+
+void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *lista_estados)
+{
+    if (lista_estados != NULL)
+    {
+        printf("Digite o nome do estado: ");
+        char *nome_estado = digitar_string();
+        corrigir_espacos(&nome_estado);
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+        LISTA_DUPLAMENTE *no_estado = buscar_duplamente(lista_estados, estado);
+
+        if (no_estado != NULL)
+        {
+            RUBRO_NEGRO *no_cidade_mais_populosa = procurar_cidade_mais_populosa_sem_capital(no_estado->estado.raiz_arvore_cidade, no_estado->estado.nome_capital);
+
+            if (no_cidade_mais_populosa != NULL)
+            {
+                printf("A cidade mais populosa de %s eh: %s\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome);
+            }
+            else
+            {
+                printf("Cidade mais populosa nao encontrada para o estado %s\n\n", nome_estado);
+            }
+        }
+        else
+        {
+            printf("Estado nao encontrado\n\n");
+        }
+
+        free(nome_estado);
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+    }
+}
+
+void quantas_pessoas_nao_moram_na_cidade_natal(RUBRO_NEGRO *Raiz_pessoas)
+{
+    if (Raiz_pessoas != NULL)
+    {
+        printf("eh: %d\n", quant_de_pessoas_que_nao_mora_na_cidade_natal(Raiz_pessoas));
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
+    }
+}
+
+void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+{
+    if (Raiz_pessoas != NULL)
+    {
+        printf("Digite o CPF da pessoa (xxx.xxx.xxx-xx): ");
+        char *cpf = digitar_string();
+        corrigir_espacos(&cpf);
+
+        DATA data = criar_data(0, 0, 0);
+        DADOS busca_pessoa;
+        busca_pessoa.pessoa = criar_pessoa(cpf, NULL, NULL, NULL, data);
+        RUBRO_NEGRO *no_pessoa = buscar_rubro_negro(Raiz_pessoas, busca_pessoa, comparar_dados_CPF_pessoa);
+
+        if (no_pessoa != NULL)
+        {
+            RUBRO_NEGRO *no_cidade = procurar_cidade_por_CEP(Lista_estados, no_pessoa->info.pessoa.CEP_natal);
+
+            if (no_cidade != NULL)
+            {
+                printf("\nA cidade natal de %s eh: %s\n", no_pessoa->info.pessoa.nome, no_cidade->info.cidade.nome);
+            }
+            else
+            {
+                printf("\nCidade natal nao encontrada!\n");
+            }
+        }
+        else
+        {
+            printf("Pessoa nao encontrada!\n");
+        }
+
+        free(cpf);
+    }
+    else
+    {
+        mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
+    }
+}
+
+void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+{
+    if (Raiz_pessoas != NULL)
+    {
+        printf("Procurar .\nDigite o nome do estado: ");
+        char *nome_estado = digitar_string();
+        corrigir_espacos(&nome_estado);
+
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+
+        LISTA_DUPLAMENTE *no_estado = buscar_duplamente(Lista_estados, estado);
+
+        if (no_estado != NULL)
+        {
+            printf("Digite o nome da cidade: ");
+            char *nome_cidade = digitar_string();
+            corrigir_espacos(&nome_cidade);
+
+            CIDADE cidade = criar_cidade(nome_cidade, 0, NULL);
+            DADOS busca_cidade;
+            busca_cidade.cidade = cidade;
+
+            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
+
+            if (no_cidade != NULL)
+            {
+                printf("eh: %d\n", quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Raiz_pessoas, no_cidade->info.cidade));
+            }
+            else
+            {
+                printf("Cidade nao encontrada ou nao cadastrada!\n");
+            }
+
+            free(nome_cidade);
+        }
+        free(nome_estado);
+    }
+    else
+    {
+        if (Lista_estados == NULL)
+        {
+            mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+        }
+
+        mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
+    }
+}
+
+void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+{
+    if (Raiz_pessoas != NULL)
+    {
+        printf("Digite o nome do estado: ");
+        char *nome_estado = digitar_string();
+        corrigir_espacos(&nome_estado);
+
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+
+        LISTA_DUPLAMENTE *no_estado = buscar_duplamente(Lista_estados, estado);
+
+        if (no_estado != NULL)
+        {
+            printf("Digite o nome da cidade: ");
+            char *nome_cidade = digitar_string();
+            corrigir_espacos(&nome_cidade);
+
+            CIDADE cidade = criar_cidade(nome_cidade, 0, NULL);
+            DADOS busca_cidade;
+            busca_cidade.cidade = cidade;
+
+            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
+
+            if (no_cidade != NULL)
+            {
+                printf("eh: %d\n", quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Raiz_pessoas, no_cidade->info.cidade));
+            }
+            else
+            {
+                printf("Cidade nao encontrada ou nao cadastrada!\n");
+            }
+
+            free(nome_cidade);
+        }
+        free(nome_estado);
+    }
+    else
+    {
+        if (Lista_estados == NULL)
+        {
+            mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
+        }
+
         mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
     }
 }
@@ -421,19 +655,39 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             break;
 
         case '1':
+            print_amarelo("=================ESTADO MAIS POPULOSO==================\n\n");
+            qual_estado_mais_populoso(*Lista_estados);
+            pausar_tela();
             break;
         case '2':
-
+            print_amarelo("=================POPULACAO DA CAPITAL DE UM ESTADO==================\n\n");
+            qual_populacao_capital_de_um_estado(*Lista_estados);
+            pausar_tela();
             break;
         case '3':
+            print_amarelo("=================CIDADE MAIS POPULOSA SEM SER A CAPITAL==================\n\n");
+            qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(*Lista_estados);
+            pausar_tela();
             break;
         case '4':
+            print_amarelo("=================QUANTIDADE DE PESSOAS QUE NAO MORAM NA CIDADE NATAL==================\n\n");
+            quantas_pessoas_nao_moram_na_cidade_natal(*Raiz_pessoas);
+            pausar_tela();
             break;
         case '5':
+            print_amarelo("=================CIDADE NATAL DE UMA PESSOA==================\n\n");
+            qual_cidade_natal_de_uma_pessoa_dado_o_CEP(*Lista_estados, *Raiz_pessoas);
+            pausar_tela();
             break;
         case '6':
+            print_amarelo("=================QUANTIDADE DE PESSOAS NASCIDAS EM UMA CIDADE==================\n\n");
+            quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(*Lista_estados, *Raiz_pessoas);
+            pausar_tela();
             break;
         case '7':
+            print_amarelo("=================QUANTIDADE DE PESSOAS QUE MORAM EM UMA CIDADE==================\n\n");
+            quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(*Lista_estados, *Raiz_pessoas);
+            pausar_tela();
             break;
         case '8':
             mostrar_tudo(*Lista_estados, *Raiz_pessoas);
