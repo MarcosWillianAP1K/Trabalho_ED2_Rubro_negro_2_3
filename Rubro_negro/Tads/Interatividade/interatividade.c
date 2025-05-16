@@ -94,7 +94,7 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
             printf("Digite um CEP generico (xxxxx-xxx): ");
             char *cep_inicial = digitar_CEP();
 
-            CIDADE cidade = criar_cidade(nome_cidade, quant_populacao, cep_inicial);
+            CIDADE cidade = criar_cidade(nome_cidade, quant_populacao, NULL);
 
             RUBRO_NEGRO *no_cep = cadastrar_CEP(lista, &cidade, cep_inicial);
 
@@ -103,6 +103,8 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                 if (cadastrar_cidade(&no_estado->estado, cidade) != NULL)
                 {
                     mensagem_sucesso("Cidade cadastrada com sucesso!\n");
+                    no_estado->estado.quantidade_cidade++;
+                    no_estado->estado.quantidade_populacao += quant_populacao;
                 }
                 else
                 {
@@ -138,7 +140,7 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
 
 void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
 {
-    if (lista == NULL)
+    if (lista != NULL)
     {
 
         printf("Procure o estado.\nnDigite o nome do estado: ");
@@ -159,7 +161,7 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
             buscar_cidade.cidade = criar_cidade(nome_cidade, 0, NULL);
             RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
 
-            if (nome_cidade != NULL)
+            if (no_cidade != NULL)
             {
                 printf("Digite o CEP (xxxxx-xxx): ");
                 char *CEP = digitar_CEP();
@@ -195,7 +197,7 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
 
 void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pessoas)
 {
-    if (lista == NULL)
+    if (lista != NULL)
     {
 
         printf("Digite o nome da pessoa: ");
@@ -211,8 +213,18 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
         printf("Digite o CEP atual (xxxxx-xxx): ");
         char *cep_atual = digitar_CEP();
 
-        printf("Digite a data de nascimento da pessoa: ");
-        DATA data_nascimento = digitar_data_nascimento();
+        printf("Digite a data de nascimento da pessoa:\n");
+        DATA data_nascimento;
+        short int valida = 0;
+
+        while (valida == 0)
+        {
+            data_nascimento = digitar_data_nascimento();
+            valida = validar_data_nascimento(data_nascimento);
+            
+            if (valida != 1)
+                print_vermelho("Digite uma data valida!\n\n");
+        }
 
         PESSOA pessoa = criar_pessoa(cpf, nome, cep_natal, cep_atual, data_nascimento);
 
@@ -270,9 +282,9 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
         printf("(f) Remover uma Pessoa.\n");
         printf("\n===== Consultas =====\n");
         printf("(1) Qual o estado mais populoso?\n");
-        printf("(2) Qual a população da Capital de um determinado estado?\n");
+        printf("(2) Qual a populacaoo da Capital de um determinado estado?\n");
         printf("(3) Qual a cidade mais populosa de um estado sem ser a Capital?\n");
-        printf("(4) Quantas pessoas não moram na cidade natal?\n");
+        printf("(4) Quantas pessoas nao moram na cidade natal?\n");
         printf("(5) Qual cidade natal de uma pessoa dado o CEP da cidade?\n");
         printf("(6) Quantas pessoas nascidas em uma determinada cidade não moram na cidade natal?\n");
         printf("(7) Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?\n");

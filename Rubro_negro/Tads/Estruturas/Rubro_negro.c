@@ -228,6 +228,7 @@ RUBRO_NEGRO *inserir_rubro_negro_void(void **raiz, DADOS info, short int (*compa
 {
     RUBRO_NEGRO *retorno = NULL;
     RUBRO_NEGRO *arvore = *raiz;
+   
     retorno = inserir_rubro_negro(&arvore, info, comparar);
     *raiz = arvore;
 

@@ -78,7 +78,6 @@ RUBRO_NEGRO *cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char 
         {
             DADOS aux;
             aux.CEP = cep;
-
             retorno = inserir_rubro_negro_void(&cidade->raiz_arvore_CEPs, aux, comparar_dados_CEP);
         }
     }
@@ -353,7 +352,7 @@ void mostrar_tudo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
 
     if (raiz_pessoa != NULL)
     {
-        print_amarelo("=================PESSOAS==================");
+        print_amarelo("\n=================PESSOAS==================\n\n");
         mostrar_pessoas(raiz_pessoa);
         printf("\n\n");
     }
