@@ -43,9 +43,8 @@ void corrigir_formatacao_CEP(char **cep)
             if (isdigit((*cep)[i])) // Ignora o hífen
             {
                 if (numeros_inseridos == 5) // Adiciona o hífen na posição correta
-                {
                     strncat(cep_corrigido, "-", 1);
-                }
+                
 
                 strncat(cep_corrigido, &(*cep)[i], 1); // Adiciona o dígito ao CEP corrigido
                 numeros_inseridos++;                   // Incrementa o contador de números inseridos
@@ -57,16 +56,20 @@ void corrigir_formatacao_CEP(char **cep)
     }
 }
 
-int validar_CEP(char *cep)
+short int validar_CEP(char *cep)
 {
-    int valido = 0;
+    short int valido = 0;
     if (cep && strlen(cep) == 10 && cep[5] == '-')
     {
         valido = 1; // CEP deve ter 8 dígitos e um hífen na posição correta
         for (int i = 0; i < 9 && valido == 1; i++)
         {
-            if (i != 5 && !isdigit(cep[i]))
-                valido = 0; // CEP deve conter apenas dígitos e o hífen na formatação correta
+            if (i == 5 && cep[i] == '-')
+                valido = 1; // Hífen na posição correta
+            else if (isdigit(cep[i]))
+                valido = 1; // Verifica se é dígito
+            else
+                valido = 0; // Não é dígito
         }
     }
 
@@ -75,12 +78,24 @@ int validar_CEP(char *cep)
 
 char *digitar_CEP()
 {
-    char *cep = digitar_string();
+    char *cep = NULL;
+    short int valido = 0;
 
-    corrigir_espacos(&cep);
+    while (valido == 0)
+    {
+        cep = digitar_string();
+        corrigir_formatacao_CEP(&cep);
 
-    corrigir_formatacao_CEP(&cep);
+        valido = validar_CEP(cep);
 
+        if (valido == 0)
+        {
+            free(cep); // Libera a memória alocada para o CEP inválido
+            cep = NULL;
+            mensagem_erro("CEP invalido.");
+            printf("Digite novamente: ");
+        }
+    }
     return cep;
 }
 

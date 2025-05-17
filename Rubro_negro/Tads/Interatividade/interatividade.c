@@ -467,7 +467,6 @@ void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados,
         printf("Digite o CPF da pessoa (xxx.xxx.xxx-xx): ");
         char *cpf = digitar_CPF();
 
-        printf("CPF: %s\n", cpf);
 
         DATA data = criar_data(0, 0, 0);
         DADOS busca_pessoa;
@@ -620,8 +619,8 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
         printf("(3) Qual a cidade mais populosa de um estado sem ser a Capital?\n");
         printf("(4) Quantas pessoas nao moram na cidade natal?\n");
         printf("(5) Qual cidade natal de uma pessoa dado o CEP da cidade?\n");
-        printf("(6) Quantas pessoas nascidas em uma determinada cidade não moram na cidade natal?\n");
-        printf("(7) Quantas pessoas que moram em uma determinada cidade não nasceram na cidade?\n");
+        printf("(6) Quantas pessoas nascidas em uma determinada cidade nao moram na cidade natal?\n");
+        printf("(7) Quantas pessoas que moram em uma determinada cidade nao nasceram na cidade?\n");
         printf("(8) Mostrar tudo\n");
         printf("\nEscolha uma opcao: ");
 

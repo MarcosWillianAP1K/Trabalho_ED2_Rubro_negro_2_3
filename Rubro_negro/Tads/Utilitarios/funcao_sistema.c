@@ -105,7 +105,6 @@ char *digitar_string()
 
             if (fgets(nome + tam, ((TAM_PADRAO * cont) * sizeof(char)) - tam, stdin) == NULL)
             {
-                // xiu
                 break;
             }
 

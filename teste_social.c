@@ -1,35 +1,287 @@
+
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 
-
-int *alocar_int( int valor )
+void limpar_buffer()
 {
-    int *p = (int *)malloc(sizeof(int));
-    if (p == NULL)
+#ifdef _WIN32
+    fflush(stdin); // Para Windows
+#else
+    char c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ; // Para Linux e MacOS
+#endif
+}
+
+void limpar_tela()
+{
+#ifdef _WIN32
+    system("cls"); // Para Windows
+#else
+    system("clear"); // Para Linux e MacOS
+#endif
+}
+
+void pausar_tela()
+{
+#ifdef _WIN32
+    printf("\n");
+    system("pause"); // Para Windows
+#else
+    printf("\nPressione qualquer tecla para continuar...");
+    getchar(); // Para Linux e MacOS
+#endif
+}
+
+void print_amarelo(char *mensagem)
+{
+    printf("\033[1;33m%s\033[0m", mensagem);
+}
+
+void print_vermelho(char *mensagem)
+{
+    printf("\033[1;31m%s\033[0m", mensagem);
+}
+
+void print_verde(char *mensagem)
+{
+    printf("\033[1;32m%s\033[0m", mensagem);
+}
+
+void mensagem_erro(char *mensagem)
+{
+    print_vermelho("\nERROR: ");
+    print_vermelho(mensagem);
+    printf("\n\n");
+}
+
+void mensagem_sucesso(char *mensagem)
+{
+    print_verde("\nSUCESSO: ");
+    print_verde(mensagem);
+    printf("\n\n");
+}
+
+void verificar_alocacao(void *ponteiro)
+{
+    if (ponteiro == NULL)
     {
-        printf("Memory allocation failed\n");
+        mensagem_erro("Erro ao alocar memoria");
         exit(1);
     }
-    *p = valor;
-    return p;
+}
+
+void verificar_realocacao(void *ponteiro)
+{
+    if (ponteiro == NULL)
+    {
+        mensagem_erro("Erro ao realocar memoria");
+        exit(1);
+    }
+}
+
+char *digitar_string()
+{
+    limpar_buffer();
+#define TAM_PADRAO 20
+
+    int tam, cont = 0;
+    char *nome = (char *)malloc(TAM_PADRAO * sizeof(char));
+
+    if (fgets(nome, TAM_PADRAO * sizeof(char), stdin) != NULL)
+    {
+
+        tam = strlen(nome);
+
+        while (nome[tam - 1] != '\n')
+        {
+            cont++;
+            char *temp = (char *)realloc(nome, (TAM_PADRAO * cont) * sizeof(char));
+
+            verificar_realocacao(temp);
+
+            nome = temp;
+
+            if (fgets(nome + tam, ((TAM_PADRAO * cont) * sizeof(char)) - tam, stdin) == NULL)
+            {
+                break;
+            }
+
+            tam = strlen(nome);
+        }
+    }
+
+    tam = strlen(nome);
+
+    if (nome[tam - 1] == '\n')
+    {
+        nome[tam - 1] = '\0';
+    }
+
+    limpar_buffer();
+
+    return nome;
+}
+
+short int digitar_short_int()
+{
+    short int numero = 0;
+
+    while (scanf("%hd", &numero) != 1 || numero < 0)
+    {
+        mensagem_erro("Numero invalido ");
+        limpar_buffer();
+        printf("Digite novamente: ");
+    }
+
+    return numero;
+}
+
+char digitar_um_caracter()
+{
+    char c;
+    scanf("%c", &c);
+    limpar_buffer();
+
+    return c;
+}
+
+void corrigir_espacos(char **str)
+{
+    if (str != NULL && *str != NULL)
+    {
+        // Remover espaços à esquerda
+        char *inicio = *str;
+        while (*inicio == ' ')
+            inicio++;
+
+        // Remover espaços à direita
+        char *fim = inicio + strlen(inicio) - 1;
+        while (fim > inicio && *fim == ' ')
+            fim--;
+
+        *(fim + 1) = '\0';
+
+        // Verificar se há necessidade de alocar nova string
+        if (inicio != *str || *(fim + 1) != '\0')
+        {
+            char *corrigida = NULL;
+            // Realocar a string corrigida
+            corrigida = (char *)malloc((strlen(inicio) + 1) * sizeof(char));
+            verificar_alocacao(corrigida);
+            strcpy(corrigida, inicio);
+            free(*str); // Liberar a string original, se necessário
+            *str = corrigida;
+        }
+    }
+}
+
+
+
+
+
+
+//==============TESTES=========================
+
+
+
+
+void corrigir_formatacao_cpf(char **cpf)
+{
+    if (cpf != NULL && *cpf != NULL)
+    {
+        char *cpf_corrigido = (char *)malloc(15 * sizeof(char)); // 11 dígitos + 3 pontos + 1 terminador
+        verificar_alocacao(cpf_corrigido);                       // Verifica se a alocação foi bem-sucedida
+
+        cpf_corrigido[0] = '\0';
+
+        short int tamanho = strlen(*cpf);
+        int numeros_inseridos = 0; // Contador de números inseridos
+        // Extrai apenas os dígitos
+        for (int i = 0; i < tamanho && numeros_inseridos < 11; i++)
+        {
+            if (isdigit((*cpf)[i])) // Ignora os pontos e o traço
+            {
+                // Adiciona o ponto após o 3º, 6º e 9º dígito
+                if (numeros_inseridos == 3 || numeros_inseridos == 6)
+                    strcat(cpf_corrigido, ".");
+
+                if (numeros_inseridos == 9)
+                    strcat(cpf_corrigido, "-");
+                
+                strncat(cpf_corrigido, &(*cpf)[i], 1); // Adiciona o dígito ao CPF corrigido
+                numeros_inseridos++;                // Incrementa o contador de números inseridos
+            }
+        }
+
+        free(*cpf);           // Libera o CPF original
+        *cpf = cpf_corrigido; // Atualiza o ponteiro para o CPF corrigido
+    }
+}
+
+short int validar_cpf(char *cpf)
+{
+    short int valido = 0;
+    if (cpf != NULL && strlen(cpf) == 14)
+    {
+        valido = 1; // CPF deve ter 14 caracteres (formato xxx.xxx.xxx-xx)
+
+        for (int i = 0; i < 14 && valido == 1; i++)
+        {
+            if(((i == 3 || i == 7) && cpf[i] == '.'))
+                valido = 1; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
+            else if (i == 11 && cpf[i] == '-')
+                valido = 1;
+            else if (isdigit(cpf[i]))
+                valido = 1;
+            else
+                valido = 0;
+
+        }
+    }
+
+    return valido;
+}
+
+char *digitar_CPF()
+{
+    char *cpf = NULL;
+    short int valido = 0;
+
+    while (valido == 0)
+    {
+        cpf = digitar_string();
+        printf("CPF digitado: %s\nTamanho: %d\n", cpf, strlen(cpf));
+        corrigir_formatacao_cpf(&cpf);
+        printf("\nCPF corrigido: %s\nTamanho: %d\n", cpf, strlen(cpf));
+
+        valido = validar_cpf(cpf);
+
+        if (valido == 0)
+        {
+            free(cpf); // Libera a memória alocada para o CPF inválido
+            cpf = NULL;
+            mensagem_erro("CPF invalido.");
+            printf("Digite novamente: ");
+        }
+            
+    }
+    return cpf;
 }
 
 
 int main()
 {
 
-    int *ponteiro = alocar_int(10);
-    int var = *ponteiro;
+    char *cpf = digitar_CPF();
 
-    free(ponteiro); // Free the allocated memory
+    printf("CPF digitado: %s\n", cpf);
 
-
-    printf("Valor alocado: %d\n", var);
-    printf("Endereco de memoria: %p\n", (void *)&(*ponteiro));
-    printf("Endereco de memoria: %p\n", (void *)&var);
-
-
+    free(cpf); // Libera a memória alocada para o CPF
 
     return 0;
 }

@@ -35,8 +35,11 @@ void corrigir_formatacao_cpf(char **cpf)
             if (isdigit((*cpf)[i])) // Ignora os pontos e o traço
             {
                 // Adiciona o ponto após o 3º, 6º e 9º dígito
-                if (numeros_inseridos == 3 || numeros_inseridos == 6 || numeros_inseridos == 9)
+                if (numeros_inseridos == 3 || numeros_inseridos == 6 )
                     strcat(cpf_corrigido, ".");
+
+                if (numeros_inseridos == 9)
+                    strcat(cpf_corrigido, "-");
                 
                 strncat(cpf_corrigido, &(*cpf)[i], 1); // Adiciona o dígito ao CPF corrigido
                 numeros_inseridos++;                // Incrementa o contador de números inseridos
@@ -48,18 +51,24 @@ void corrigir_formatacao_cpf(char **cpf)
     }
 }
 
-int validar_cpf(char *cpf)
+short int validar_cpf(char *cpf)
 {
-    int valido = 0;
-    if (cpf != NULL && strlen(cpf) == 11)
+    short int valido = 0;
+    if (cpf != NULL && strlen(cpf) == 14)
     {
-        valido = 1; // CPF deve ter 11 dígitos
+        valido = 1; // CPF deve ter 14 caracteres (formato xxx.xxx.xxx-xx)
 
-        for (int i = 0; i < 11 && valido == 1; i++)
+        for (int i = 0; i < 14 && valido == 1; i++)
         {
-            if (!isdigit(cpf[i]) || ((i == 3 || i == 7) && cpf[i] != '.') || (i == 11 && cpf[i] != '-'))
-              valido = 0; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
-            
+            if(((i == 3 || i == 7) && cpf[i] == '.'))
+                valido = 1; // CPF deve conter apenas dígitos, pontos e traço na formatação correta
+            else if (i == 11 && cpf[i] == '-')
+                valido = 1;
+            else if (isdigit(cpf[i]))
+                valido = 1;
+            else
+                valido = 0;
+
         }
     }
 
@@ -68,13 +77,24 @@ int validar_cpf(char *cpf)
 
 char *digitar_CPF()
 {
-    char *cpf = digitar_string();
+    char *cpf = NULL;
+    short int valido = 0;
 
-    // corrigir_espacos(&cpf);
+    while (valido == 0)
+    {
+        cpf = digitar_string();
+        corrigir_formatacao_cpf(&cpf);
 
-    corrigir_formatacao_cpf(&cpf);
+        valido = validar_cpf(cpf);
 
-    // if (validar_cpf(cpf) == 0)
-    //   cpf = NULL;
+        if (valido == 0)
+        {
+            free(cpf); // Libera a memória alocada para o CPF inválido
+            cpf = NULL;
+            mensagem_erro("CPF invalido.");
+            printf("Digite novamente: ");
+        }
+            
+    }
     return cpf;
 }
