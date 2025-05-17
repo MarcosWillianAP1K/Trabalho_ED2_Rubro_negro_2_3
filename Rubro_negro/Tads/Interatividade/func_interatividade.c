@@ -292,7 +292,7 @@ int quant_de_pessoas_que_nao_mora_na_cidade_natal(RUBRO_NEGRO *raiz_pessoa)
 
     if (raiz_pessoa != NULL)
     {
-        if (comparar_CEPs(raiz_pessoa->info.pessoa.CEP_atual, raiz_pessoa->info.pessoa.CEP_natal) == 0)
+        if (comparar_CEPs(raiz_pessoa->info.pessoa.CEP_atual, raiz_pessoa->info.pessoa.CEP_natal) != 0)
             quantidade++;
 
         quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda);
@@ -423,6 +423,7 @@ void mostrar_pessoas(RUBRO_NEGRO *raiz)
     {
         mostrar_pessoas(raiz->esquerda);
         imprimir_pessoa(raiz->info.pessoa);
+        printf("\n");
         mostrar_pessoas(raiz->direita);
     }
 }

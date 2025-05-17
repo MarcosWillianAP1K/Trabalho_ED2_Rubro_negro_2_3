@@ -21,7 +21,6 @@ void cadastrar_estados_interativo(LISTA_DUPLAMENTE **lista)
 
     printf("Digite um CEP generico da capital (xxxxx-xxx): ");
     char *cep_inicial = digitar_CEP();
-    corrigir_espacos(&cep_inicial);
 
     // Criação das variaveis para cadastros
     ESTADO estado = criar_estado(nome_estado, nome_capital, quant_populacao, 0, NULL);
@@ -389,10 +388,7 @@ void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
 
         if (no_estado != NULL)
         {
-            DADOS buscar_cidade;
-            buscar_cidade.cidade = criar_cidade(no_estado->estado.nome_capital, 0, NULL);
-
-            RUBRO_NEGRO *no_capital = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
+            RUBRO_NEGRO *no_capital = procurar_capital_de_um_estado(no_estado->estado);
 
             if (no_capital != NULL)
             {
@@ -403,6 +399,11 @@ void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
                 printf("Capital nao encontrada ou nao cadastrada para o estado %s\n\n", nome_estado);
             }
         }
+        else
+        {
+            mensagem_erro("ESTADO NAO ENCONTRADA!");
+        }
+
         free(nome_estado);
     }
     else
@@ -427,7 +428,7 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
 
             if (no_cidade_mais_populosa != NULL)
             {
-                printf("A cidade mais populosa de %s eh: %s\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome);
+                printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
             }
             else
             {
@@ -464,8 +465,9 @@ void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados,
     if (Raiz_pessoas != NULL)
     {
         printf("Digite o CPF da pessoa (xxx.xxx.xxx-xx): ");
-        char *cpf = digitar_string();
-        corrigir_espacos(&cpf);
+        char *cpf = digitar_CPF();
+
+        printf("CPF: %s\n", cpf);
 
         DATA data = criar_data(0, 0, 0);
         DADOS busca_pessoa;
@@ -482,12 +484,12 @@ void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados,
             }
             else
             {
-                printf("\nCidade natal nao encontrada!\n");
+                mensagem_erro("CIDADE NATAL NAO ENCONTRADA!");
             }
         }
         else
         {
-            printf("Pessoa nao encontrada!\n");
+            mensagem_erro("PESSOA NAO ENCONTRADA!");
         }
 
         free(cpf);

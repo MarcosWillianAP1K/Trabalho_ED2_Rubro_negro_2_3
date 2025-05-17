@@ -26,36 +26,35 @@ void liberar_CEP(char **cep)
     }
 }
 
-char *corrigir_formatacao_CEP(char *cep)
+void corrigir_formatacao_CEP(char **cep)
 {
-    if (cep != NULL)
+    if (cep != NULL && *cep != NULL)
     {
         char *cep_corrigido = (char *)malloc(10 * sizeof(char)); // 8 dígitos + 1 hífen + 1 terminador
         verificar_alocacao(cep_corrigido);                       // Verifica se a alocação foi bem-sucedida
 
         cep_corrigido[0] = '\0';
 
-        short int tamanho = strlen(cep);
+        short int tamanho = strlen(*cep);
         int numeros_inseridos = 0; // Contador de números inseridos
         // Extrai apenas os dígitos
         for (int i = 0; i < tamanho && numeros_inseridos < 8; i++)
         {
-            if (isdigit(cep[i]) && i != 5) // Ignora o hífen
+            if (isdigit((*cep)[i])) // Ignora o hífen
             {
-                strncat(cep_corrigido, &cep[i], 1); // Adiciona o dígito ao CEP corrigido
-                numeros_inseridos++;                // Incrementa o contador de números inseridos
-            }
-            else if (i == 5) // Adiciona o hífen na posição correta
-            {
-                strncat(cep_corrigido, "-", 1);
+                if (numeros_inseridos == 5) // Adiciona o hífen na posição correta
+                {
+                    strncat(cep_corrigido, "-", 1);
+                }
+
+                strncat(cep_corrigido, &(*cep)[i], 1); // Adiciona o dígito ao CEP corrigido
+                numeros_inseridos++;                   // Incrementa o contador de números inseridos
             }
         }
 
-        free(cep);           // Libera o CEP original
-        cep = cep_corrigido; // Atualiza o ponteiro para o CEP corrigido
+        free(*cep);           // Libera o CEP original
+        *cep = cep_corrigido; // Atualiza o ponteiro para o CEP corrigido
     }
-
-    return cep;
 }
 
 int validar_CEP(char *cep)
@@ -67,8 +66,7 @@ int validar_CEP(char *cep)
         for (int i = 0; i < 9 && valido == 1; i++)
         {
             if (i != 5 && !isdigit(cep[i]))
-              valido = 0; // CEP deve conter apenas dígitos e o hífen na formatação correta
-            
+                valido = 0; // CEP deve conter apenas dígitos e o hífen na formatação correta
         }
     }
 
@@ -81,7 +79,7 @@ char *digitar_CEP()
 
     corrigir_espacos(&cep);
 
-    cep = corrigir_formatacao_CEP(cep);
+    corrigir_formatacao_CEP(&cep);
 
     return cep;
 }
@@ -91,12 +89,11 @@ short int comparar_CEPs(char *cep1, char *cep2)
     short int resultado = 0;
 
     if (cep1 != NULL && cep2 != NULL)
-      resultado = strcmp(cep1, cep2);
+        resultado = strcmp(cep1, cep2);
     else if (cep1 == NULL && cep2 != NULL)
-           resultado = -1; // cep1 é menor que cep2
+        resultado = -1; // cep1 é menor que cep2
     else if (cep1 != NULL && cep2 == NULL)
-           resultado = 1; // cep1 é maior que cep2
-    
-    
+        resultado = 1; // cep1 é maior que cep2
+
     return resultado;
 }

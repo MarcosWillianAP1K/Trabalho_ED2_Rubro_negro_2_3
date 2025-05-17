@@ -8,6 +8,7 @@ int main()
 
     if (compilador == 0)
     {
+        
         system("main.exe");
     }
 }

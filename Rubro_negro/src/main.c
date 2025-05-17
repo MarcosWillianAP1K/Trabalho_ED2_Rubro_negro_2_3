@@ -11,7 +11,7 @@ int main()
     RUBRO_NEGRO *Raiz_pessoas = NULL;
     LISTA_DUPLAMENTE *Lista_estados = NULL;
 
-    povoar_sistema(&Lista_estados, &Raiz_pessoas, 5, 3, 2, 10);
+    povoar_sistema(&Lista_estados, &Raiz_pessoas, 3, 3, 3, 3);
 
     pausar_tela();
 

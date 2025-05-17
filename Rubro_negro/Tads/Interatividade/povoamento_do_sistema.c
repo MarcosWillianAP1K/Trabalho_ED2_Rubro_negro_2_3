@@ -14,10 +14,21 @@
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 #include "../../Includes/Interatividade/povoamento_do_sistema.h"
 
+short int contador_de_digitos(int numero)
+{
+    short int contador = 0;
+    do
+    {
+        contador++;
+        numero /= 10;
+    } while (numero != 0);
+    return contador;
+}
+
 // Funcoes auxiliares basicas
 char *gerar_nome_estado(int numero)
 {
-    char *nome = (char *)malloc(20 * sizeof(char));
+    char *nome = (char *)malloc((6 + contador_de_digitos(numero) + 1) * sizeof(char));
     if (nome == NULL)
         return NULL;
     sprintf(nome, "Estado%d", numero);
@@ -26,7 +37,7 @@ char *gerar_nome_estado(int numero)
 
 char *gerar_nome_capital(int numero)
 {
-    char *nome = (char *)malloc(20 * sizeof(char));
+    char *nome = (char *)malloc((7 + contador_de_digitos(numero) + 1) * sizeof(char));
     if (nome == NULL)
         return NULL;
     sprintf(nome, "Capital%d", numero);
@@ -35,7 +46,7 @@ char *gerar_nome_capital(int numero)
 
 char *gerar_nome_cidade(int numero_estado, int numero_cidade)
 {
-    char *nome = (char *)malloc(20 * sizeof(char));
+    char *nome = (char *)malloc((7 + contador_de_digitos(numero_estado) + contador_de_digitos(numero_cidade) + 1) * sizeof(char));
     if (nome == NULL)
         return NULL;
     sprintf(nome, "Cidade%d.%d", numero_estado, numero_cidade);
@@ -44,14 +55,12 @@ char *gerar_nome_cidade(int numero_estado, int numero_cidade)
 
 char *gerar_cep(int numero_estado, int numero_cep)
 {
-    char *cep = (char *)malloc(10 * sizeof(char));
+    char *cep = (char *)malloc((11) * sizeof(char));
     if (cep == NULL)
         return NULL;
-    sprintf(cep, "%d%d%d%d%d-%03d",
-            numero_estado, numero_estado, numero_estado, numero_estado, numero_estado,
-            numero_cep);
+    sprintf(cep, "%05d-%03d", numero_estado, numero_cep);
 
-    corrigir_formatacao_CEP(cep);
+    corrigir_formatacao_CEP(&cep);
     return cep;
 }
 
@@ -69,7 +78,7 @@ char *gerar_cpf(int numero_pessoa)
 
     sprintf(cpf, "%d.%d.%d-%d", x, y, z, w);
 
-    corrigir_formatacao_cpf(cpf);
+    corrigir_formatacao_cpf(&cpf);
     return cpf;
 }
 
@@ -136,37 +145,29 @@ short int povoar_estados(LISTA_DUPLAMENTE **lista_estados, int quantidade)
     for (int i = 1; i <= quantidade; i++)
     {
         char *nome_estado = gerar_nome_estado(i);
-        char *nome_capital = gerar_nome_capital(i);
 
-        if (nome_estado == NULL || nome_capital == NULL)
+        if (nome_estado == NULL)
         {
-            if (nome_estado)
-                free(nome_estado);
-            if (nome_capital)
-                free(nome_capital);
             sucesso = 0;
+            free(nome_estado);
             continue;
         }
 
-        // Valores arbitrarios para municipios e populacao
-        int municipios = 50 + (i * 10);
-        int populacao = 1000000 + (i * 500000);
+        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
+        LISTA_DUPLAMENTE *no_estado = cadastrar_estado(lista_estados, estado);
 
-        ESTADO estado = criar_estado(nome_estado, nome_capital, municipios, populacao, NULL);
-        LISTA_DUPLAMENTE *estado_node = cadastrar_estado(lista_estados, estado);
-
-        if (estado_node != NULL)
+        if (no_estado != NULL)
         {
             printf("Estado %s cadastrado com sucesso!\n", nome_estado);
         }
         else
         {
             printf("Falha ao cadastrar estado %s!\n", nome_estado);
+
+            free(nome_estado);
+
             sucesso = 0;
         }
-
-        free(nome_estado);
-        free(nome_capital);
     }
 
     return sucesso;
@@ -189,27 +190,35 @@ short int povoar_cidades(LISTA_DUPLAMENTE *lista_estados, int cidades_por_estado
 
             if (nome_cidade == NULL)
             {
+                free(nome_cidade);
                 sucesso = 0;
                 continue;
             }
 
             // Populacao arbitraria
-            int populacao = 50000 + (i * 10000) + (contador_estado * 5000);
+            int populacao = (i * 10) * contador_estado;
 
             CIDADE cidade = criar_cidade(nome_cidade, populacao, NULL);
-            RUBRO_NEGRO *cidade_node = cadastrar_cidade(&atual->estado, cidade);
+            RUBRO_NEGRO *no_cidade = cadastrar_cidade(&atual->estado, cidade);
 
-            if (cidade_node != NULL)
+            if (i == 1)
+            {
+                // Se for a primeira cidade, podemos definir como capital
+                atual->estado.nome_capital = nome_cidade;
+            }
+
+            if (no_cidade != NULL)
             {
                 printf("Cidade %s cadastrada com sucesso no Estado%d!\n", nome_cidade, contador_estado);
+                atual->estado.quantidade_cidade++;
+                atual->estado.quantidade_populacao += populacao;
             }
             else
             {
                 printf("Falha ao cadastrar cidade %s no Estado%d!\n", nome_cidade, contador_estado);
+                free(nome_cidade);
                 sucesso = 0;
             }
-
-            free(nome_cidade);
         }
 
         atual = atual->prox;
@@ -219,21 +228,26 @@ short int povoar_cidades(LISTA_DUPLAMENTE *lista_estados, int cidades_por_estado
     return sucesso;
 }
 
-short int povoar_ceps_cidade(LISTA_DUPLAMENTE *estado, RUBRO_NEGRO *cidade_node, int numero_estado, int ceps_por_cidade)
+short int povoar_ceps_cidade(LISTA_DUPLAMENTE *estado, RUBRO_NEGRO *cidade_node, int numero_estado, int ceps_por_cidade, int *cont)
 {
     if (cidade_node == NULL)
-        return 0;
+        return 1; // Base case - success (there's no error in having no node)
 
     short int sucesso = 1; // Começamos considerando sucesso
+
+    if (!povoar_ceps_cidade(estado, cidade_node->esquerda, numero_estado, ceps_por_cidade, cont))
+        sucesso = 0;
 
     // Adicionar CEPs à cidade atual
     for (int i = 1; i <= ceps_por_cidade; i++)
     {
-        char *cep = gerar_cep(numero_estado, i);
+        char *cep = gerar_cep(numero_estado, *cont);
+        (*cont)++;
 
         if (cep == NULL)
         {
             sucesso = 0;
+            free(cep);
             continue;
         }
 
@@ -241,24 +255,20 @@ short int povoar_ceps_cidade(LISTA_DUPLAMENTE *estado, RUBRO_NEGRO *cidade_node,
 
         if (cep_node != NULL)
         {
-            printf("CEP %s cadastrado com sucesso em %s!\n",
-                   cep, cidade_node->info.cidade.nome);
+            printf("CEP %s cadastrado com sucesso em %s!\n", cep, cidade_node->info.cidade.nome);
         }
         else
         {
-            printf("Falha ao cadastrar CEP %s em %s!\n",
-                   cep, cidade_node->info.cidade.nome);
+            printf("Falha ao cadastrar CEP %s em %s!\n", cep, cidade_node->info.cidade.nome);
+            free(cep);
             sucesso = 0; // Marcar falha se não conseguir cadastrar um CEP
         }
-
-        free(cep);
     }
 
     // Percorrer outras cidades (pre-ordem)
     // Se falhar em qualquer recursão, propaga falha
-    if (!povoar_ceps_cidade(estado, cidade_node->esquerda, numero_estado, ceps_por_cidade))
-        sucesso = 0;
-    if (!povoar_ceps_cidade(estado, cidade_node->direita, numero_estado, ceps_por_cidade))
+
+    if (!povoar_ceps_cidade(estado, cidade_node->direita, numero_estado, ceps_por_cidade, cont))
         sucesso = 0;
 
     return sucesso;
@@ -279,7 +289,8 @@ short int povoar_ceps(LISTA_DUPLAMENTE *lista_estados, int ceps_por_cidade)
 
         // Percorrer cidades em pre-ordem (simplificacao)
         // Se falhar em qualquer estado, marcamos falha mas continuamos para os outros
-        if (!povoar_ceps_cidade(estado_atual, cidade_atual, contador_estado, ceps_por_cidade))
+        int contador_cep = 1;
+        if (!povoar_ceps_cidade(estado_atual, cidade_atual, contador_estado, ceps_por_cidade, &contador_cep))
             sucesso = 0;
 
         estado_atual = estado_atual->prox;
@@ -345,7 +356,7 @@ short int povoar_pessoas(RUBRO_NEGRO **raiz_pessoas, LISTA_DUPLAMENTE *lista_est
         int ano = 1950 + (i % 50);
         DATA data = criar_data(dia, mes, ano);
 
-        PESSOA pessoa = criar_pessoa(cpf, nome, ceps_disponiveis[idx_res], ceps_disponiveis[idx_nasc], data);
+        PESSOA pessoa = criar_pessoa(cpf, nome, strdup(ceps_disponiveis[idx_res]), strdup(ceps_disponiveis[idx_nasc]), data);
         RUBRO_NEGRO *pessoa_node = cadastrar_pessoa(raiz_pessoas, pessoa);
 
         if (pessoa_node != NULL)
@@ -355,11 +366,10 @@ short int povoar_pessoas(RUBRO_NEGRO **raiz_pessoas, LISTA_DUPLAMENTE *lista_est
         else
         {
             printf("Falha ao cadastrar pessoa %s com CPF %s!\n", nome, cpf);
+            free(nome);
+            free(cpf);
             sucesso = 0; // Marcar falha se não conseguir cadastrar uma pessoa
         }
-
-        free(nome);
-        free(cpf);
     }
 
     // Liberar memoria dos CEPs
