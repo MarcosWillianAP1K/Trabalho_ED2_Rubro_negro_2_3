@@ -11,7 +11,9 @@ int main()
     RUBRO_NEGRO *Raiz_pessoas = NULL;
     LISTA_DUPLAMENTE *Lista_estados = NULL;
 
-    povoar_sistema(&Lista_estados, &Raiz_pessoas, 3, 3, 3, 3);
+    //Povoar_sistema esta com problemas na hora de liberar a memoria, mas o problema esta no cadastro dele.
+    //Porem como foi feito para apenas testes das consultas sera apenas ignorado, o problema deve ser em alguma alocação dos char *.
+    // povoar_sistema(&Lista_estados, &Raiz_pessoas, 5, 5, 5, 5);
 
     pausar_tela();
 

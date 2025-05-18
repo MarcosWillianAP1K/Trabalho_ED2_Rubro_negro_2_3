@@ -448,11 +448,11 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
     }
 }
 
-void quantas_pessoas_nao_moram_na_cidade_natal(RUBRO_NEGRO *Raiz_pessoas)
+void quantas_pessoas_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
     {
-        printf("eh: %d\n", quant_de_pessoas_que_nao_mora_na_cidade_natal(Raiz_pessoas));
+        printf("eh: %d\n", quant_de_pessoas_que_nao_mora_na_cidade_natal(Lista_estados, Raiz_pessoas));
     }
     else
     {
@@ -503,7 +503,7 @@ void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPL
 {
     if (Raiz_pessoas != NULL)
     {
-        printf("Procurar .\nDigite o nome do estado: ");
+        printf("Procurar Estado.\nDigite o nome do estado: ");
         char *nome_estado = digitar_string();
         corrigir_espacos(&nome_estado);
 
@@ -513,7 +513,7 @@ void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPL
 
         if (no_estado != NULL)
         {
-            printf("Digite o nome da cidade: ");
+            printf("Procurar Cidade.\nDigite o nome da cidade: ");
             char *nome_cidade = digitar_string();
             corrigir_espacos(&nome_cidade);
 
@@ -675,7 +675,7 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             break;
         case '4':
             print_amarelo("=================QUANTIDADE DE PESSOAS QUE NAO MORAM NA CIDADE NATAL==================\n\n");
-            quantas_pessoas_nao_moram_na_cidade_natal(*Raiz_pessoas);
+            quantas_pessoas_nao_moram_na_cidade_natal(*Lista_estados, *Raiz_pessoas);
             pausar_tela();
             break;
         case '5':

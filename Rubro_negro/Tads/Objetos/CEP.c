@@ -59,7 +59,7 @@ void corrigir_formatacao_CEP(char **cep)
 short int validar_CEP(char *cep)
 {
     short int valido = 0;
-    if (cep && strlen(cep) == 10 && cep[5] == '-')
+    if (cep && strlen(cep) == 9 && cep[5] == '-')
     {
         valido = 1; // CEP deve ter 8 dígitos e um hífen na posição correta
         for (int i = 0; i < 9 && valido == 1; i++)
@@ -70,6 +70,7 @@ short int validar_CEP(char *cep)
                 valido = 1; // Verifica se é dígito
             else
                 valido = 0; // Não é dígito
+
         }
     }
 
@@ -85,8 +86,10 @@ char *digitar_CEP()
     {
         cep = digitar_string();
         corrigir_formatacao_CEP(&cep);
+        
 
         valido = validar_CEP(cep);
+
 
         if (valido == 0)
         {

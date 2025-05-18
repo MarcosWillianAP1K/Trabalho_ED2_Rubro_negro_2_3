@@ -6,15 +6,13 @@
 
 //===============DELETE_ALL===============
 
-
-
-
 void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
 {
     if (raiz_cidade != NULL && *raiz_cidade != NULL)
     {
         delete_cidade_CEP(&(*raiz_cidade)->esquerda);
         delete_cidade_CEP(&(*raiz_cidade)->direita);
+        printf("Liberando arvore rubro-negra de cidades...\n");
 
         RUBRO_NEGRO *raiz_cep = (*raiz_cidade)->info.cidade.raiz_arvore_CEPs;
         (*raiz_cidade)->info.cidade.raiz_arvore_CEPs = NULL;
@@ -35,11 +33,11 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
 
         while (aux != NULL)
         {
+            printf("Liberando lista de estados...\n");
             temp = aux;
             aux = aux->prox;
 
             RUBRO_NEGRO *raiz_cidade = temp->estado.raiz_arvore_cidade;
-            printf("Liberando arvore rubro-negra de cidades...\n");
             delete_cidade_CEP(&raiz_cidade);
             temp->estado.raiz_arvore_cidade = NULL;
             liberar_no_duplamente(&temp);
@@ -51,7 +49,7 @@ void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
 {
     if (lista_estado != NULL && *lista_estado != NULL)
     {
-        printf("Liberando lista de estados...\n");
+        
         delete_estado(lista_estado);
         *lista_estado = NULL;
     }
@@ -140,6 +138,48 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(RUBRO_NEGRO *raiz_pessoa
     return retorno;
 }
 
+//===============BUSCAS===============
+
+RUBRO_NEGRO *procurar_cidade_por_CEP_pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, DADOS cep)
+{
+    RUBRO_NEGRO *retorno = NULL;
+
+    if (raiz_cidade != NULL)
+    {
+        if (buscar_rubro_negro(raiz_cidade->info.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP) != NULL)
+            retorno = raiz_cidade;
+
+        if (retorno == NULL)
+            retorno = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->esquerda, cep);
+
+        if (retorno == NULL)
+            retorno = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->direita, cep);
+    }
+
+    return retorno;
+}
+
+RUBRO_NEGRO *procurar_cidade_por_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
+{
+    RUBRO_NEGRO *no_cidade = NULL;
+
+    if (lista_estado != NULL && cep != NULL)
+    {
+        LISTA_DUPLAMENTE *aux = lista_estado;
+        DADOS cep_dados;
+        cep_dados.CEP = cep;
+
+        while (aux != NULL && no_cidade == NULL)
+        {
+            no_cidade = procurar_cidade_por_CEP_pecorrer_cidade(aux->estado.raiz_arvore_cidade, cep_dados);
+
+            aux = aux->prox;
+        }
+    }
+
+    return no_cidade;
+}
+
 //===============CADASTROS===============
 
 RUBRO_NEGRO *cadastrar_pessoa(RUBRO_NEGRO **raiz, PESSOA info)
@@ -186,7 +226,6 @@ RUBRO_NEGRO *cadastrar_cidade(ESTADO *estado, CIDADE info)
     return retorno;
 }
 
-// Pode inserir um estado ja inserindo uma cidade/Capital, Ideal quando se cadastrar o estado pela primeira vez.
 LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info)
 {
     LISTA_DUPLAMENTE *retorno = NULL;
@@ -286,60 +325,25 @@ RUBRO_NEGRO *procurar_cidade_mais_populosa_sem_capital(RUBRO_NEGRO *raiz_cidade,
     return retorno;
 }
 
-int quant_de_pessoas_que_nao_mora_na_cidade_natal(RUBRO_NEGRO *raiz_pessoa)
+int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
 {
     int quantidade = 0;
 
     if (raiz_pessoa != NULL)
     {
-        if (comparar_CEPs(raiz_pessoa->info.pessoa.CEP_atual, raiz_pessoa->info.pessoa.CEP_natal) != 0)
+        RUBRO_NEGRO *no_cidade = procurar_cidade_por_CEP(lista, raiz_pessoa->info.pessoa.CEP_atual);
+
+        DADOS aux;
+        aux.CEP = raiz_pessoa->info.pessoa.CEP_natal;
+
+        if (no_cidade != NULL && buscar_rubro_negro(no_cidade->info.cidade.raiz_arvore_CEPs, aux, comparar_dados_CEP) == NULL)
             quantidade++;
 
-        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda);
-        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(raiz_pessoa->direita);
+        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->esquerda);
+        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->direita);
     }
 
     return quantidade;
-}
-
-RUBRO_NEGRO *procurar_cidade_por_CEP_pecorrer_cidade(RUBRO_NEGRO *raiz_cidade, DADOS cep)
-{
-    RUBRO_NEGRO *retorno = NULL;
-
-    if (raiz_cidade != NULL)
-    {
-        if (buscar_rubro_negro(raiz_cidade->info.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP) != NULL)
-            retorno = raiz_cidade;
-
-        if (retorno == NULL)
-            retorno = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->esquerda, cep);
-
-        if (retorno == NULL)
-            retorno = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->direita, cep);
-    }
-
-    return retorno;
-}
-
-RUBRO_NEGRO *procurar_cidade_por_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
-{
-    RUBRO_NEGRO *no_cidade = NULL;
-
-    if (lista_estado != NULL && cep != NULL)
-    {
-        LISTA_DUPLAMENTE *aux = lista_estado;
-        DADOS cep_dados;
-        cep_dados.CEP = cep;
-
-        while (aux != NULL && no_cidade == NULL)
-        {
-            no_cidade = procurar_cidade_por_CEP_pecorrer_cidade(aux->estado.raiz_arvore_cidade, cep_dados);
-
-            aux = aux->prox;
-        }
-    }
-
-    return no_cidade;
 }
 
 int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(RUBRO_NEGRO *raiz_pessoa, CIDADE cidade)
@@ -351,8 +355,17 @@ int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(RUBRO_N
         DADOS cep_natal;
         cep_natal.CEP = raiz_pessoa->info.pessoa.CEP_natal;
 
-        if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info.pessoa.CEP_atual) != 0 && buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
-            quantidade++;
+        if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
+        {
+            if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info.pessoa.CEP_atual) != 0)
+            {
+                DADOS cep_atual;
+                cep_atual.CEP = raiz_pessoa->info.pessoa.CEP_atual;
+
+                if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) == NULL)
+                    quantidade++;
+            }
+        }
 
         quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda, cidade);
         quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->direita, cidade);
@@ -370,8 +383,18 @@ int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(RUBRO_NEGRO *raiz_pess
         DADOS cep_atual;
         cep_atual.CEP = raiz_pessoa->info.pessoa.CEP_atual;
 
-        if (comparar_CEPs(cep_atual.CEP, raiz_pessoa->info.pessoa.CEP_natal) != 0 && buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) != NULL)
-            quantidade++;
+        if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) != NULL)
+        {
+            if (comparar_CEPs(cep_atual.CEP, raiz_pessoa->info.pessoa.CEP_natal) != 0)
+            {
+                DADOS cep_natal;
+                cep_natal.CEP = raiz_pessoa->info.pessoa.CEP_natal;
+
+                if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) == NULL)
+                    quantidade++;
+            }
+            
+        }
 
         quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->esquerda, cidade);
         quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->direita, cidade);

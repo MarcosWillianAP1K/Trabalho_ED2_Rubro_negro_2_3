@@ -28,7 +28,7 @@ RUBRO_NEGRO *procurar_capital_de_um_estado(ESTADO estado);
 
 RUBRO_NEGRO *procurar_cidade_mais_populosa_sem_capital(RUBRO_NEGRO *raiz_cidade, char *nome_capital);
 
-int quant_de_pessoas_que_nao_mora_na_cidade_natal(RUBRO_NEGRO *raiz_pessoa);
+int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa);
 
 RUBRO_NEGRO *procurar_cidade_por_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep);
 
