@@ -15,7 +15,7 @@ int main()
     //Porem como foi feito para apenas testes das consultas sera apenas ignorado, o problema deve ser em alguma alocação dos char *.
     // povoar_sistema(&Lista_estados, &Raiz_pessoas, 5, 5, 5, 5);
 
-    pausar_tela();
+    // pausar_tela();
 
     menu_principal(&Lista_estados, &Raiz_pessoas);
 
