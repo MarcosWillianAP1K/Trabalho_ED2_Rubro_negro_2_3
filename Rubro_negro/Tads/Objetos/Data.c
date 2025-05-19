@@ -96,17 +96,11 @@ int dias_no_mes(int mes, int ano)
     int dias;
 
     if (mes == 2)
-    {
         dias = eh_bissexto(ano) ? 29 : 28;
-    }
     else if (mes == 4 || mes == 6 || mes == 9 || mes == 11)
-    {
-        dias = 30;
-    }
-    else
-    {
-        dias = 31;
-    }
+           dias = 30;
+    else dias = 31;
+
     return dias;
 }
 
@@ -115,13 +109,9 @@ int validar_data(DATA data)
     int valida = 0;
 
     if (data.mes >= 1 && data.mes <= 12)
-    {
-        valida = 1;
-    }
+      valida = 1;
     else if (data.dia >= 1 && data.dia <= dias_no_mes(data.mes, data.ano))
-    {
-        valida = 1;
-    }
+           valida = 1;
 
     return valida;
 }
@@ -137,19 +127,16 @@ int validar_data_nascimento(DATA data)
     if (validar_data(data))
     {
         if (data.   ano < tempo_atual.tm_year + 1900)
-        {
-            valida = 1;
-        }
+          valida = 1;
+
         else if (data.ano == tempo_atual.tm_year + 1900)
         {
             if (data.mes < tempo_atual.tm_mon + 1)
-            {
-                valida = 1;
-            }
+              valida = 1;
+            
             else if (data.mes == tempo_atual.tm_mon + 1 && data.dia <= tempo_atual.tm_mday)
-            {
-                valida = 1;
-            }
+                   valida = 1;
+
         }
     }
 
@@ -194,33 +181,23 @@ short int comparar_data(DATA data1, DATA data2)
     short int resultado = 0;
 
     if (data1.ano < data2.ano)
-    {
-        resultado = -1;
-    }
+      resultado = -1;
+
     else if (data1.ano > data2.ano)
-    {
-        resultado = 1;
-    }
+           resultado = 1;
+
     else
     {
         if (data1.mes < data2.mes)
-        {
-            resultado = -1;
-        }
+          resultado = -1;
         else if (data1.mes > data2.mes)
-        {
-            resultado = 1;
-        }
+               resultado = 1;
         else
         {
             if (data1.dia < data2.dia)
-            {
-                resultado = -1;
-            }
+              resultado = -1;
             else if (data1.dia > data2.dia)
-            {
-                resultado = 1;
-            }
+                   resultado = 1;
         }
     }
 

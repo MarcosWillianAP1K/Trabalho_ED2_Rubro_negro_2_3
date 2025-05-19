@@ -61,18 +61,11 @@ short int comparar_nome_pessoas(PESSOA pessoa1, PESSOA pessoa2)
     short int resultado = 0;
 
     if (pessoa1.nome != NULL && pessoa2.nome != NULL)
-    {
-        resultado = strcmp(pessoa1.nome, pessoa2.nome);
-    }
+      resultado = strcmp(pessoa1.nome, pessoa2.nome);
     else if (pessoa1.nome == NULL && pessoa2.nome != NULL)
-    {
-        resultado = -1;
-    }
+           resultado = -1;
     else if (pessoa1.nome != NULL && pessoa2.nome == NULL)
-    {
-        resultado = 1;
-    }
-    
+           resultado = 1;
     return resultado;
 }
 
@@ -81,17 +74,11 @@ short int comparar_CPF_pessoas(PESSOA pessoa1, PESSOA pessoa2)
     short int resultado = 0;
 
     if (pessoa1.CPF != NULL && pessoa2.CPF != NULL)
-    {
-        resultado = strcmp(pessoa1.CPF, pessoa2.CPF);
-    }
+      resultado = strcmp(pessoa1.CPF, pessoa2.CPF);
     else if (pessoa1.CPF == NULL && pessoa2.CPF != NULL)
-    {
-        resultado = -1;
-    }
+           resultado = -1;
     else if (pessoa1.CPF != NULL && pessoa2.CPF == NULL)
-    {
-        resultado = 1;
-    }
+           resultado = 1;
 
     return resultado;
 }

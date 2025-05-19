@@ -55,17 +55,13 @@ short int comparar_nome_estado(ESTADO estado1, ESTADO estado2)
     short int resultado = 0;
 
     if (estado1.nome_estado != NULL && estado2.nome_estado != NULL)
-    {
-        resultado = strcmp(estado1.nome_estado, estado2.nome_estado);
-    }
+      resultado = strcmp(estado1.nome_estado, estado2.nome_estado);
+
     else if (estado1.nome_estado == NULL && estado2.nome_estado != NULL)
-    {
-        resultado = -1;
-    }
+           resultado = -1;
+
     else if (estado1.nome_estado != NULL && estado2.nome_estado == NULL)
-    {
-        resultado = 1;
-    }
+           resultado = 1;
 
     return resultado;
 }
