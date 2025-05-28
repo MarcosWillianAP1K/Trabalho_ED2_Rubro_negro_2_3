@@ -7,8 +7,6 @@
 //===============DELETE_ALL===============
 
 
-
-
 void delete_cidade_CEP(RUBRO_NEGRO **raiz_cidade)
 {
     if (raiz_cidade != NULL)
