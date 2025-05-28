@@ -70,7 +70,7 @@ DADOS *buscar_23(Arv23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
             retorno = buscar_23(raiz->dir, info, comparar);
         }
     }
-    
+
     return retorno;
 }
 
@@ -578,6 +578,16 @@ short int remover_23(Arv23 **raiz, DADOS valor, DADOS *dado_removido ,  short in
     return sucesso;
 }
 
+short int remover_23_void(void **raiz, DADOS valor, DADOS *dado_removido ,  short int (*comparar)(DADOS, DADOS))
+{
+    short int retorno = 0;
+
+    Arv23 *raiz_23 = *raiz;
+    retorno = remover_23(&raiz_23, valor, dado_removido, comparar);
+    *raiz = raiz_23;
+    return retorno;
+}
+
 //================ FUNCOES AUXILIARES INSERCAO  ==================
 
 void adiciona_infos(Arv23 **no, DADOS info, Arv23 *Sub_Arv_Info, short int (*comparar)(DADOS, DADOS))
@@ -736,6 +746,16 @@ short int inserir_23(Arv23 **raiz, DADOS valor, short int (*comparar)(DADOS, DAD
         }
     }
     return sucesso;
+}
+
+short int inserir_23_void(void **raiz, DADOS valor, short int (*comparar)(DADOS, DADOS))
+{
+    short int retorno = 0;
+
+    Arv23 *raiz_23 = *raiz;
+    retorno = inserir_23(&raiz_23, valor, comparar);
+    *raiz = raiz_23;
+    return retorno;
 }
 
 //=============== IMPRIMIR ==================

@@ -56,7 +56,6 @@ void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
 
     if (raiz_pessoa != NULL && *raiz_pessoa != NULL)
     {
-        printf("Liberando arvore rubro-negra de pessoas...\n");
         // Libera a árvore rubro-negra de pessoas
         liberar_rubro_negro(raiz_pessoa, liberar_dados_pessoa);
     }

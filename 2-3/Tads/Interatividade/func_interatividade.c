@@ -37,7 +37,7 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
             temp = aux;
             aux = aux->prox;
 
-            RUBRO_NEGRO *raiz_cidade = temp->estado.raiz_arvore_cidade;
+            Arv23 *raiz_cidade = temp->estado.raiz_arvore_cidade;
             delete_cidade_CEP(&raiz_cidade);
             temp->estado.raiz_arvore_cidade = NULL;
             liberar_no_duplamente(&temp);
@@ -45,7 +45,7 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
     }
 }
 
-void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
+void delete_all(LISTA_DUPLAMENTE **lista_estado, Arv23 **raiz_pessoa)
 {
     if (lista_estado != NULL && *lista_estado != NULL)
     {
@@ -56,9 +56,8 @@ void delete_all(LISTA_DUPLAMENTE **lista_estado, RUBRO_NEGRO **raiz_pessoa)
 
     if (raiz_pessoa != NULL && *raiz_pessoa != NULL)
     {
-        printf("Liberando arvore rubro-negra de pessoas...\n");
-        // Libera a árvore rubro-negra de pessoas
-        liberar_rubro_negro(raiz_pessoa, liberar_dados_pessoa);
+        // Libera a árvore 2-3 de pessoas
+        liberar_23(raiz_pessoa, liberar_dados_pessoa);
     }
 }
 
