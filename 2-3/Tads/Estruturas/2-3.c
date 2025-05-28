@@ -10,8 +10,8 @@
 typedef enum
 {
     OK,
-    UNDERFLOW
-    // ,NAO_ENCONTADO
+    UNDERFLOW,
+    NAO_ENCONTADO
 } StatusRemocao;
 
 // Prototipos das Funcoes
@@ -361,7 +361,7 @@ DADOS remover_23_recursivo(Arv23 **ponteiro_no_atual, DADOS valor, StatusRemocao
 {
     DADOS dado_removido;
     // Valor nao encontrado na subarvore
-    *status_final = OK;
+    *status_final = NAO_ENCONTADO;
     Arv23 *no_atual = *ponteiro_no_atual;
 
     if (no_atual != NULL)
@@ -952,6 +952,16 @@ void menu(Arv23 **raiz)
     else
     {
         printf("Falha ao remover: %s\n", dado1.cidade.nome);
+    }
+
+    if (remover_23(raiz, dado1, &dado_removido, comparar_dados_nome_cidade) == 1)
+    {
+        printf("Removido inexistente: \n");
+        
+    }
+    else
+    {
+        printf("Falha ao remover inexistente\n");
     }
 
     if (remover_23(raiz, dado2, &dado_removido, comparar_dados_nome_cidade) == 1)
