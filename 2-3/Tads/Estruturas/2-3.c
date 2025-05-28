@@ -41,6 +41,39 @@ Arv23 *cria_no(DADOS info, Arv23 *F_esq, Arv23 *F_cen)
     return no;
 }
 
+//================ BUSCAR INFO ==================
+
+DADOS *buscar_23(Arv23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
+{
+    DADOS *retorno = NULL;
+
+    if (raiz != NULL)
+    {
+        if (comparar(info, raiz->info1) == 0)
+        {
+            retorno = &(raiz->info1);
+        }
+        else if (raiz->nInfo == 2 && comparar(info, raiz->info2) == 0)
+        {
+            retorno = &(raiz->info2);
+        }
+        else if (comparar(info, raiz->info1) < 0)
+        {
+            retorno = buscar_23(raiz->esq, info, comparar);
+        }
+        else if (raiz->nInfo == 1 || comparar(info, raiz->info2) < 0)
+        {
+            retorno = buscar_23(raiz->cen, info, comparar);
+        }
+        else
+        {
+            retorno = buscar_23(raiz->dir, info, comparar);
+        }
+    }
+    
+    return retorno;
+}
+
 //================ FUNCOES AUXILIARES  ==================
 
 // //Verifica se o no e uma folha (sem filhos)
@@ -1051,15 +1084,15 @@ void menu(Arv23 **raiz)
 
 //================ MAIN PARA TESTES  ==================
 
-int main()
-{
-    Arv23 *raiz = NULL;
-    // Chama o menu interativo
-    menu(&raiz);
+// int main()
+// {
+//     Arv23 *raiz = NULL;
+//     // Chama o menu interativo
+//     menu(&raiz);
 
-    liberar_23(&raiz, liberar_dados_CEP); // Libera a memoria da arvore
+//     liberar_23(&raiz, liberar_dados_CEP); // Libera a memoria da arvore
 
-    printf("\nPrograma encerrado. Memoria liberada.\n");
+//     printf("\nPrograma encerrado. Memoria liberada.\n");
 
-    return 0;
-}
+//     return 0;
+// }
