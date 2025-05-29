@@ -281,7 +281,7 @@ LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info)
 
 //===============REMOÇÕES===============
 
-short int remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
+short int remover_CEP(CIDADE *cidade, char *cep, char **cep_removido)
 {
     short int retorno = 0;
 
@@ -298,7 +298,7 @@ short int remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
         {
             if (cep_removido != NULL)
             {
-                cep_removido = dado_removido.CEP;
+                *cep_removido = dado_removido.CEP;
             }
         }
     }

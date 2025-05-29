@@ -23,7 +23,7 @@ short int cadastrar_CEP(LISTA_DUPLAMENTE *lista_estado, CIDADE *cidade, char *ce
 short int cadastrar_pessoa(AVR_23 **raiz, PESSOA info);
 
 //Remover
-short int remover_CEP(CIDADE *cidade, char *cep, char *cep_removido);
+short int remover_CEP(CIDADE *cidade, char *cep, char **cep_removido);
 
 short int remover_pessoa(AVR_23 **raiz, PESSOA info, PESSOA *pessoa_removida);
 
