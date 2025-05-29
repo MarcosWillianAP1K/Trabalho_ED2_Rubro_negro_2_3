@@ -259,6 +259,12 @@ short int cadastrar_cidade(ESTADO *estado, CIDADE info)
         aux.cidade = info;
 
         retorno = inserir_23_void(&estado->raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
+
+        if (retorno == 1)
+        {
+            estado->quantidade_cidade += 1;
+            estado->quantidade_populacao += info.quantidade_populacao;
+        }
     }
 
     return retorno;

@@ -103,8 +103,6 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                 if (cadastrar_cidade(&no_estado->estado, cidade) != NULL)
                 {
                     mensagem_sucesso("Cidade cadastrada com sucesso!\n");
-                    no_estado->estado.quantidade_cidade++;
-                    no_estado->estado.quantidade_populacao += quant_populacao;
                 }
                 else
                     mensagem_erro("CIDADE JA EXISTENTE!");
