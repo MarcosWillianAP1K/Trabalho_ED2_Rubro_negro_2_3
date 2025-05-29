@@ -16,16 +16,16 @@ typedef enum
 
 // Prototipos das Funcoes
 
-StatusRemocao tratar_underflow(Arv23 **ponteiro_filho_no_pai, Arv23 *pai);
-StatusRemocao redistribuir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_esq, short int pos_filho);
-StatusRemocao redistribuir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_dir, short int pos_filho);
-StatusRemocao fundir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_esq, short int pos_filho);
-StatusRemocao fundir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_dir, short int pos_filho);
+StatusRemocao tratar_underflow(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai);
+StatusRemocao redistribuir_com_irmao_esquerdo(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_esq, short int pos_filho);
+StatusRemocao redistribuir_com_irmao_direito(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_dir, short int pos_filho);
+StatusRemocao fundir_com_irmao_esquerdo(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_esq, short int pos_filho);
+StatusRemocao fundir_com_irmao_direito(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_dir, short int pos_filho);
 
 //================ CRIA NO ==================
-Arv23 *cria_no(DADOS info, Arv23 *F_esq, Arv23 *F_cen)
+AVR_23 *cria_no(DADOS info, AVR_23 *F_esq, AVR_23 *F_cen)
 {
-    Arv23 *no = (Arv23 *)malloc(sizeof(Arv23));
+    AVR_23 *no = (AVR_23 *)malloc(sizeof(AVR_23));
 
     verificar_alocacao(no);
 
@@ -43,7 +43,7 @@ Arv23 *cria_no(DADOS info, Arv23 *F_esq, Arv23 *F_cen)
 
 //================ BUSCAR INFO ==================
 
-DADOS *buscar_23(Arv23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
+DADOS *buscar_23(AVR_23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 {
     DADOS *retorno = NULL;
 
@@ -77,7 +77,7 @@ DADOS *buscar_23(Arv23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 //================ FUNCOES AUXILIARES  ==================
 
 // //Verifica se o no e uma folha (sem filhos)
-short int eh_folha(Arv23 *no)
+short int eh_folha(AVR_23 *no)
 {
     short int resultado = 0;
     if (no != NULL)
@@ -90,12 +90,12 @@ short int eh_folha(Arv23 *no)
 //================ FUNCOES AUXILIARES DA REMOCAO==================
 
 // Busca o menor elemento na subarvore a partir do no dado
-Arv23 *buscar_menor_elemento(Arv23 *no)
+AVR_23 *buscar_menor_elemento(AVR_23 *no)
 {
-    Arv23 *resultado = NULL;
+    AVR_23 *resultado = NULL;
     if (no != NULL)
     {
-        Arv23 *atual = no;
+        AVR_23 *atual = no;
         while (atual != NULL && atual->esq != NULL)
         {
             atual = atual->esq;
@@ -106,10 +106,10 @@ Arv23 *buscar_menor_elemento(Arv23 *no)
 }
 
 // Funcao principal para tratar underflow
-StatusRemocao tratar_underflow(Arv23 **ponteiro_filho_no_pai, Arv23 *pai)
+StatusRemocao tratar_underflow(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai)
 {
     StatusRemocao status_final = OK;
-    Arv23 *filho_com_underflow = *ponteiro_filho_no_pai;
+    AVR_23 *filho_com_underflow = *ponteiro_filho_no_pai;
 
     if (filho_com_underflow != NULL && filho_com_underflow->nInfo <= 0)
     {
@@ -122,8 +122,8 @@ StatusRemocao tratar_underflow(Arv23 **ponteiro_filho_no_pai, Arv23 *pai)
         {
             // Caso de underflow: filho_com_underflow e um 2-no ou 3-no com apenas 1 info
 
-            Arv23 *irmao_esq = NULL;
-            Arv23 *irmao_dir = NULL;
+            AVR_23 *irmao_esq = NULL;
+            AVR_23 *irmao_dir = NULL;
             short int pos_filho = -1;
 
             // Identifica a posicao do filho e seus irmaos
@@ -183,12 +183,12 @@ StatusRemocao tratar_underflow(Arv23 **ponteiro_filho_no_pai, Arv23 *pai)
 }
 
 // Redistribui do irmao esquerdo (3-no) para o filho (underflow)
-StatusRemocao redistribuir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_esq, short int pos_filho)
+StatusRemocao redistribuir_com_irmao_esquerdo(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_esq, short int pos_filho)
 {
-    Arv23 *filho = *ponteiro_filho_no_pai;
+    AVR_23 *filho = *ponteiro_filho_no_pai;
     DADOS chave_pai_desce;
-    Arv23 *filho_transferido = irmao_esq->dir;
-    Arv23 *filho_original_unico = (filho->esq != NULL) ? filho->esq : filho->cen;
+    AVR_23 *filho_transferido = irmao_esq->dir;
+    AVR_23 *filho_original_unico = (filho->esq != NULL) ? filho->esq : filho->cen;
 
     if (pos_filho == 1)
     {
@@ -214,12 +214,12 @@ StatusRemocao redistribuir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv
 }
 
 // Redistribui do irmao direito (3-no) para o filho (underflow)
-StatusRemocao redistribuir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_dir, short int pos_filho)
+StatusRemocao redistribuir_com_irmao_direito(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_dir, short int pos_filho)
 {
-    Arv23 *filho = *ponteiro_filho_no_pai;
+    AVR_23 *filho = *ponteiro_filho_no_pai;
     DADOS chave_pai_desce;
-    Arv23 *filho_transferido = irmao_dir->esq;
-    Arv23 *filho_original_unico = (filho->esq != NULL) ? filho->esq : filho->cen;
+    AVR_23 *filho_transferido = irmao_dir->esq;
+    AVR_23 *filho_original_unico = (filho->esq != NULL) ? filho->esq : filho->cen;
 
     if (pos_filho == 0)
     {
@@ -248,15 +248,15 @@ StatusRemocao redistribuir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv2
 }
 
 // Funde o filho (underflow) com o irmao esquerdo (2-no)
-StatusRemocao fundir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_esq, short int pos_filho)
+StatusRemocao fundir_com_irmao_esquerdo(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_esq, short int pos_filho)
 {
-    Arv23 *filho_underflow = *ponteiro_filho_no_pai;
+    AVR_23 *filho_underflow = *ponteiro_filho_no_pai;
     DADOS chave_pai_desce;
     StatusRemocao status_pai = OK;
 
-    Arv23 *filho_u_remanescente = (filho_underflow->esq != NULL) ? filho_underflow->esq : filho_underflow->cen;
-    Arv23 *irmao_e_esq = irmao_esq->esq;
-    Arv23 *irmao_e_cen = irmao_esq->cen;
+    AVR_23 *filho_u_remanescente = (filho_underflow->esq != NULL) ? filho_underflow->esq : filho_underflow->cen;
+    AVR_23 *irmao_e_esq = irmao_esq->esq;
+    AVR_23 *irmao_e_cen = irmao_esq->cen;
 
     // Determina a chave que desce do pai e ajusta o pai
     if (pai->nInfo == 1)
@@ -317,15 +317,15 @@ StatusRemocao fundir_com_irmao_esquerdo(Arv23 **ponteiro_filho_no_pai, Arv23 *pa
 }
 
 // Funde o filho (underflow) com o irmao direito (2-no)
-StatusRemocao fundir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv23 *pai, Arv23 *irmao_dir, short int pos_filho)
+StatusRemocao fundir_com_irmao_direito(AVR_23 **ponteiro_filho_no_pai, AVR_23 *pai, AVR_23 *irmao_dir, short int pos_filho)
 {
-    Arv23 *filho_underflow = *ponteiro_filho_no_pai;
+    AVR_23 *filho_underflow = *ponteiro_filho_no_pai;
     DADOS chave_pai_desce;
     StatusRemocao status_pai = OK;
 
-    Arv23 *filho_u_remanescente = (filho_underflow->esq != NULL) ? filho_underflow->esq : filho_underflow->cen;
-    Arv23 *irmao_d_esq = irmao_dir->esq;
-    Arv23 *irmao_d_cen = irmao_dir->cen;
+    AVR_23 *filho_u_remanescente = (filho_underflow->esq != NULL) ? filho_underflow->esq : filho_underflow->cen;
+    AVR_23 *irmao_d_esq = irmao_dir->esq;
+    AVR_23 *irmao_d_cen = irmao_dir->cen;
 
     // Determina a chave que desce do pai e ajusta o pai
     if (pai->nInfo == 1)
@@ -390,16 +390,16 @@ StatusRemocao fundir_com_irmao_direito(Arv23 **ponteiro_filho_no_pai, Arv23 *pai
 }
 
 //================ REMOCAO (Recursiva) ==================
-DADOS remover_23_recursivo(Arv23 **ponteiro_no_atual, DADOS valor, StatusRemocao *status_final, short int (*comparar)(DADOS, DADOS))
+DADOS remover_23_recursivo(AVR_23 **ponteiro_no_atual, DADOS valor, StatusRemocao *status_final, short int (*comparar)(DADOS, DADOS))
 {
     DADOS dado_removido;
     // Valor nao encontrado na subarvore
     *status_final = NAO_ENCONTADO;
-    Arv23 *no_atual = *ponteiro_no_atual;
+    AVR_23 *no_atual = *ponteiro_no_atual;
 
     if (no_atual != NULL)
     {
-        Arv23 **proximo_ponteiro_recursao = NULL;
+        AVR_23 **proximo_ponteiro_recursao = NULL;
         short int valor_encontrado_neste_no = 0;
         short int indice_valor_removido = -1;
 
@@ -455,9 +455,9 @@ DADOS remover_23_recursivo(Arv23 **ponteiro_no_atual, DADOS valor, StatusRemocao
             }
             else
             {
-                Arv23 *sucessor_node = NULL;
+                AVR_23 *sucessor_node = NULL;
                 DADOS valor_sucessor;
-                Arv23 **ponteiro_subarvore_sucessor;
+                AVR_23 **ponteiro_subarvore_sucessor;
 
                 if (indice_valor_removido == 0)
                 {
@@ -519,7 +519,7 @@ DADOS remover_23_recursivo(Arv23 **ponteiro_no_atual, DADOS valor, StatusRemocao
 
 //================ REMOCAO (Principal) ==================
 
-short int remover_23(Arv23 **raiz, DADOS valor, DADOS *dado_removido ,  short int (*comparar)(DADOS, DADOS))
+short int remover_23(AVR_23 **raiz, DADOS valor, DADOS *dado_removido ,  short int (*comparar)(DADOS, DADOS))
 {
     short int sucesso = 0; // 0 para falha, 1 para sucesso
 
@@ -540,8 +540,8 @@ short int remover_23(Arv23 **raiz, DADOS valor, DADOS *dado_removido ,  short in
 
         if (*raiz != NULL && (*raiz)->nInfo == 0)
         {
-            Arv23 *raiz_antiga = *raiz;
-            Arv23 *nova_raiz = NULL;
+            AVR_23 *raiz_antiga = *raiz;
+            AVR_23 *nova_raiz = NULL;
 
             // A nova raiz e o unico filho nao-NULL da raiz antiga.
             // Apos uma fusao que causa underflow na raiz, ou remocao da unica chave da raiz,
@@ -582,7 +582,7 @@ short int remover_23_void(void **raiz, DADOS valor, DADOS *dado_removido ,  shor
 {
     short int retorno = 0;
 
-    Arv23 *raiz_23 = *raiz;
+    AVR_23 *raiz_23 = *raiz;
     retorno = remover_23(&raiz_23, valor, dado_removido, comparar);
     *raiz = raiz_23;
     return retorno;
@@ -590,9 +590,9 @@ short int remover_23_void(void **raiz, DADOS valor, DADOS *dado_removido ,  shor
 
 //================ FUNCOES AUXILIARES INSERCAO  ==================
 
-void adiciona_infos(Arv23 **no, DADOS info, Arv23 *Sub_Arv_Info, short int (*comparar)(DADOS, DADOS))
+void adiciona_infos(AVR_23 **no, DADOS info, AVR_23 *Sub_Arv_Info, short int (*comparar)(DADOS, DADOS))
 {
-    Arv23 *no_atual = *no;
+    AVR_23 *no_atual = *no;
     if (comparar(info, no_atual->info1) > 0)
     {
         no_atual->info2 = info;
@@ -609,10 +609,10 @@ void adiciona_infos(Arv23 **no, DADOS info, Arv23 *Sub_Arv_Info, short int (*com
     no_atual->nInfo = 2;
 }
 
-Arv23 *quebra_no(Arv23 **no, DADOS info, DADOS *sobe, Arv23 *F_dir, short int (*comparar)(DADOS, DADOS))
+AVR_23 *quebra_no(AVR_23 **no, DADOS info, DADOS *sobe, AVR_23 *F_dir, short int (*comparar)(DADOS, DADOS))
 {
-    Arv23 *no_atual = *no;
-    Arv23 *maior = NULL;
+    AVR_23 *no_atual = *no;
+    AVR_23 *maior = NULL;
     if (comparar(info, no_atual->info2) > 0)
     {
         *sobe = no_atual->info2;
@@ -642,10 +642,10 @@ Arv23 *quebra_no(Arv23 **no, DADOS info, DADOS *sobe, Arv23 *F_dir, short int (*
 
 //================ INSERCAO RECURSIVA  ==================
 
-short int inserir_23_recursivo(Arv23 **raiz, DADOS valor, DADOS *sobe, Arv23 **maiorNo, short int (*comparar)(DADOS, DADOS))
+short int inserir_23_recursivo(AVR_23 **raiz, DADOS valor, DADOS *sobe, AVR_23 **maiorNo, short int (*comparar)(DADOS, DADOS))
 {
     short int sucesso = 0;
-    Arv23 *no_atual = *raiz;
+    AVR_23 *no_atual = *raiz;
 
     if (no_atual == NULL)
     {
@@ -677,7 +677,7 @@ short int inserir_23_recursivo(Arv23 **raiz, DADOS valor, DADOS *sobe, Arv23 **m
         }
         else
         {
-            Arv23 **proximo_filho;
+            AVR_23 **proximo_filho;
             if (comparar(valor, no_atual->info1) < 0)
             {
                 proximo_filho = &(no_atual->esq);
@@ -697,7 +697,7 @@ short int inserir_23_recursivo(Arv23 **raiz, DADOS valor, DADOS *sobe, Arv23 **m
             if (*maiorNo != NULL)
             {
                 DADOS chave_que_subiu = *sobe;
-                Arv23 *novo_filho_dir = *maiorNo;
+                AVR_23 *novo_filho_dir = *maiorNo;
                 *maiorNo = NULL;
 
                 if (no_atual->nInfo == 1)
@@ -719,10 +719,10 @@ short int inserir_23_recursivo(Arv23 **raiz, DADOS valor, DADOS *sobe, Arv23 **m
 
 //================ INSERCAO PRINCIPAL  ==================
 
-short int inserir_23(Arv23 **raiz, DADOS valor, short int (*comparar)(DADOS, DADOS))
+short int inserir_23(AVR_23 **raiz, DADOS valor, short int (*comparar)(DADOS, DADOS))
 {
     DADOS sobe;
-    Arv23 *maiorNo = NULL;
+    AVR_23 *maiorNo = NULL;
     short int sucesso = 0;
 
     if (raiz != NULL)
@@ -731,7 +731,7 @@ short int inserir_23(Arv23 **raiz, DADOS valor, short int (*comparar)(DADOS, DAD
 
         if (maiorNo != NULL)
         {
-            Arv23 *nova_raiz = cria_no(sobe, *raiz, maiorNo);
+            AVR_23 *nova_raiz = cria_no(sobe, *raiz, maiorNo);
 
             if (nova_raiz != NULL)
             {
@@ -752,14 +752,14 @@ short int inserir_23_void(void **raiz, DADOS valor, short int (*comparar)(DADOS,
 {
     short int retorno = 0;
 
-    Arv23 *raiz_23 = *raiz;
+    AVR_23 *raiz_23 = *raiz;
     retorno = inserir_23(&raiz_23, valor, comparar);
     *raiz = raiz_23;
     return retorno;
 }
 
 //=============== IMPRIMIR ==================
-void imprimir_23_em_ordem(Arv23 *raiz, void (*imprimir)(DADOS))
+void imprimir_23_em_ordem(AVR_23 *raiz, void (*imprimir)(DADOS))
 {
     if (raiz != NULL)
     {
@@ -779,7 +779,7 @@ void imprimir_23_em_ordem(Arv23 *raiz, void (*imprimir)(DADOS))
     }
 }
 
-void imprimir_arvore_visual(Arv23 *raiz, char *prefixo, short int eh_ultimo, short int eh_raiz, void (*imprimir)(DADOS))
+void imprimir_arvore_visual(AVR_23 *raiz, char *prefixo, short int eh_ultimo, short int eh_raiz, void (*imprimir)(DADOS))
 {
     if (raiz != NULL)
     {
@@ -846,7 +846,7 @@ void imprimir_arvore_visual(Arv23 *raiz, char *prefixo, short int eh_ultimo, sho
 
 //================ LIBERAR MEMORIA ==================
 
-void liberar_no_23(Arv23 **no, void (*liberar)(DADOS *))
+void liberar_no_23(AVR_23 **no, void (*liberar)(DADOS *))
 {
     if (no != NULL && *no != NULL)
     {
@@ -860,7 +860,7 @@ void liberar_no_23(Arv23 **no, void (*liberar)(DADOS *))
     }
 }
 
-void liberar_23(Arv23 **raiz, void (*liberar)(DADOS *))
+void liberar_23(AVR_23 **raiz, void (*liberar)(DADOS *))
 {
     if (raiz != NULL && *raiz != NULL)
     {
@@ -877,7 +877,7 @@ void liberar_23(Arv23 **raiz, void (*liberar)(DADOS *))
 }
 
 //================ MENU para testes ==================
-void menu(Arv23 **raiz)
+void menu(AVR_23 **raiz)
 {
     DADOS dado1;
     dado1.cidade = criar_cidade("Cidade1", 0, NULL);
@@ -1106,7 +1106,7 @@ void menu(Arv23 **raiz)
 
 // int main()
 // {
-//     Arv23 *raiz = NULL;
+//     AVR_23 *raiz = NULL;
 //     // Chama o menu interativo
 //     menu(&raiz);
 

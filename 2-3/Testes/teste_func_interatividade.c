@@ -10,7 +10,7 @@ gcc -Wall teste_func_interatividade.c ../Tads/Estruturas/Lista_duplamente.c ../T
 #include <stdlib.h>
 #include <string.h>
 #include "../Includes/Estruturas/Lista_duplamente.h"
-#include "../Includes/Estruturas/Rubro_negro.h"
+#include "../Includes/Estruturas/2-3.h"
 #include "../Includes/Estruturas/Dados.h"
 #include "../Includes/Interatividade/func_interatividade.h"
 #include "../Includes/Objetos/Estado.h"

@@ -6,7 +6,7 @@
 
 //===============DELETE_ALL===============
 
-void delete_cidade_CEP(Arv23 **raiz_cidade)
+void delete_cidade_CEP(AVR_23 **raiz_cidade)
 {
     if (raiz_cidade != NULL && *raiz_cidade != NULL)
     {
@@ -14,7 +14,7 @@ void delete_cidade_CEP(Arv23 **raiz_cidade)
         delete_cidade_CEP(&(*raiz_cidade)->cen);
         printf("Liberando arvore rubro-negra de cidades...\n");
 
-        Arv23 *raiz_cep = (*raiz_cidade)->info1.cidade.raiz_arvore_CEPs;
+        AVR_23 *raiz_cep = (*raiz_cidade)->info1.cidade.raiz_arvore_CEPs;
         (*raiz_cidade)->info1.cidade.raiz_arvore_CEPs = NULL;
 
         printf("Liberando arvore rubro-negra de CEPs...\n");
@@ -48,7 +48,7 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
             temp = aux;
             aux = aux->prox;
 
-            Arv23 *raiz_cidade = temp->estado.raiz_arvore_cidade;
+            AVR_23 *raiz_cidade = temp->estado.raiz_arvore_cidade;
             delete_cidade_CEP(&raiz_cidade);
             temp->estado.raiz_arvore_cidade = NULL;
             liberar_no_duplamente(&temp);
@@ -56,7 +56,7 @@ void delete_estado(LISTA_DUPLAMENTE **lista_estado)
     }
 }
 
-void delete_all(LISTA_DUPLAMENTE **lista_estado, Arv23 **raiz_pessoa)
+void delete_all(LISTA_DUPLAMENTE **lista_estado, AVR_23 **raiz_pessoa)
 {
     if (lista_estado != NULL && *lista_estado != NULL)
     {
@@ -74,7 +74,7 @@ void delete_all(LISTA_DUPLAMENTE **lista_estado, Arv23 **raiz_pessoa)
 
 //===============VERIFICAÇÕES===============
 
-short int pecorrer_cidade(Arv23 *raiz_cidade, char *cep)
+short int pecorrer_cidade(AVR_23 *raiz_cidade, char *cep)
 {
     short int retorno = 0;
 
@@ -131,7 +131,7 @@ short int verificar_se_existe_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
     return retorno;
 }
 
-short int verificar_se_existe_pessoa_associada_a_um_CEP(Arv23 *raiz_pessoas, char *CEP)
+short int verificar_se_existe_pessoa_associada_a_um_CEP(AVR_23 *raiz_pessoas, char *CEP)
 {
     short int retorno = 0;
 
@@ -162,7 +162,7 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(Arv23 *raiz_pessoas, cha
 
 //===============BUSCAS===============
 
-CIDADE *procurar_cidade_por_CEP_pecorrer_cidade(Arv23 *raiz_cidade, DADOS cep)
+CIDADE *procurar_cidade_por_CEP_pecorrer_cidade(AVR_23 *raiz_cidade, DADOS cep)
 {
     CIDADE *cidade = NULL;
 
@@ -220,7 +220,7 @@ CIDADE *procurar_cidade_por_CEP(LISTA_DUPLAMENTE *lista_estado, char *cep)
 
 //===============CADASTROS===============
 
-short int cadastrar_pessoa(Arv23 **raiz, PESSOA info)
+short int cadastrar_pessoa(AVR_23 **raiz, PESSOA info)
 {
     short int retorno = 0;
 
@@ -300,7 +300,7 @@ short int remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
     return retorno;
 }
 
-short int remover_pessoa(Arv23 **raiz, PESSOA info, PESSOA *pessoa_removida)
+short int remover_pessoa(AVR_23 **raiz, PESSOA info, PESSOA *pessoa_removida)
 {
     short int retorno = 0;
 
@@ -365,7 +365,7 @@ CIDADE *procurar_capital_de_um_estado(ESTADO estado)
     return retorno;
 }
 
-CIDADE *procurar_cidade_mais_populosa_sem_capital(Arv23 *raiz_cidade, char *nome_capital)
+CIDADE *procurar_cidade_mais_populosa_sem_capital(AVR_23 *raiz_cidade, char *nome_capital)
 {
     CIDADE *retorno = NULL;
 
@@ -399,7 +399,7 @@ CIDADE *procurar_cidade_mais_populosa_sem_capital(Arv23 *raiz_cidade, char *nome
     return retorno;
 }
 
-int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, Arv23 *raiz_pessoa)
+int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, AVR_23 *raiz_pessoa)
 {
     int quantidade = 0;
 
@@ -433,7 +433,7 @@ int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, Arv23
     return quantidade;
 }
 
-int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Arv23 *raiz_pessoa, CIDADE cidade)
+int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(AVR_23 *raiz_pessoa, CIDADE cidade)
 {
     int quantidade = 0;
 
@@ -481,7 +481,7 @@ int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Arv23 *
     return quantidade;
 }
 
-int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Arv23 *raiz_pessoa, CIDADE cidade)
+int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(AVR_23 *raiz_pessoa, CIDADE cidade)
 {
     int quantidade = 0;
 
@@ -529,7 +529,7 @@ int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Arv23 *raiz_pessoa, CI
     return quantidade;
 }
 
-// void mostrar_CEPs(Arv23 *raiz)
+// void mostrar_CEPs(AVR_23 *raiz)
 // {
 //     if (raiz != NULL)
 //     {
@@ -539,7 +539,7 @@ int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Arv23 *raiz_pessoa, CI
 //     }
 // }
 
-void mostrar_cidades(Arv23 *raiz)
+void mostrar_cidades(AVR_23 *raiz)
 {
     if (raiz != NULL)
     {
@@ -578,7 +578,7 @@ void mostrar_estados(LISTA_DUPLAMENTE *lista)
     }
 }
 
-void mostrar_pessoas(Arv23 *raiz)
+void mostrar_pessoas(AVR_23 *raiz)
 {
     if (raiz != NULL)
     {
@@ -592,7 +592,7 @@ void mostrar_pessoas(Arv23 *raiz)
     }
 }
 
-void mostrar_tudo(LISTA_DUPLAMENTE *lista, Arv23 *raiz_pessoa)
+void mostrar_tudo(LISTA_DUPLAMENTE *lista, AVR_23 *raiz_pessoa)
 {
     if (lista != NULL)
     {
