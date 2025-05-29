@@ -768,7 +768,7 @@ void imprimir_23_em_ordem(AVR_23 *raiz, void (*imprimir)(DADOS))
         {
             imprimir_23_em_ordem(raiz->esq, imprimir);
             imprimir(raiz->info1);
-            printf("  ");
+            printf("\n");
             imprimir_23_em_ordem(raiz->cen, imprimir);
             if (raiz->nInfo == 2)
             {
