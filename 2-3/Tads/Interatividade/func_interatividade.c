@@ -93,7 +93,6 @@ short int pecorrer_cidade(Arv23 *raiz_cidade, char *cep)
             retorno = 1; // CEP encontrado na segunda informação
         }
 
-
         if (retorno == 0)
             retorno = pecorrer_cidade(raiz_cidade->esq, cep);
 
@@ -142,9 +141,8 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(Arv23 *raiz_pessoas, cha
 
         valor_comparacao = comparar_CEPs(raiz_pessoas->info1.pessoa.CEP_natal, CEP);
 
-        
         if (valor_comparacao != 0 && raiz_pessoas->nInfo == 2)
-            valor_comparacao = comparar_CEPs(raiz_pessoas->info2.pessoa.CEP_natal, CEP); 
+            valor_comparacao = comparar_CEPs(raiz_pessoas->info2.pessoa.CEP_natal, CEP);
 
         if (valor_comparacao == 0)
             retorno = 1;
@@ -157,7 +155,6 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(Arv23 *raiz_pessoas, cha
 
         if (retorno == 0 && raiz_pessoas->nInfo == 2)
             retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->dir, CEP);
-
     }
 
     return retorno;
@@ -175,20 +172,26 @@ CIDADE *procurar_cidade_por_CEP_pecorrer_cidade(Arv23 *raiz_cidade, DADOS cep)
 
         procurar_dado = buscar_23(raiz_cidade->info1.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP);
 
-        if (procurar_dado == NULL && raiz_cidade->nInfo == 2)
-            procurar_dado = buscar_23(raiz_cidade->info2.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP);
-
-        if (procurar_dado == NULL)
-            procurar_dado = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->esq, cep);
-
-        if (procurar_dado == NULL)
-            procurar_dado = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->cen, cep);
-
-        if (procurar_dado == NULL && raiz_cidade->nInfo == 2) 
-            procurar_dado = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->dir, cep);
-
         if (procurar_dado != NULL)
             cidade = &(raiz_cidade->info1.cidade);
+        else if (raiz_cidade->nInfo == 2)
+        {
+            procurar_dado = buscar_23(raiz_cidade->info2.cidade.raiz_arvore_CEPs, cep, comparar_dados_CEP);
+
+            if (procurar_dado != NULL)
+                cidade = &(raiz_cidade->info2.cidade);
+        }
+
+        if (cidade == NULL)
+        {
+            cidade = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->esq, cep);
+
+            if (cidade == NULL)
+                cidade = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->cen, cep);
+
+            if (cidade == NULL && raiz_cidade->nInfo == 2)
+                cidade = procurar_cidade_por_CEP_pecorrer_cidade(raiz_cidade->dir, cep);
+        }
     }
 
     return cidade;
@@ -272,7 +275,7 @@ LISTA_DUPLAMENTE *cadastrar_estado(LISTA_DUPLAMENTE **lista_estado, ESTADO info)
 
 //===============REMOÇÕES===============
 
-short int *remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
+short int remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
 {
     short int retorno = 0;
 
@@ -297,9 +300,9 @@ short int *remover_CEP(CIDADE *cidade, char *cep, char *cep_removido)
     return retorno;
 }
 
-short int *remover_pessoa(Arv23 **raiz, PESSOA info, PESSOA *pessoa_removida)
+short int remover_pessoa(Arv23 **raiz, PESSOA info, PESSOA *pessoa_removida)
 {
-    short int *retorno = NULL;
+    short int retorno = 0;
 
     DADOS aux;
     aux.pessoa = info;
@@ -342,143 +345,224 @@ LISTA_DUPLAMENTE *procurar_estado_mais_populoso(LISTA_DUPLAMENTE *lista_estado)
     return retorno;
 }
 
-RUBRO_NEGRO *procurar_capital_de_um_estado(ESTADO estado)
+CIDADE *procurar_capital_de_um_estado(ESTADO estado)
 {
-    RUBRO_NEGRO *retorno = NULL;
+    CIDADE *retorno = NULL;
 
     if (estado.raiz_arvore_cidade != NULL)
     {
         DADOS aux;
         aux.cidade = criar_cidade(estado.nome_capital, 0, NULL);
 
-        retorno = buscar_rubro_negro(estado.raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
+        DADOS *dado_retornado = buscar_23(estado.raiz_arvore_cidade, aux, comparar_dados_nome_cidade);
+
+        if (dado_retornado != NULL)
+        {
+            retorno = &(dado_retornado->cidade);
+        }
     }
 
     return retorno;
 }
 
-RUBRO_NEGRO *procurar_cidade_mais_populosa_sem_capital(RUBRO_NEGRO *raiz_cidade, char *nome_capital)
+CIDADE *procurar_cidade_mais_populosa_sem_capital(Arv23 *raiz_cidade, char *nome_capital)
 {
-    RUBRO_NEGRO *retorno = NULL;
+    CIDADE *retorno = NULL;
 
     if (raiz_cidade != NULL)
     {
-        retorno = procurar_cidade_mais_populosa_sem_capital(raiz_cidade->esquerda, nome_capital);
+        retorno = procurar_cidade_mais_populosa_sem_capital(raiz_cidade->esq, nome_capital);
 
-        if (retorno == NULL && strcmp(raiz_cidade->info.cidade.nome, nome_capital) != 0)
-            retorno = raiz_cidade;
+        if (retorno == NULL && strcmp(raiz_cidade->info1.cidade.nome, nome_capital) != 0)
+            retorno = &raiz_cidade->info1.cidade;
 
-        if (retorno != NULL && strcmp(raiz_cidade->info.cidade.nome, nome_capital) != 0 && raiz_cidade->info.cidade.quantidade_populacao > retorno->info.cidade.quantidade_populacao)
-            retorno = raiz_cidade;
+        if (retorno != NULL && strcmp(raiz_cidade->info1.cidade.nome, nome_capital) != 0 && raiz_cidade->info1.cidade.quantidade_populacao > retorno->quantidade_populacao)
+            retorno = &raiz_cidade->info1.cidade;
 
-        RUBRO_NEGRO *aux = procurar_cidade_mais_populosa_sem_capital(raiz_cidade->direita, nome_capital);
+        if (retorno != NULL && raiz_cidade->nInfo == 2 && strcmp(raiz_cidade->info2.cidade.nome, nome_capital) != 0 && raiz_cidade->info2.cidade.quantidade_populacao > retorno->quantidade_populacao)
+            retorno = &raiz_cidade->info2.cidade;
 
-        if (aux != NULL && aux->info.cidade.quantidade_populacao > retorno->info.cidade.quantidade_populacao)
+        CIDADE *aux = procurar_cidade_mais_populosa_sem_capital(raiz_cidade->cen, nome_capital);
+
+        if (aux != NULL && aux->quantidade_populacao > retorno->quantidade_populacao)
             retorno = aux;
+
+        if (raiz_cidade->nInfo == 2)
+        {
+            aux = procurar_cidade_mais_populosa_sem_capital(raiz_cidade->dir, nome_capital);
+
+            if (aux != NULL && aux->quantidade_populacao > retorno->quantidade_populacao)
+                retorno = aux;
+        }
     }
 
     return retorno;
 }
 
-int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
+int quant_de_pessoas_que_nao_mora_na_cidade_natal(LISTA_DUPLAMENTE *lista, Arv23 *raiz_pessoa)
 {
     int quantidade = 0;
 
     if (raiz_pessoa != NULL)
     {
-        RUBRO_NEGRO *no_cidade = procurar_cidade_por_CEP(lista, raiz_pessoa->info.pessoa.CEP_atual);
+        CIDADE *cidade = procurar_cidade_por_CEP(lista, raiz_pessoa->info1.pessoa.CEP_atual);
 
         DADOS aux;
-        aux.CEP = raiz_pessoa->info.pessoa.CEP_natal;
+        aux.CEP = raiz_pessoa->info1.pessoa.CEP_natal;
 
-        if (no_cidade != NULL && buscar_rubro_negro(no_cidade->info.cidade.raiz_arvore_CEPs, aux, comparar_dados_CEP) == NULL)
+        if (cidade != NULL && buscar_23(cidade->raiz_arvore_CEPs, aux, comparar_dados_CEP) == NULL)
             quantidade++;
 
-        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->esquerda);
-        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->direita);
+        if (raiz_pessoa->nInfo == 2)
+        {
+            cidade = procurar_cidade_por_CEP(lista, raiz_pessoa->info2.pessoa.CEP_atual);
+
+            aux.CEP = raiz_pessoa->info2.pessoa.CEP_natal;
+
+            if (cidade != NULL && buscar_23(cidade->raiz_arvore_CEPs, aux, comparar_dados_CEP) == NULL)
+                quantidade++;
+        }
+
+        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->esq);
+        quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->cen);
+
+        if (raiz_pessoa->nInfo == 2)
+            quantidade += quant_de_pessoas_que_nao_mora_na_cidade_natal(lista, raiz_pessoa->dir);
     }
 
     return quantidade;
 }
 
-int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(RUBRO_NEGRO *raiz_pessoa, CIDADE cidade)
+int quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Arv23 *raiz_pessoa, CIDADE cidade)
 {
     int quantidade = 0;
 
     if (raiz_pessoa != NULL)
     {
         DADOS cep_natal;
-        cep_natal.CEP = raiz_pessoa->info.pessoa.CEP_natal;
+        cep_natal.CEP = raiz_pessoa->info1.pessoa.CEP_natal;
 
-        if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
+        if (buscar_23(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
         {
-            if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info.pessoa.CEP_atual) != 0)
+            if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info1.pessoa.CEP_atual) != 0)
             {
                 DADOS cep_atual;
-                cep_atual.CEP = raiz_pessoa->info.pessoa.CEP_atual;
+                cep_atual.CEP = raiz_pessoa->info1.pessoa.CEP_atual;
 
-                if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) == NULL)
+                if (buscar_23(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) == NULL)
                     quantidade++;
             }
         }
 
-        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->esquerda, cidade);
-        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->direita, cidade);
+        if (raiz_pessoa->nInfo == 2)
+        {
+            cep_natal.CEP = raiz_pessoa->info2.pessoa.CEP_natal;
+
+            if (buscar_23(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) != NULL)
+            {
+                if (comparar_CEPs(cep_natal.CEP, raiz_pessoa->info2.pessoa.CEP_atual) != 0)
+                {
+                    DADOS cep_atual;
+                    cep_atual.CEP = raiz_pessoa->info2.pessoa.CEP_atual;
+
+                    if (buscar_23(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) == NULL)
+                        quantidade++;
+                }
+            }
+        }
+
+        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->esq, cidade);
+        quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->cen, cidade);
+
+        if (raiz_pessoa->nInfo == 2)
+            quantidade += quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(raiz_pessoa->dir, cidade);
     }
 
     return quantidade;
 }
 
-int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(RUBRO_NEGRO *raiz_pessoa, CIDADE cidade)
+int quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Arv23 *raiz_pessoa, CIDADE cidade)
 {
     int quantidade = 0;
 
     if (raiz_pessoa != NULL)
     {
         DADOS cep_atual;
-        cep_atual.CEP = raiz_pessoa->info.pessoa.CEP_atual;
+        cep_atual.CEP = raiz_pessoa->info1.pessoa.CEP_atual;
 
-        if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) != NULL)
+        if (buscar_23(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) != NULL)
         {
-            if (comparar_CEPs(cep_atual.CEP, raiz_pessoa->info.pessoa.CEP_natal) != 0)
+            if (comparar_CEPs(cep_atual.CEP, raiz_pessoa->info1.pessoa.CEP_natal) != 0)
             {
                 DADOS cep_natal;
-                cep_natal.CEP = raiz_pessoa->info.pessoa.CEP_natal;
+                cep_natal.CEP = raiz_pessoa->info1.pessoa.CEP_natal;
 
-                if (buscar_rubro_negro(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) == NULL)
+                if (buscar_23(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) == NULL)
                     quantidade++;
             }
         }
 
-        quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->esquerda, cidade);
-        quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->direita, cidade);
+        if (raiz_pessoa->nInfo == 2)
+        {
+            cep_atual.CEP = raiz_pessoa->info2.pessoa.CEP_atual;
+
+            if (buscar_23(cidade.raiz_arvore_CEPs, cep_atual, comparar_dados_CEP) != NULL)
+            {
+                if (comparar_CEPs(cep_atual.CEP, raiz_pessoa->info2.pessoa.CEP_natal) != 0)
+                {
+                    DADOS cep_natal;
+                    cep_natal.CEP = raiz_pessoa->info2.pessoa.CEP_natal;
+
+                    if (buscar_23(cidade.raiz_arvore_CEPs, cep_natal, comparar_dados_CEP) == NULL)
+                        quantidade++;
+                }
+            }
+        }
+
+        quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->esq, cidade);
+        quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->cen, cidade);
+
+        if (raiz_pessoa->nInfo == 2)
+            quantidade += quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(raiz_pessoa->dir, cidade);
     }
 
     return quantidade;
 }
 
-void mostrar_CEPs(RUBRO_NEGRO *raiz)
-{
-    if (raiz != NULL)
-    {
-        mostrar_CEPs(raiz->esquerda);
-        imprimir_CEP(raiz->info.CEP);
-        mostrar_CEPs(raiz->direita);
-    }
-}
+// void mostrar_CEPs(Arv23 *raiz)
+// {
+//     if (raiz != NULL)
+//     {
+//         mostrar_CEPs(raiz->esquerda);
+//         imprimir_CEP(raiz->info.CEP);
+//         mostrar_CEPs(raiz->direita);
+//     }
+// }
 
-void mostrar_cidades(RUBRO_NEGRO *raiz)
+void mostrar_cidades(Arv23 *raiz)
 {
     if (raiz != NULL)
     {
-        mostrar_cidades(raiz->esquerda);
+        mostrar_cidades(raiz->esq);
         print_amarelo("\n\n=================CIDADE==================\n");
-        imprimir_cidade(raiz->info.cidade);
+        imprimir_cidade(raiz->info1.cidade);
 
         print_amarelo("\n\n=================CEPS==================\n");
-        mostrar_CEPs(raiz->info.cidade.raiz_arvore_CEPs);
+        imprimir_23_em_ordem(raiz->info1.cidade.raiz_arvore_CEPs, imprimir_dados_CEP);
         printf("\n\n");
-        mostrar_cidades(raiz->direita);
+        mostrar_cidades(raiz->cen);
+
+        if (raiz->nInfo == 2)
+        {
+            print_amarelo("\n\n=================CIDADE==================\n");
+            imprimir_cidade(raiz->info2.cidade);
+
+            print_amarelo("\n\n=================CEPS==================\n");
+            imprimir_23_em_ordem(raiz->info2.cidade.raiz_arvore_CEPs, imprimir_dados_CEP);
+            printf("\n\n");
+
+            mostrar_cidades(raiz->dir);
+        }
     }
 }
 
@@ -494,18 +578,21 @@ void mostrar_estados(LISTA_DUPLAMENTE *lista)
     }
 }
 
-void mostrar_pessoas(RUBRO_NEGRO *raiz)
+void mostrar_pessoas(Arv23 *raiz)
 {
     if (raiz != NULL)
     {
-        mostrar_pessoas(raiz->esquerda);
-        imprimir_pessoa(raiz->info.pessoa);
+        // mostrar_pessoas(raiz->esquerda);
+        // imprimir_pessoa(raiz->info.pessoa);
+        // printf("\n");
+        // mostrar_pessoas(raiz->direita);
+
+        imprimir_23_em_ordem(raiz, imprimir_dados_pessoa);
         printf("\n");
-        mostrar_pessoas(raiz->direita);
     }
 }
 
-void mostrar_tudo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *raiz_pessoa)
+void mostrar_tudo(LISTA_DUPLAMENTE *lista, Arv23 *raiz_pessoa)
 {
     if (lista != NULL)
     {

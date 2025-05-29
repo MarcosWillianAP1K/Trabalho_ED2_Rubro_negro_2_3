@@ -26,7 +26,7 @@ void imprimir_arvore_visual(Arv23 *raiz, char *prefixo, short int eh_ultimo, sho
 
 short int remover_23(Arv23 **raiz, DADOS valor, DADOS *dado_removido, short int (*comparar)(DADOS, DADOS));
 
-short int remover_23_void(Arv23 **raiz, DADOS valor, DADOS *dado_removido, short int (*comparar)(DADOS, DADOS));
+short int remover_23_void(void **raiz, DADOS valor, DADOS *dado_removido, short int (*comparar)(DADOS, DADOS));
 
 
 void liberar_no_23(Arv23 **no, void (*liberar)(DADOS *));
