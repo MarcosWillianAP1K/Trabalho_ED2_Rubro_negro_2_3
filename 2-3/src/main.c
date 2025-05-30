@@ -8,14 +8,11 @@
 
 int main()
 {
-    RUBRO_NEGRO *Raiz_pessoas = NULL;
+    AVR_23 *Raiz_pessoas = NULL;
     LISTA_DUPLAMENTE *Lista_estados = NULL;
 
-    //Povoar_sistema esta com problemas na hora de liberar a memoria, mas o problema esta no cadastro dele.
-    //Porem como foi feito para apenas testes das consultas sera apenas ignorado, o problema deve ser em alguma alocação dos char *.
-    // povoar_sistema(&Lista_estados, &Raiz_pessoas, 5, 5, 5, 5);
-
-    // pausar_tela();
+    // Lista_estados = povoar_estados();
+    // Raiz_pessoas = povoar_pessoas();
 
     menu_principal(&Lista_estados, &Raiz_pessoas);
 

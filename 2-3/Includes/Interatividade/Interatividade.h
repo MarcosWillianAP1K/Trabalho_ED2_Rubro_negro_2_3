@@ -2,4 +2,4 @@
 
 #pragma once
 
-void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas);
+void menu_principal(LISTA_DUPLAMENTE **Lista_estados, AVR_23 **Raiz_pessoas);

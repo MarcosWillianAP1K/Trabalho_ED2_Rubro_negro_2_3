@@ -1,10 +1,11 @@
 
 
 #include "../Estruturas/Lista_duplamente.h"
-#include "../Estruturas/Rubro_negro.h"
+#include "../Estruturas/2-3.h"
 
 #pragma once
 
-short int povoar_sistema(LISTA_DUPLAMENTE **lista_estados, RUBRO_NEGRO **raiz_pessoas, int num_estados, int cidades_por_estado,int ceps_por_cidade, int num_pessoas);
+LISTA_DUPLAMENTE *povoar_estados();
 
+AVR_23 *povoar_pessoas();
 

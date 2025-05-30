@@ -14,420 +14,253 @@
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 #include "../../Includes/Interatividade/povoamento_do_sistema.h"
 
-short int contador_de_digitos(int numero)
+#define quantidade_estados 10
+#define quantidade_cidades 20
+#define quantidade_ceps 40
+#define quantidade_pessoas 10
+
+LISTA_DUPLAMENTE *povoar_estados()
 {
-    short int contador = 0;
-    do
+    limpar_tela();
+    print_amarelo("=== INICIANDO POVOAMENTO DE ESTADOS ===\n\n");
+
+    pausar_tela();
+    // Inicializar a lista de estados
+    LISTA_DUPLAMENTE *lista_estados = NULL;
+
+    print_amarelo("=== Criando CEPs ===\n");
+
+    // Criar 40 CEPs com formato "00000-001" até "00000-040" - alterado para ponteiros
+    char *ceps[quantidade_ceps];
+    for (int i = 0; i < quantidade_ceps; i++)
     {
-        contador++;
-        numero /= 10;
-    } while (numero != 0);
-    return contador;
-}
+        char temp_cep[10];
+        sprintf(temp_cep, "%05d-%03d", 0, i + 1);
+        limpar_buffer();
+        ceps[i] = strdup(temp_cep); // Alocação dinâmica com strdup
+        printf("CEP criado: %s\n", ceps[i]);
+    }
+    mensagem_sucesso("CEPs CRIADOS COM SUCESSO.\n\n");
 
-// Funcoes auxiliares basicas
-char *gerar_nome_estado(int numero)
-{
-    char *nome = (char *)malloc((6 + contador_de_digitos(numero) + 1) * sizeof(char));
-    if (nome == NULL)
-        return NULL;
-    sprintf(nome, "Estado%d", numero);
-    return nome;
-}
+    print_amarelo("Agora sera criado as cidades...\n");
 
-char *gerar_nome_capital(int numero)
-{
-    char *nome = (char *)malloc((7 + contador_de_digitos(numero) + 1) * sizeof(char));
-    if (nome == NULL)
-        return NULL;
-    sprintf(nome, "Capital%d", numero);
-    return nome;
-}
+    pausar_tela();
+    limpar_tela();
 
-char *gerar_nome_cidade(int numero_estado, int numero_cidade)
-{
-    char *nome = (char *)malloc((7 + contador_de_digitos(numero_estado) + contador_de_digitos(numero_cidade) + 1) * sizeof(char));
-    if (nome == NULL)
-        return NULL;
-    sprintf(nome, "Cidade%d.%d", numero_estado, numero_cidade);
-    return nome;
-}
+    print_amarelo("=== Criando Cidades ===\n");
 
-char *gerar_cep(int numero_estado, int numero_cep)
-{
-    char *cep = (char *)malloc((11) * sizeof(char));
-    if (cep == NULL)
-        return NULL;
-    sprintf(cep, "%05d-%03d", numero_estado, numero_cep);
-
-    corrigir_formatacao_CEP(&cep);
-    return cep;
-}
-
-char *gerar_cpf(int numero_pessoa)
-{
-    char *cpf = (char *)malloc(15 * sizeof(char));
-    if (cpf == NULL)
-        return NULL;
-
-    // Formata o CPF como XXX.YYY.ZZZ-WW onde numero da pessoa e distribuido
-    int x = (numero_pessoa % 900) + 100;            // Garante um numero de 3 digitos para XXX
-    int y = ((numero_pessoa / 900) % 900) + 100;    // Garante um numero de 3 digitos para YYY
-    int z = ((numero_pessoa / 810000) % 900) + 100; // Garante um numero de 3 digitos para ZZZ
-    int w = (numero_pessoa % 90) + 10;              // Garante um numero de 2 digitos para WW
-
-    sprintf(cpf, "%d.%d.%d-%d", x, y, z, w);
-
-    corrigir_formatacao_cpf(&cpf);
-    return cpf;
-}
-
-char *gerar_nome_pessoa(int numero)
-{
-    char *nome = (char *)malloc(20 * sizeof(char));
-    if (nome == NULL)
-        return NULL;
-    sprintf(nome, "Pessoa%d", numero);
-    return nome;
-}
-
-// Funcoes auxiliares para coleta de CEPs (ordenadas por dependencia)
-void coletar_ceps_cidade(RUBRO_NEGRO *cep_node, char **ceps, int *total, int max)
-{
-    if (cep_node == NULL || *total >= max)
-        return;
-
-    // Percorrer a arvore em in-ordem
-    coletar_ceps_cidade(cep_node->esquerda, ceps, total, max);
-
-    if (*total < max)
+    // Criar 20 cidades com populações crescentes
+    CIDADE cidades[quantidade_cidades];
+    for (int i = 0; i < quantidade_cidades; i++)
     {
-        // Duplicar o CEP para uso posterior
-        ceps[*total] = strdup(cep_node->info.CEP);
-        (*total)++;
+        char nome_cidade[20];
+        sprintf(nome_cidade, "cidade%d", i + 1);
+        limpar_buffer();
+        int populacao = (i + 1) * 10; // Começando com 10 e incrementando de 10 em 10
+        cidades[i] = criar_cidade(strdup(nome_cidade), populacao, NULL);
+        printf("Cidade criada: %s, Populacao: %d\n", nome_cidade, populacao);
     }
 
-    coletar_ceps_cidade(cep_node->direita, ceps, total, max);
-}
+    mensagem_sucesso("CIDADES CRIADAS COM SUCESSO.\n\n");
 
-void coletar_ceps_arvore(LISTA_DUPLAMENTE *estado, RUBRO_NEGRO *cidade_node, char **ceps, int *total, int max)
-{
-    if (cidade_node == NULL || *total >= max)
-        return;
+    print_amarelo("Agora sera criado os estados...\n");
 
-    // Coletar CEPs da cidade atual
-    coletar_ceps_cidade(cidade_node->info.cidade.raiz_arvore_CEPs, ceps, total, max);
+    pausar_tela();
+    limpar_tela();
 
-    // Percorrer outras cidades
-    coletar_ceps_arvore(estado, cidade_node->esquerda, ceps, total, max);
-    coletar_ceps_arvore(estado, cidade_node->direita, ceps, total, max);
-}
+    print_amarelo("=== Criando Estados ===\n");
 
-void coletar_ceps(LISTA_DUPLAMENTE *lista_estados, char **ceps, int *total, int max)
-{
-    LISTA_DUPLAMENTE *estado_atual = lista_estados;
-
-    while (estado_atual != NULL && *total < max)
+    // Criar 10 estados, cada um com duas cidades (sendo uma delas a capital)
+    ESTADO estado[quantidade_estados];
+    for (int i = 0; i < quantidade_estados; i++)
     {
-        coletar_ceps_arvore(estado_atual, estado_atual->estado.raiz_arvore_cidade, ceps, total, max);
-        estado_atual = estado_atual->prox;
-    }
-}
+        char nome_estado[20];
+        sprintf(nome_estado, "estado%d", i + 1);
+        limpar_buffer();
 
-// Funcoes para povoamento
-short int povoar_estados(LISTA_DUPLAMENTE **lista_estados, int quantidade)
-{
-    if (lista_estados == NULL || quantidade <= 0)
-        return 0;
+        // A capital é a cidade número (estado * 2)
+        int num_capital = (i + 1) * 2;
 
-    short int sucesso = 1; // Começamos considerando sucesso
-
-    for (int i = 1; i <= quantidade; i++)
-    {
-        char *nome_estado = gerar_nome_estado(i);
-
-        if (nome_estado == NULL)
-        {
-            sucesso = 0;
-            free(nome_estado);
-            continue;
-        }
-
-        ESTADO estado = criar_estado(nome_estado, NULL, 0, 0, NULL);
-        LISTA_DUPLAMENTE *no_estado = cadastrar_estado(lista_estados, estado);
-
-        if (no_estado != NULL)
-        {
-            printf("Estado %s cadastrado com sucesso!\n", nome_estado);
-        }
-        else
-        {
-            printf("Falha ao cadastrar estado %s!\n", nome_estado);
-
-            free(nome_estado);
-
-            sucesso = 0;
-        }
+        // Criar o estado
+        printf("Criando estado: %s com capital: %s\n", nome_estado, cidades[num_capital - 1].nome);
+        estado[i] = criar_estado(strdup(nome_estado), cidades[num_capital - 1].nome, 0, (i + 1) * 10, NULL);
     }
 
-    return sucesso;
-}
+    mensagem_sucesso("ESTADOS CRIADOS COM SUCESSO.\n\n");
 
-short int povoar_cidades(LISTA_DUPLAMENTE *lista_estados, int cidades_por_estado)
-{
-    if (lista_estados == NULL || cidades_por_estado <= 0)
-        return 0;
+    print_amarelo("Agora iniciara o processo de cadastros dos ceps nas cidades...\n");
 
-    LISTA_DUPLAMENTE *atual = lista_estados;
-    int contador_estado = 1;
-    short int sucesso = 1; // Começamos considerando sucesso
+    pausar_tela();
+    limpar_tela();
 
-    while (atual != NULL)
+    print_amarelo("=== Iniciando o cadastros dos ceps nas cidades ===\n");
+
+    for (int i = 0; i < quantidade_cidades; i++)
     {
-        for (int i = 1; i <= cidades_por_estado; i++)
+        // Cada cidade recebe 2 CEPs
+        for (int j = i * 2; j < (i * 2) + 2; j++)
         {
-            char *nome_cidade = gerar_nome_cidade(contador_estado, i);
-
-            if (nome_cidade == NULL)
+            // Atribuir o CEP à cidade
+            printf("Atribuindo CEP %s a cidade %s\n", ceps[j], cidades[i].nome);
+            if (cadastrar_CEP(NULL, &cidades[i], ceps[j]))
             {
-                free(nome_cidade);
-                sucesso = 0;
-                continue;
-            }
-
-            // Populacao arbitraria
-            int populacao = (i * 10) * contador_estado;
-
-            CIDADE cidade = criar_cidade(nome_cidade, populacao, NULL);
-            RUBRO_NEGRO *no_cidade = cadastrar_cidade(&atual->estado, cidade);
-
-            if (i == 1)
-            {
-                // Se for a primeira cidade, podemos definir como capital
-                atual->estado.nome_capital = nome_cidade;
-            }
-
-            if (no_cidade != NULL)
-            {
-                printf("Cidade %s cadastrada com sucesso no Estado%d!\n", nome_cidade, contador_estado);
-                atual->estado.quantidade_cidade++;
-                atual->estado.quantidade_populacao += populacao;
+                mensagem_sucesso("\n");
             }
             else
             {
-                printf("Falha ao cadastrar cidade %s no Estado%d!\n", nome_cidade, contador_estado);
-                free(nome_cidade);
-                sucesso = 0;
+                mensagem_erro("\n");
             }
         }
-
-        atual = atual->prox;
-        contador_estado++;
     }
 
-    return sucesso;
-}
+    mensagem_sucesso("CEPs CADASTRADOS COM SUCESSO.\n\n");
 
-short int povoar_ceps_cidade(LISTA_DUPLAMENTE *estado, RUBRO_NEGRO *cidade_node, int numero_estado, int ceps_por_cidade, int *cont)
-{
-    if (cidade_node == NULL)
-        return 1; // Base case - success (there's no error in having no node)
+    print_amarelo("Agora iniciara o processo de cadastros das cidades nos estados...\n");
 
-    short int sucesso = 1; // Começamos considerando sucesso
+    pausar_tela();
+    limpar_tela();
 
-    if (!povoar_ceps_cidade(estado, cidade_node->esquerda, numero_estado, ceps_por_cidade, cont))
-        sucesso = 0;
+    print_amarelo("=== Iniciando o cadastros das cidades nos estados ===\n");
 
-    // Adicionar CEPs à cidade atual
-    for (int i = 1; i <= ceps_por_cidade; i++)
+    for (int i = 0; i < quantidade_estados; i++)
     {
-        char *cep = gerar_cep(numero_estado, *cont);
-        (*cont)++;
-
-        if (cep == NULL)
+        // Cada estado recebe 2 cidades
+        for (int j = i * 2; j < (i * 2) + 2; j++)
         {
-            sucesso = 0;
-            free(cep);
-            continue;
-        }
-
-        RUBRO_NEGRO *cep_node = cadastrar_CEP(estado, &cidade_node->info.cidade, cep);
-
-        if (cep_node != NULL)
-        {
-            printf("CEP %s cadastrado com sucesso em %s!\n", cep, cidade_node->info.cidade.nome);
-        }
-        else
-        {
-            printf("Falha ao cadastrar CEP %s em %s!\n", cep, cidade_node->info.cidade.nome);
-            free(cep);
-            sucesso = 0; // Marcar falha se não conseguir cadastrar um CEP
+            // Atribuir a cidade ao estado
+            printf("Atribuindo cidade %s ao estado %s\n", cidades[j].nome, estado[i].nome_estado);
+            if (cadastrar_cidade(&estado[i], cidades[j]))
+            {
+                mensagem_sucesso("\n");
+            }
+            else
+            {
+                mensagem_erro("\n");
+            }
         }
     }
 
-    // Percorrer outras cidades (pre-ordem)
-    // Se falhar em qualquer recursão, propaga falha
+    mensagem_sucesso("CIDADES CADASTRADAS NOS ESTADOS COM SUCESSO.\n\n");
 
-    if (!povoar_ceps_cidade(estado, cidade_node->direita, numero_estado, ceps_por_cidade, cont))
-        sucesso = 0;
+    print_amarelo("Agora iniciara o processo de cadastros dos estados na lista...\n");
 
-    return sucesso;
-}
+    pausar_tela();
+    limpar_tela();
 
-short int povoar_ceps(LISTA_DUPLAMENTE *lista_estados, int ceps_por_cidade)
-{
-    if (lista_estados == NULL)
-        return 0;
+    print_amarelo("=== Iniciando o cadastros dos estados na lista ===\n");
 
-    LISTA_DUPLAMENTE *estado_atual = lista_estados;
-    int contador_estado = 1;
-    short int sucesso = 1; // Começamos considerando sucesso
-
-    while (estado_atual != NULL)
+    for (int i = 0; i < quantidade_estados; i++)
     {
-        RUBRO_NEGRO *cidade_atual = estado_atual->estado.raiz_arvore_cidade;
+        // Adicionar o estado à lista
+        printf("Adicionando estado %s a lista\n", estado[i].nome_estado);
 
-        // Percorrer cidades em pre-ordem (simplificacao)
-        // Se falhar em qualquer estado, marcamos falha mas continuamos para os outros
-        int contador_cep = 1;
-        if (!povoar_ceps_cidade(estado_atual, cidade_atual, contador_estado, ceps_por_cidade, &contador_cep))
-            sucesso = 0;
-
-        estado_atual = estado_atual->prox;
-        contador_estado++;
-    }
-
-    return sucesso;
-}
-
-short int povoar_pessoas(RUBRO_NEGRO **raiz_pessoas, LISTA_DUPLAMENTE *lista_estados, int quantidade)
-{
-    if (raiz_pessoas == NULL || lista_estados == NULL || quantidade <= 0)
-        return 0;
-
-    // Coletar todos os CEPs disponiveis para uso
-    int max_ceps = 100; // Limite arbitrario
-    char **ceps_disponiveis = (char **)malloc(max_ceps * sizeof(char *));
-    if (ceps_disponiveis == NULL)
-        return 0;
-
-    int total_ceps = 0;
-    short int sucesso = 1; // Começamos considerando sucesso
-
-    // Inicializar array
-    for (int i = 0; i < max_ceps; i++)
-    {
-        ceps_disponiveis[i] = NULL;
-    }
-
-    // Coletar CEPs de todos os estados/cidades
-    coletar_ceps(lista_estados, ceps_disponiveis, &total_ceps, max_ceps);
-
-    if (total_ceps == 0)
-    {
-        printf("Nenhum CEP disponivel para cadastro de pessoas!\n");
-        free(ceps_disponiveis);
-        return 0;
-    }
-
-    // Cadastrar pessoas usando os CEPs coletados
-    for (int i = 1; i <= quantidade && i <= max_ceps; i++)
-    {
-        char *nome = gerar_nome_pessoa(i);
-        char *cpf = gerar_cpf(i);
-
-        if (nome == NULL || cpf == NULL)
+        if (inserir_ordernado_duplamente(&lista_estados, estado[i]))
         {
-            if (nome)
-                free(nome);
-            if (cpf)
-                free(cpf);
-            sucesso = 0;
-            continue;
-        }
-
-        // Escolher dois CEPs aleatorios para residencia e nascimento
-        int idx_res = i % total_ceps;
-        int idx_nasc = (i * 3) % total_ceps; // Garantir variacao
-
-        // Criar data de nascimento variada
-        int dia = 1 + (i % 28);
-        int mes = 1 + (i % 12);
-        int ano = 1950 + (i % 50);
-        DATA data = criar_data(dia, mes, ano);
-
-        PESSOA pessoa = criar_pessoa(cpf, nome, strdup(ceps_disponiveis[idx_res]), strdup(ceps_disponiveis[idx_nasc]), data);
-        RUBRO_NEGRO *pessoa_node = cadastrar_pessoa(raiz_pessoas, pessoa);
-
-        if (pessoa_node != NULL)
-        {
-            printf("Pessoa %s com CPF %s cadastrada com sucesso!\n", nome, cpf);
+            mensagem_sucesso("\n");
         }
         else
         {
-            printf("Falha ao cadastrar pessoa %s com CPF %s!\n", nome, cpf);
-            free(nome);
-            free(cpf);
-            sucesso = 0; // Marcar falha se não conseguir cadastrar uma pessoa
+            mensagem_erro("\n");
         }
     }
 
-    // Liberar memoria dos CEPs
-    for (int i = 0; i < total_ceps; i++)
-    {
-        if (ceps_disponiveis[i])
-        {
-            free(ceps_disponiveis[i]);
-        }
-    }
-    free(ceps_disponiveis);
+    mensagem_sucesso("ESTADOS CADASTRADOS NA LISTA COM SUCESSO.\n\n");
 
-    return sucesso;
+    print_amarelo("\n=== POVOAMENTO CONCLUIDO ===\n");
+
+    pausar_tela();
+
+    return lista_estados;
 }
 
-short int povoar_sistema(LISTA_DUPLAMENTE **lista_estados, RUBRO_NEGRO **raiz_pessoas, int num_estados, int cidades_por_estado, int ceps_por_cidade, int num_pessoas)
+// Função para povoar pessoas
+AVR_23 *povoar_pessoas()
 {
-    if (lista_estados == NULL || raiz_pessoas == NULL ||
-        num_estados <= 0 || cidades_por_estado <= 0 ||
-        ceps_por_cidade <= 0 || num_pessoas <= 0)
-        return 0;
+    srand(time(NULL)); // Inicializar gerador de números aleatórios
 
-    short int sucesso = 1; // Começamos considerando sucesso
+    limpar_tela();
+    print_amarelo("=== INICIANDO POVOAMENTO DE PESSOAS ===\n\n");
 
-    printf("=== INICIANDO POVOAMENTO DO SISTEMA ===\n");
+    // Inicializar a árvore de pessoas
+    AVR_23 *raiz_pessoas = NULL;
 
-    printf("\n=== POVOANDO ESTADOS ===\n");
-    if (!povoar_estados(lista_estados, num_estados))
+    print_amarelo("=== Criando Pessoas ===\n");
+
+    
+
+    // Criar 10 pessoas
+    for (int i = 0; i < quantidade_pessoas; i++)
     {
-        printf("Erro ao povoar estados!\n");
-        sucesso = 0;
+        // Criar nome da pessoa
+        char nome_pessoa[20];
+        sprintf(nome_pessoa, "pessoa%d", i + 1);
+
+        // Criar CPF único
+        char cpf[15];
+        sprintf(cpf, "%03d.%03d.%03d-%02d", 100 + i, 200 + i, 300 + i, 10 + i);
+
+        // Criar data de nascimento
+        int dia = 1 + (i % 28); // dia entre 1 e 28
+        int mes = 1 + (i % 12); // mês entre 1 e 12
+        int ano = 1970 + i;     // ano a partir de 1970
+        DATA data_nascimento = criar_data(dia, mes, ano);
+
+        // Definir CEP natal e atual
+        char *cep_natal, *cep_atual;
+        char buffer[50];
+
+        if (i < 5)
+        {
+            sprintf(buffer, "00000-%03d", rand() % quantidade_ceps + 1);
+            limpar_buffer();
+            cep_natal = strdup(buffer); // Exemplo de CEP natal
+
+            while (1) // Loop para garantir que o CEP atual seja diferente do natal
+            {
+                sprintf(buffer, "00000-%03d", rand() % quantidade_ceps + 1);
+                limpar_buffer();
+                if (strcmp(buffer, cep_natal) != 0)
+                {
+                    cep_atual = strdup(buffer);
+                    break;
+                }
+            }
+            
+            cep_atual = strdup(buffer); // Exemplo de CEP atual
+
+            printf("Criando %s com CEPs diferentes (natal: %s, atual: %s)\n",
+                   nome_pessoa, cep_natal, cep_atual);
+        }
+        else
+        {
+            sprintf(buffer, "00000-%03d", rand() % quantidade_ceps + 1);
+            cep_natal = strdup(buffer); // Exemplo de CEP natal
+            cep_atual = cep_natal;           // Mesmo CEP
+            printf("Criando %s com CEPs iguais (natal e atual: %s)\n",
+                   nome_pessoa, cep_natal);
+        }
+
+        // Criar a pessoa
+        PESSOA pessoa = criar_pessoa(strdup(cpf), strdup(nome_pessoa),
+                                     cep_natal, cep_atual,
+                                     data_nascimento);
+
+        // Cadastrar pessoa
+        short int resultado = cadastrar_pessoa(&raiz_pessoas, pessoa);
+        if (resultado)
+        {
+            mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
+        }
+        else
+        {
+            mensagem_erro("Falha ao cadastrar pessoa!\n");
+        }
     }
 
-    printf("\n=== POVOANDO CIDADES ===\n");
-    if (!povoar_cidades(*lista_estados, cidades_por_estado))
-    {
-        printf("Erro ao povoar cidades!\n");
-        sucesso = 0;
-    }
+    mensagem_sucesso("POVOAMENTO DE PESSOAS CONCLUIDO COM SUCESSO!\n");
 
-    printf("\n=== POVOANDO CEPs ===\n");
-    if (!povoar_ceps(*lista_estados, ceps_por_cidade))
-    {
-        printf("Erro ao povoar CEPs!\n");
-        sucesso = 0;
-    }
+    print_amarelo("Total de pessoas cadastradas: 10\n");
 
-    printf("\n=== POVOANDO PESSOAS ===\n");
-    if (!povoar_pessoas(raiz_pessoas, *lista_estados, num_pessoas))
-    {
-        printf("Erro ao povoar pessoas!\n");
-        sucesso = 0;
-    }
-
-    if (sucesso)
-        printf("\n=== POVOAMENTO CONCLUIDO COM SUCESSO ===\n");
-    else
-        printf("\n=== POVOAMENTO CONCLUIDO COM FALHAS ===\n");
-
-    return sucesso;
+    pausar_tela();
+    return raiz_pessoas;
 }

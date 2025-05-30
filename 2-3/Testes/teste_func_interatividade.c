@@ -183,7 +183,7 @@ LISTA_DUPLAMENTE *povoar_estados()
 }
 
 // Função para povoar pessoas
-AVR_23 *povoar_pessoas(LISTA_DUPLAMENTE *lista_estados)
+AVR_23 *povoar_pessoas()
 {
     limpar_tela();
     print_amarelo("=== INICIANDO POVOAMENTO DE PESSOAS ===\n\n");
@@ -605,7 +605,7 @@ void testar_exibicao_e_liberacao(LISTA_DUPLAMENTE *lista_estados, AVR_23 **raiz_
 int main()
 {
     LISTA_DUPLAMENTE *lista_estados = povoar_estados();
-    AVR_23 *raiz_pessoas = povoar_pessoas(lista_estados);
+    AVR_23 *raiz_pessoas = povoar_pessoas();
 
     // Testar as diversas funções
     testar_consultas_e_verificacoes(lista_estados, raiz_pessoas);
