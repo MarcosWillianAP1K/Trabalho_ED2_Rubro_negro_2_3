@@ -117,21 +117,16 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(RUBRO_NEGRO *raiz_pessoa
 
     if (raiz_pessoas != NULL && CEP != NULL)
     {
-        short int valor_comparacao;
+        if (comparar_CEPs(raiz_pessoas->info.pessoa.CEP_natal, CEP) == 0)
+            retorno = 1;
+        else if (comparar_CEPs(raiz_pessoas->info.pessoa.CEP_atual, CEP) == 0)
+            retorno = 1;
 
-        valor_comparacao = comparar_CEPs(raiz_pessoas->info.pessoa.CEP_natal, CEP);
-
-        if (valor_comparacao != 0)
-            valor_comparacao = comparar_CEPs(raiz_pessoas->info.pessoa.CEP_atual, CEP);
-
-        if (valor_comparacao != 0)
+        if (retorno == 0)
             retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->esquerda, CEP);
 
-        if (valor_comparacao != 0 && retorno == 0)
+        if (retorno == 0)
             retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->direita, CEP);
-
-        if (valor_comparacao == 0)
-            retorno = 1;
     }
 
     return retorno;

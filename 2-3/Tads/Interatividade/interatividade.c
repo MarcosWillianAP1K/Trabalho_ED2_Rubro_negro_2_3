@@ -549,7 +549,7 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, AVR_23 **Raiz_pessoas)
         printf("(b) Cadastrar uma Cidade e seus respectivos dados.\n");
         printf("(c) Cadastrar os CEPs de uma Cidade.\n");
         printf("(d) Cadastrar Pessoas e seus respectivos dados.\n");
-        printf("(e) Remover um CEP (desde que não tenha nenhuma pessoa associada).\n");
+        printf("(e) Remover um CEP (desde que nao tenha nenhuma pessoa associada).\n");
         printf("(f) Remover uma Pessoa.\n");
         printf("\n===== Consultas =====\n");
         printf("(1) Qual o estado mais populoso?\n");

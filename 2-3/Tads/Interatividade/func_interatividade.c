@@ -139,13 +139,20 @@ short int verificar_se_existe_pessoa_associada_a_um_CEP(AVR_23 *raiz_pessoas, ch
     {
         short int valor_comparacao;
 
-        valor_comparacao = comparar_CEPs(raiz_pessoas->info1.pessoa.CEP_natal, CEP);
+        if (comparar_CEPs(raiz_pessoas->info1.pessoa.CEP_natal, CEP) == 0)
+            retorno = 1; // Pessoa encontrada
 
-        if (valor_comparacao != 0 && raiz_pessoas->nInfo == 2)
-            valor_comparacao = comparar_CEPs(raiz_pessoas->info2.pessoa.CEP_natal, CEP);
+        else if (comparar_CEPs(raiz_pessoas->info1.pessoa.CEP_atual, CEP) == 0)
+            retorno = 1; // Pessoa encontrada
 
-        if (valor_comparacao == 0)
-            retorno = 1;
+        if (retorno == 0 && raiz_pessoas->nInfo == 2)
+        {
+            if (comparar_CEPs(raiz_pessoas->info2.pessoa.CEP_natal, CEP) == 0)
+                retorno = 1; // Pessoa encontrada
+                
+            else if (comparar_CEPs(raiz_pessoas->info2.pessoa.CEP_atual, CEP) == 0)
+                retorno = 1; // Pessoa encontrada
+        }
 
         if (retorno == 0)
             retorno = verificar_se_existe_pessoa_associada_a_um_CEP(raiz_pessoas->esq, CEP);
