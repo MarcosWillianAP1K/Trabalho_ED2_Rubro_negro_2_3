@@ -55,8 +55,7 @@ void cadastrar_estados_interativo(LISTA_DUPLAMENTE **lista)
     else
     {
         if (buscar_duplamente(*lista, estado) != NULL)
-          mensagem_erro("ESTADO JA EXISTE!");
-
+            mensagem_erro("ESTADO JA EXISTE!");
     }
 
     // Liberando em caso de error
@@ -107,10 +106,11 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                     no_estado->estado.quantidade_populacao += quant_populacao;
                 }
                 else
+                {
                     mensagem_erro("CIDADE JA EXISTENTE!");
                     liberar_rubro_negro_void(&cidade.raiz_arvore_CEPs, liberar_dados_CEP);
                     liberar_cidade(&cidade);
-
+                }
             }
             else
             {
@@ -121,22 +121,19 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                 busca_cidade.cidade = cidade;
 
                 if (buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade) != NULL)
-                  mensagem_erro("CIDADE JA EXISTENTE!");
+                    mensagem_erro("CIDADE JA EXISTENTE!");
 
                 liberar_cidade(&cidade);
                 liberar_CEP(&cep_inicial);
-
             }
         }
         else
             mensagem_erro("ESTADO NAO ENCONTRADO!");
 
-
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
@@ -168,7 +165,7 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
                 char *CEP = digitar_CEP();
 
                 if (cadastrar_CEP(lista, &no_cidade->info.cidade, CEP) != NULL)
-                  mensagem_sucesso("CEP CADASTRADO COM SUCESSO!");
+                    mensagem_sucesso("CEP CADASTRADO COM SUCESSO!");
 
                 else
                 {
@@ -178,17 +175,16 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
             }
             else
                 mensagem_erro("CIDADE NAO ENCONTRADA!");
-            
+
             free(nome_cidade);
         }
         else
             mensagem_erro("ESTADO NAO ENCONTRADA!");
-    
+
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pessoas)
@@ -230,7 +226,7 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
         if (validar_cep_natal == 1 && validar_cep_atual == 1)
         {
             if (cadastrar_pessoa(Raiz_pessoas, pessoa) != NULL)
-              mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
+                mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
 
             else
             {
@@ -257,7 +253,6 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
@@ -307,7 +302,7 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
             }
             else
                 mensagem_erro("CIDADE NAO ENCONTRADA!");
-    
+
             free(nome_cidade);
         }
         else
@@ -317,7 +312,6 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
@@ -333,9 +327,9 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
 
         if (no_removido != NULL)
         {
-          mensagem_sucesso("Pessoa removida com sucesso!");
-          liberar_no_rubro_negro(&no_removido, liberar_dados_pessoa);
-        }   
+            mensagem_sucesso("Pessoa removida com sucesso!");
+            liberar_no_rubro_negro(&no_removido, liberar_dados_pessoa);
+        }
         else
             mensagem_erro("CPF NAO ENCONTRADO!");
 
@@ -343,7 +337,6 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
     }
     else
         mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
-
 }
 
 //================CONSULTAS================
@@ -357,7 +350,6 @@ void qual_estado_mais_populoso(LISTA_DUPLAMENTE *Lista_estados)
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
@@ -375,21 +367,18 @@ void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
             RUBRO_NEGRO *no_capital = procurar_capital_de_um_estado(no_estado->estado);
 
             if (no_capital != NULL)
-              printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
+                printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
 
             else
                 printf("Capital nao encontrada ou nao cadastrada para o estado %s\n\n", nome_estado);
-
         }
-        else 
+        else
             mensagem_erro("ESTADO NAO ENCONTRADA!");
-     
 
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-    
 }
 
 void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *lista_estados)
@@ -407,11 +396,10 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
             RUBRO_NEGRO *no_cidade_mais_populosa = procurar_cidade_mais_populosa_sem_capital(no_estado->estado.raiz_arvore_cidade, no_estado->estado.nome_capital);
 
             if (no_cidade_mais_populosa != NULL)
-              printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
-            
+                printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
+
             else
                 printf("Cidade mais populosa nao encontrada para o estado %s\n\n", nome_estado);
-            
         }
         else
             printf("Estado nao encontrado\n\n");
@@ -604,6 +592,7 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             break;
         case 'f':
             remover_pessoa_interativo(Raiz_pessoas);
+            pausar_tela();
             break;
 
         case '0':
@@ -646,7 +635,19 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas
             pausar_tela();
             break;
         case '8':
-            mostrar_tudo(*Lista_estados, *Raiz_pessoas);
+            if (*Lista_estados != NULL || *Raiz_pessoas != NULL)
+            {
+                print_amarelo("=================MOSTRAR TUDO==================\n\n");
+                mostrar_tudo(*Lista_estados, *Raiz_pessoas);
+            }
+            else
+            {
+                mensagem_erro("CADASTRE UM ESTADO OU UMA PESSOA PRIMEIRO!\n");
+            }
+            pausar_tela();
+            break;
+        default:
+            mensagem_erro("Opcao invalida! Tente novamente.\n");
             pausar_tela();
             break;
         }

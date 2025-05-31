@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../../Includes/Estruturas/Lista_duplamente.h"
-#include "../../Includes/Estruturas/Rubro_negro.h"
 #include "../../Includes/Estruturas/Dados.h"
 #include "../../Includes/Interatividade/func_interatividade.h"
 #include "../../Includes/Objetos/Estado.h"

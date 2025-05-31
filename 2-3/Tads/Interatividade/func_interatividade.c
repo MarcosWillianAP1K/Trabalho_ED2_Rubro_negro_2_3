@@ -382,6 +382,9 @@ CIDADE *procurar_cidade_mais_populosa_sem_capital(AVR_23 *raiz_cidade, char *nom
         if (retorno == NULL && strcmp(raiz_cidade->info1.cidade.nome, nome_capital) != 0)
             retorno = &raiz_cidade->info1.cidade;
 
+        if (retorno == NULL && strcmp(raiz_cidade->info2.cidade.nome, nome_capital) != 0)
+            retorno = &raiz_cidade->info2.cidade;
+
         if (retorno != NULL && strcmp(raiz_cidade->info1.cidade.nome, nome_capital) != 0 && raiz_cidade->info1.cidade.quantidade_populacao > retorno->quantidade_populacao)
             retorno = &raiz_cidade->info1.cidade;
 

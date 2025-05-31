@@ -104,9 +104,11 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                     mensagem_sucesso("Cidade cadastrada com sucesso!\n");
                 }
                 else
+                {
                     mensagem_erro("CIDADE JA EXISTENTE!");
-                liberar_23_void(&cidade.raiz_arvore_CEPs, liberar_dados_CEP);
-                liberar_cidade(&cidade);
+                    liberar_23_void(&cidade.raiz_arvore_CEPs, liberar_dados_CEP);
+                    liberar_cidade(&cidade);
+                }
             }
             else
             {
@@ -588,6 +590,7 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, AVR_23 **Raiz_pessoas)
             break;
         case 'f':
             remover_pessoa_interativo(Raiz_pessoas);
+            pausar_tela();
             break;
 
         case '0':
@@ -630,7 +633,20 @@ void menu_principal(LISTA_DUPLAMENTE **Lista_estados, AVR_23 **Raiz_pessoas)
             pausar_tela();
             break;
         case '8':
-            mostrar_tudo(*Lista_estados, *Raiz_pessoas);
+            if (*Lista_estados != NULL || *Raiz_pessoas != NULL)
+            {
+                print_amarelo("=================MOSTRAR TUDO==================\n\n");
+                mostrar_tudo(*Lista_estados, *Raiz_pessoas);
+            }
+            else
+            {
+                mensagem_erro("CADASTRE UM ESTADO OU UMA PESSOA PRIMEIRO!\n");
+            }
+            pausar_tela();
+            break;
+
+        default:
+            mensagem_erro("Opcao invalida! Tente novamente.\n");
             pausar_tela();
             break;
         }
