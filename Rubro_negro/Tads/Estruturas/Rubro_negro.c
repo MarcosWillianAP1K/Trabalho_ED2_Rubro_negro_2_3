@@ -272,13 +272,15 @@ RUBRO_NEGRO *procura_Menor(RUBRO_NEGRO *atual)
 
 // Função para remover o menor elemento
 //TROCAR O RETORNO PARA AQUI INVES DE DAR FREE
-void remover_no_Menor(RUBRO_NEGRO **raiz)
+RUBRO_NEGRO *remover_no_Menor(RUBRO_NEGRO **raiz)
 {
+    RUBRO_NEGRO *retorno = NULL;
+
     if ((*raiz)->esquerda == NULL)
     {
-        free(*raiz);
+        retorno = *raiz;
         *raiz = NULL;
-        return;
+        return retorno;
     }
     if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->esquerda->esquerda) == PRETO)
         move2EsquerdaVERMELHO(raiz);
@@ -317,14 +319,19 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short 
         if (comparar(aux, (*raiz)->info) == 0)
         {
             RUBRO_NEGRO *aux = procura_Menor((*raiz)->direita);
-            //Precisa criar um copia do no para retornar.
-            retorno = alocar_no_rubro_negro();
-            retorno->info = (*raiz)->info;
-            retorno->cor = (*raiz)->cor;
 
+            // Precisa criar um copia do no para retornar.
+            // retorno = alocar_no_rubro_negro();
+            // retorno->info = (*raiz)->info;
+            // retorno->cor = (*raiz)->cor;
+
+            // remover_no_Menor(&(*raiz)->direita);
+
+            DADOS aux_dado = (*raiz)->info;
             (*raiz)->info = aux->info;
-            
-            remover_no_Menor(&(*raiz)->direita);
+            aux->info = aux_dado;
+
+            retorno = remover_no_Menor(&(*raiz)->direita);
         }
         else
         {

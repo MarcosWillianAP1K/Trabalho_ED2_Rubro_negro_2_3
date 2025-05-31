@@ -272,6 +272,8 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
 
     mensagem_sucesso("Dados para teste de remocao de cidades criados com sucesso!\n");
 
+imprimir_rubro_negro(*arvore, imprimir_dados_cidade);
+
     // Test removing first existing city - removendo o operador de endereço "&"
     print_amarelo("Removendo cidade 'Rio de Janeiro':\n");
     RUBRO_NEGRO *cidade_removida1 = remover_rubro_negro(arvore, cidade_remover1, comparar_dados_nome_cidade);
@@ -374,6 +376,7 @@ void testar_remocao_cidades(RUBRO_NEGRO **arvore)
     liberar_dados_cidade(&cidade_inexistente1);
     liberar_dados_cidade(&cidade_inexistente2);
     mensagem_sucesso("Memoria para busca de remocao liberada!\n");
+    
 }
 
 // Test function for person insertions
