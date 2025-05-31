@@ -271,6 +271,7 @@ RUBRO_NEGRO *procura_Menor(RUBRO_NEGRO *atual)
 }
 
 // Função para remover o menor elemento
+//TROCAR O RETORNO PARA AQUI INVES DE DAR FREE
 void remover_no_Menor(RUBRO_NEGRO **raiz)
 {
     if ((*raiz)->esquerda == NULL)

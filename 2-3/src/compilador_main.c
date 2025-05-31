@@ -8,7 +8,11 @@ int main()
 
     if (compilador == 0)
     {
-        
+
+        #ifdef _WIN32
         system("main.exe");
+        #else
+        system("./main");
+        #endif
     }
 }

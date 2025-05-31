@@ -99,7 +99,7 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
 
             if (retorno_cep != 0)
             {
-                if (cadastrar_cidade(&no_estado->estado, cidade) != NULL)
+                if (cadastrar_cidade(&no_estado->estado, cidade) != 0)
                 {
                     mensagem_sucesso("Cidade cadastrada com sucesso!\n");
                 }
@@ -160,7 +160,7 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
                 printf("Digite o CEP (xxxxx-xxx): ");
                 char *CEP = digitar_CEP();
 
-                if (cadastrar_CEP(lista, &cidade->cidade, CEP) != NULL)
+                if (cadastrar_CEP(lista, &cidade->cidade, CEP) != 0)
                     mensagem_sucesso("CEP CADASTRADO COM SUCESSO!");
 
                 else
@@ -221,7 +221,7 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, AVR_23 **Raiz_pessoas)
 
         if (validar_cep_natal == 1 && validar_cep_atual == 1)
         {
-            if (cadastrar_pessoa(Raiz_pessoas, pessoa) != NULL)
+            if (cadastrar_pessoa(Raiz_pessoas, pessoa) != 0)
                 mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
 
             else
@@ -321,7 +321,7 @@ void remover_pessoa_interativo(AVR_23 **Raiz_pessoas)
         PESSOA pessoa_a_remover = criar_pessoa(cpf, NULL, NULL, NULL, data);
         PESSOA pessoa_removida;
 
-        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover, &pessoa_removida) != NULL)
+        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover, &pessoa_removida) != 0)
         {
             mensagem_sucesso("Pessoa removida com sucesso!");
             liberar_pessoa(&pessoa_removida);
@@ -360,10 +360,10 @@ void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
 
         if (no_estado != NULL)
         {
-            RUBRO_NEGRO *no_capital = procurar_capital_de_um_estado(no_estado->estado);
+            CIDADE *capital = procurar_capital_de_um_estado(no_estado->estado);
 
-            if (no_capital != NULL)
-                printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
+            if (capital != NULL)
+                printf("eh: %d\n\n", capital->quantidade_populacao);
 
             else
                 printf("Capital nao encontrada ou nao cadastrada para o estado %s\n\n", nome_estado);
@@ -389,10 +389,10 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
 
         if (no_estado != NULL)
         {
-            RUBRO_NEGRO *no_cidade_mais_populosa = procurar_cidade_mais_populosa_sem_capital(no_estado->estado.raiz_arvore_cidade, no_estado->estado.nome_capital);
+            CIDADE *cidade_mais_populosa = procurar_cidade_mais_populosa_sem_capital(no_estado->estado.raiz_arvore_cidade, no_estado->estado.nome_capital);
 
-            if (no_cidade_mais_populosa != NULL)
-                printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
+            if (cidade_mais_populosa != NULL)
+                printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, cidade_mais_populosa->nome, cidade_mais_populosa->quantidade_populacao);
 
             else
                 printf("Cidade mais populosa nao encontrada para o estado %s\n\n", nome_estado);
@@ -406,7 +406,7 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
 }
 
-void quantas_pessoas_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+void quantas_pessoas_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, AVR_23 *Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
         printf("eh: %d\n", quant_de_pessoas_que_nao_mora_na_cidade_natal(Lista_estados, Raiz_pessoas));
@@ -415,7 +415,7 @@ void quantas_pessoas_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, 
         mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
 }
 
-void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados, AVR_23 *Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
     {
@@ -425,14 +425,14 @@ void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados,
         DATA data = criar_data(0, 0, 0);
         DADOS busca_pessoa;
         busca_pessoa.pessoa = criar_pessoa(cpf, NULL, NULL, NULL, data);
-        RUBRO_NEGRO *no_pessoa = buscar_rubro_negro(Raiz_pessoas, busca_pessoa, comparar_dados_CPF_pessoa);
+        DADOS *pessoa = buscar_23(Raiz_pessoas, busca_pessoa, comparar_dados_CPF_pessoa);
 
-        if (no_pessoa != NULL)
+        if (pessoa != NULL)
         {
-            RUBRO_NEGRO *no_cidade = procurar_cidade_por_CEP(Lista_estados, no_pessoa->info.pessoa.CEP_natal);
+            CIDADE *cidade = procurar_cidade_por_CEP(Lista_estados, pessoa->pessoa.CEP_natal);
 
-            if (no_cidade != NULL)
-                printf("\nA cidade natal de %s eh: %s\n", no_pessoa->info.pessoa.nome, no_cidade->info.cidade.nome);
+            if (cidade != NULL)
+                printf("\nA cidade natal de %s eh: %s\n", pessoa->pessoa.nome, cidade->nome);
 
             else
                 mensagem_erro("CIDADE NATAL NAO ENCONTRADA!");
@@ -446,7 +446,7 @@ void qual_cidade_natal_de_uma_pessoa_dado_o_CEP(LISTA_DUPLAMENTE *Lista_estados,
         mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
 }
 
-void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPLAMENTE *Lista_estados, AVR_23 *Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
     {
@@ -468,10 +468,10 @@ void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPL
             DADOS busca_cidade;
             busca_cidade.cidade = cidade;
 
-            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
+            DADOS *cidade_encontrada = buscar_23(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
 
-            if (no_cidade != NULL)
-                printf("eh: %d\n", quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Raiz_pessoas, no_cidade->info.cidade));
+            if (cidade_encontrada != NULL)
+                printf("eh: %d\n", quant_de_pessoas_nascidas_em_uma_cidade_que_nao_mora_na_cidade_natal(Raiz_pessoas, cidade_encontrada->cidade));
 
             else
                 printf("Cidade nao encontrada ou nao cadastrada!\n");
@@ -489,7 +489,7 @@ void quantas_pessoas_nascidas_em_uma_cidade_nao_moram_na_cidade_natal(LISTA_DUPL
     }
 }
 
-void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(LISTA_DUPLAMENTE *Lista_estados, RUBRO_NEGRO *Raiz_pessoas)
+void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(LISTA_DUPLAMENTE *Lista_estados, AVR_23 *Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
     {
@@ -511,10 +511,10 @@ void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(
             DADOS busca_cidade;
             busca_cidade.cidade = cidade;
 
-            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
+            DADOS *cidade_encontrada = buscar_23(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade);
 
-            if (no_cidade != NULL)
-                printf("eh: %d\n", quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Raiz_pessoas, no_cidade->info.cidade));
+            if (cidade_encontrada != NULL)
+                printf("eh: %d\n", quant_de_pessoas_de_uma_cidade_nao_nasceram_na_cidade(Raiz_pessoas, cidade_encontrada->cidade));
 
             else
                 printf("Cidade nao encontrada ou nao cadastrada!\n");
@@ -534,7 +534,7 @@ void quantas_pessoas_que_moram_em_uma_determinada_cidade_nao_nasceram_na_cidade(
 
 //===================MENUS===================
 
-void menu_principal(LISTA_DUPLAMENTE **Lista_estados, RUBRO_NEGRO **Raiz_pessoas)
+void menu_principal(LISTA_DUPLAMENTE **Lista_estados, AVR_23 **Raiz_pessoas)
 {
     char opcao;
 
