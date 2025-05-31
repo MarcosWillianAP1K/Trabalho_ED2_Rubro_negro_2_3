@@ -876,6 +876,13 @@ void liberar_23(AVR_23 **raiz, void (*liberar)(DADOS *))
     }
 }
 
+void liberar_23_void(void **raiz, void (*liberar)(DADOS *))
+{
+    AVR_23 *raiz_23 = *raiz;
+    liberar_23(&raiz_23, liberar);
+    *raiz = NULL; // Define o ponteiro para NULL apos liberar
+}
+
 //================ MENU para testes ==================
 void menu(AVR_23 **raiz)
 {

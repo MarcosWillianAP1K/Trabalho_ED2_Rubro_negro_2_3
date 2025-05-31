@@ -108,6 +108,8 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                 }
                 else
                     mensagem_erro("CIDADE JA EXISTENTE!");
+                    liberar_rubro_negro_void(&cidade.raiz_arvore_CEPs, liberar_dados_CEP);
+                    liberar_cidade(&cidade);
 
             }
             else
@@ -116,10 +118,13 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
 
                 // Faz a busca para verificar se a cidade daria error ou não. Mesmo se o CEP ja existir.
                 DADOS busca_cidade;
-                busca_cidade.cidade = criar_cidade(NULL, 0, NULL);
+                busca_cidade.cidade = cidade;
 
                 if (buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade) != NULL)
                   mensagem_erro("CIDADE JA EXISTENTE!");
+
+                liberar_cidade(&cidade);
+                liberar_CEP(&cep_inicial);
 
             }
         }
@@ -324,9 +329,13 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
 
         DATA data = criar_data(0, 0, 0);
         PESSOA pessoa_a_remover = criar_pessoa(cpf, NULL, NULL, NULL, data);
+        RUBRO_NEGRO *no_removido = remover_pessoa(Raiz_pessoas, pessoa_a_remover);
 
-        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover) != NULL)
+        if (no_removido != NULL)
+        {
           mensagem_sucesso("Pessoa removida com sucesso!");
+          liberar_no_rubro_negro(&no_removido, liberar_dados_pessoa);
+        }   
         else
             mensagem_erro("CPF NAO ENCONTRADO!");
 

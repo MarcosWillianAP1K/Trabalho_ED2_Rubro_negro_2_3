@@ -27,19 +27,19 @@ void cadastrar_estados_interativo(LISTA_DUPLAMENTE **lista)
     CIDADE cidade = criar_cidade(nome_capital, quant_populacao, NULL);
 
     // Cadastrando as subs arvores
-    RUBRO_NEGRO *no_CEP = cadastrar_CEP(*lista, &cidade, cep_inicial);
-    RUBRO_NEGRO *no_cidade = cadastrar_cidade(&estado, cidade);
+    short int retorno_CEP = cadastrar_CEP(*lista, &cidade, cep_inicial);
+    short int retorno_cidade = cadastrar_cidade(&estado, cidade);
 
     short int sucesso = 0;
 
     // VERIFICAÇÃO DE ERROS.
-    if (no_CEP == NULL)
+    if (retorno_CEP == 0)
         mensagem_erro("CEP JA EXISTE!");
 
-    if (no_cidade == NULL)
+    if (retorno_cidade == 0)
         mensagem_erro("CIDADE JA EXISTE!");
 
-    if (no_CEP != NULL && no_cidade != NULL)
+    if (retorno_CEP != 0 && retorno_cidade != 0)
     {
         LISTA_DUPLAMENTE *no_estado = cadastrar_estado(lista, estado);
 
@@ -55,15 +55,14 @@ void cadastrar_estados_interativo(LISTA_DUPLAMENTE **lista)
     else
     {
         if (buscar_duplamente(*lista, estado) != NULL)
-          mensagem_erro("ESTADO JA EXISTE!");
-
+            mensagem_erro("ESTADO JA EXISTE!");
     }
 
     // Liberando em caso de error
     if (sucesso == 0)
     {
-        liberar_no_rubro_negro(&no_CEP, NULL);
-        liberar_no_rubro_negro(&no_cidade, NULL);
+        liberar_23_void(&cidade.raiz_arvore_CEPs, NULL);
+        liberar_23_void(&estado.raiz_arvore_cidade, NULL);
         liberar_CEP(&cep_inicial);
         liberar_cidade(&cidade);
         liberar_estado(&estado);
@@ -96,9 +95,9 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
 
             CIDADE cidade = criar_cidade(nome_cidade, quant_populacao, NULL);
 
-            RUBRO_NEGRO *no_cep = cadastrar_CEP(lista, &cidade, cep_inicial);
+            short int retorno_cep = cadastrar_CEP(lista, &cidade, cep_inicial);
 
-            if (no_cep != NULL)
+            if (retorno_cep != 0)
             {
                 if (cadastrar_cidade(&no_estado->estado, cidade) != NULL)
                 {
@@ -106,7 +105,8 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
                 }
                 else
                     mensagem_erro("CIDADE JA EXISTENTE!");
-
+                liberar_23_void(&cidade.raiz_arvore_CEPs, liberar_dados_CEP);
+                liberar_cidade(&cidade);
             }
             else
             {
@@ -114,22 +114,22 @@ void cadastrar_cidade_interativo(LISTA_DUPLAMENTE *lista)
 
                 // Faz a busca para verificar se a cidade daria error ou não. Mesmo se o CEP ja existir.
                 DADOS busca_cidade;
-                busca_cidade.cidade = criar_cidade(NULL, 0, NULL);
+                busca_cidade.cidade = cidade;
 
-                if (buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade) != NULL)
-                  mensagem_erro("CIDADE JA EXISTENTE!");
+                if (buscar_23(no_estado->estado.raiz_arvore_cidade, busca_cidade, comparar_dados_nome_cidade) != NULL)
+                    mensagem_erro("CIDADE JA EXISTENTE!");
 
+                liberar_cidade(&cidade);
+                liberar_CEP(&cep_inicial);
             }
         }
         else
             mensagem_erro("ESTADO NAO ENCONTRADO!");
 
-
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
@@ -153,15 +153,15 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
 
             DADOS buscar_cidade;
             buscar_cidade.cidade = criar_cidade(nome_cidade, 0, NULL);
-            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
+            DADOS *cidade = buscar_23(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
 
-            if (no_cidade != NULL)
+            if (cidade != NULL)
             {
                 printf("Digite o CEP (xxxxx-xxx): ");
                 char *CEP = digitar_CEP();
 
-                if (cadastrar_CEP(lista, &no_cidade->info.cidade, CEP) != NULL)
-                  mensagem_sucesso("CEP CADASTRADO COM SUCESSO!");
+                if (cadastrar_CEP(lista, &cidade->cidade, CEP) != NULL)
+                    mensagem_sucesso("CEP CADASTRADO COM SUCESSO!");
 
                 else
                 {
@@ -171,20 +171,19 @@ void cadastrar_CEP_interativo(LISTA_DUPLAMENTE *lista)
             }
             else
                 mensagem_erro("CIDADE NAO ENCONTRADA!");
-            
+
             free(nome_cidade);
         }
         else
             mensagem_erro("ESTADO NAO ENCONTRADA!");
-    
+
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
-void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pessoas)
+void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, AVR_23 **Raiz_pessoas)
 {
     if (lista != NULL)
     {
@@ -223,7 +222,7 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
         if (validar_cep_natal == 1 && validar_cep_atual == 1)
         {
             if (cadastrar_pessoa(Raiz_pessoas, pessoa) != NULL)
-              mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
+                mensagem_sucesso("Pessoa cadastrada com sucesso!\n");
 
             else
             {
@@ -242,7 +241,7 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
             DADOS busca_pessoa;
             busca_pessoa.pessoa = pessoa;
 
-            if (buscar_rubro_negro(*Raiz_pessoas, busca_pessoa, comparar_dados_CPF_pessoa) != NULL)
+            if (buscar_23(*Raiz_pessoas, busca_pessoa, comparar_dados_CPF_pessoa) != NULL)
                 mensagem_erro("CPF DA PESSOA JA EXISTENTE!");
 
             liberar_pessoa(&pessoa);
@@ -250,10 +249,9 @@ void cadastrar_pessoa_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO **Raiz_pes
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
-void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
+void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, AVR_23 *Raiz_pessoas)
 {
     if (lista != NULL)
     {
@@ -273,9 +271,9 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
 
             DADOS buscar_cidade;
             buscar_cidade.cidade = criar_cidade(nome_cidade, 0, NULL);
-            RUBRO_NEGRO *no_cidade = buscar_rubro_negro(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
+            DADOS *cidade = buscar_23(no_estado->estado.raiz_arvore_cidade, buscar_cidade, comparar_dados_nome_cidade);
 
-            if (no_cidade != NULL)
+            if (cidade != NULL)
             {
                 printf("Digite o CEP a ser removido (xxxxx-xxx): ");
                 char *CEP = digitar_CEP();
@@ -283,12 +281,12 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
                 if (verificar_se_existe_pessoa_associada_a_um_CEP(Raiz_pessoas, CEP) == 0)
                 {
 
-                    RUBRO_NEGRO *no_removido = remover_CEP(&no_cidade->info.cidade, CEP);
+                    char *cep_removido = NULL;
 
-                    if (no_removido != NULL)
+                    if (remover_CEP(&cidade->cidade, CEP, &cep_removido) != 0)
                     {
                         mensagem_sucesso("CEP REMOVIDO COM SUCESSO!");
-                        liberar_no_rubro_negro(&no_removido, liberar_dados_CEP);
+                        liberar_CEP(&cep_removido);
                     }
                     else
                         mensagem_erro("CEP NAO ENCONTRADO!");
@@ -300,7 +298,7 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
             }
             else
                 mensagem_erro("CIDADE NAO ENCONTRADA!");
-    
+
             free(nome_cidade);
         }
         else
@@ -310,10 +308,9 @@ void remover_CEP_interativo(LISTA_DUPLAMENTE *lista, RUBRO_NEGRO *Raiz_pessoas)
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
-void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
+void remover_pessoa_interativo(AVR_23 **Raiz_pessoas)
 {
     if (Raiz_pessoas != NULL)
     {
@@ -322,9 +319,13 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
 
         DATA data = criar_data(0, 0, 0);
         PESSOA pessoa_a_remover = criar_pessoa(cpf, NULL, NULL, NULL, data);
+        PESSOA pessoa_removida;
 
-        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover) != NULL)
-          mensagem_sucesso("Pessoa removida com sucesso!");
+        if (remover_pessoa(Raiz_pessoas, pessoa_a_remover, &pessoa_removida) != NULL)
+        {
+            mensagem_sucesso("Pessoa removida com sucesso!");
+            liberar_pessoa(&pessoa_removida);
+        }
         else
             mensagem_erro("CPF NAO ENCONTRADO!");
 
@@ -332,7 +333,6 @@ void remover_pessoa_interativo(RUBRO_NEGRO **Raiz_pessoas)
     }
     else
         mensagem_erro("CADASTRE UMA PESSOA PRIMEIRO!");
-
 }
 
 //================CONSULTAS================
@@ -346,7 +346,6 @@ void qual_estado_mais_populoso(LISTA_DUPLAMENTE *Lista_estados)
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-
 }
 
 void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
@@ -364,21 +363,18 @@ void qual_populacao_capital_de_um_estado(LISTA_DUPLAMENTE *Lista_estados)
             RUBRO_NEGRO *no_capital = procurar_capital_de_um_estado(no_estado->estado);
 
             if (no_capital != NULL)
-              printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
+                printf("eh: %d\n\n", no_capital->info.cidade.quantidade_populacao);
 
             else
                 printf("Capital nao encontrada ou nao cadastrada para o estado %s\n\n", nome_estado);
-
         }
-        else 
+        else
             mensagem_erro("ESTADO NAO ENCONTRADA!");
-     
 
         free(nome_estado);
     }
     else
         mensagem_erro("CADASTRE UM ESTADO PRIMEIRO!");
-    
 }
 
 void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *lista_estados)
@@ -396,11 +392,10 @@ void qual_cidade_mais_populosa_de_um_estado_sem_ser_a_capital(LISTA_DUPLAMENTE *
             RUBRO_NEGRO *no_cidade_mais_populosa = procurar_cidade_mais_populosa_sem_capital(no_estado->estado.raiz_arvore_cidade, no_estado->estado.nome_capital);
 
             if (no_cidade_mais_populosa != NULL)
-              printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
-            
+                printf("A cidade mais populosa de %s eh: %s\nCom: %d habitantes\n", nome_estado, no_cidade_mais_populosa->info.cidade.nome, no_cidade_mais_populosa->info.cidade.quantidade_populacao);
+
             else
                 printf("Cidade mais populosa nao encontrada para o estado %s\n\n", nome_estado);
-            
         }
         else
             printf("Estado nao encontrado\n\n");

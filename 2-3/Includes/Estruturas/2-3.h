@@ -32,3 +32,5 @@ short int remover_23_void(void **raiz, DADOS valor, DADOS *dado_removido, short 
 void liberar_no_23(AVR_23 **no, void (*liberar)(DADOS *));
 
 void liberar_23(AVR_23 **raiz, void (*liberar)(DADOS *));
+
+void liberar_23_void(void **raiz, void (*liberar)(DADOS *));
