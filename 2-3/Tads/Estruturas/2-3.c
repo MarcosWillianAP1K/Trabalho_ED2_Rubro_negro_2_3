@@ -49,26 +49,28 @@ DADOS *buscar_23(AVR_23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 
     if (raiz != NULL)
     {
-        if (comparar(info, raiz->info1) == 0)
+        if (comparar(info, raiz->info1) < 0)
+        {
+            retorno = buscar_23(raiz->esq, info, comparar);
+            retorno = &(raiz->info1);
+        }
+        else if (comparar(info, raiz->info1) == 0)
         {
             retorno = &(raiz->info1);
+        }
+        else if (raiz->nInfo == 2 && comparar(info, raiz->info2) < 0)
+        {
+            retorno = buscar_23(raiz->cen, info, comparar);
         }
         else if (raiz->nInfo == 2 && comparar(info, raiz->info2) == 0)
         {
             retorno = &(raiz->info2);
         }
-        else if (comparar(info, raiz->info1) < 0)
-        {
-            retorno = buscar_23(raiz->esq, info, comparar);
-        }
-        else if (raiz->nInfo == 1 || comparar(info, raiz->info2) < 0)
-        {
-            retorno = buscar_23(raiz->cen, info, comparar);
-        }
         else
         {
             retorno = buscar_23(raiz->dir, info, comparar);
         }
+        
     }
 
     return retorno;
