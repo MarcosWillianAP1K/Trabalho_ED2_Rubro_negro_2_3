@@ -110,10 +110,7 @@ COR cor(RUBRO_NEGRO *no)
     COR retorno = PRETO;
 
     if (no != NULL)
-    {
-        retorno = no->cor;
-    }
-
+      retorno = no->cor;
     return retorno;
 }
 
@@ -122,36 +119,22 @@ void trocar_cor(RUBRO_NEGRO *no)
     if (no != NULL)
     {
         if (no->cor == VERMELHO)
-        {
-            no->cor = PRETO;
-        }
-        else
-        {
-            no->cor = VERMELHO;
-        }
+          no->cor = PRETO;
+        else no->cor = VERMELHO;
 
         if (no->esquerda != NULL)
         {
             if (cor(no->esquerda) == VERMELHO)
-            {
                 no->esquerda->cor = PRETO;
-            }
-            else
-            {
-                no->esquerda->cor = VERMELHO;
-            }
+            else no->esquerda->cor = VERMELHO;
         }
 
         if (no->direita != NULL)
         {
             if (cor(no->direita) == VERMELHO)
-            {
-                no->direita->cor = PRETO;
-            }
-            else
-            {
-                no->direita->cor = VERMELHO;
-            }
+              no->direita->cor = PRETO;
+    
+            else no->direita->cor = VERMELHO;
         }
     }
 }
@@ -163,19 +146,12 @@ void balancear(RUBRO_NEGRO **raiz)
 {
 
     if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->direita) == VERMELHO)
-    {
-        de_ladinho_para_esquerda(raiz);
-    }
-
+      de_ladinho_para_esquerda(raiz);
     if (cor((*raiz)->esquerda) == VERMELHO && cor((*raiz)->esquerda->esquerda))
-    {
-        de_ladinho_para_direita(raiz);
-    }
-
+      de_ladinho_para_direita(raiz);
     if (cor((*raiz)->esquerda) == VERMELHO && cor((*raiz)->direita) == VERMELHO)
-    {
-        trocar_cor(*raiz);
-    }
+      trocar_cor(*raiz);
+    
 }
 
 
@@ -194,18 +170,13 @@ RUBRO_NEGRO *inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short
     else
     {
         if (comparar((*raiz)->info, info) > 0)
-        {
-            retorno = inserir_rubro_negro_recursivo(&(*raiz)->esquerda, info, comparar);
-        }
+          retorno = inserir_rubro_negro_recursivo(&(*raiz)->esquerda, info, comparar);
         else if (comparar((*raiz)->info, info) < 0)
-        {
-            retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
-        }
+               retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
 
         if (retorno != NULL)
-        {
             balancear(raiz);
-        }
+        
     }
 
     return retorno;
@@ -263,9 +234,8 @@ void move2DireitaVERMELHO(RUBRO_NEGRO **no)
 RUBRO_NEGRO *procura_Menor(RUBRO_NEGRO *atual)
 {
     while (atual->esquerda != NULL)
-    {
         atual = atual->esquerda;
-    }
+    
 
     return atual;
 }
@@ -333,10 +303,8 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short 
 
             retorno = remover_no_Menor(&(*raiz)->direita);
         }
-        else
-        {
-            retorno = remover_rubro_negro_recursivo(&(*raiz)->direita, aux, comparar);
-        }
+        else retorno = remover_rubro_negro_recursivo(&(*raiz)->direita, aux, comparar);
+    
     }
 
     balancear(raiz);

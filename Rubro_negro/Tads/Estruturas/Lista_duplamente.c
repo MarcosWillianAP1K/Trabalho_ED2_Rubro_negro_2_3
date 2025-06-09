@@ -4,7 +4,6 @@
 #include "../../Includes/Estruturas/Lista_duplamente.h"
 #include "../../Includes/Utilitarios/funcao_sistema.h"
 
-// Function to create a new node
 LISTA_DUPLAMENTE *alocar_no_duplamente()
 {
     LISTA_DUPLAMENTE *novo = (LISTA_DUPLAMENTE *)malloc(sizeof(LISTA_DUPLAMENTE));
@@ -82,9 +81,8 @@ LISTA_DUPLAMENTE *inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO i
                     novo->ant = temp;
                     temp->prox = novo;
                     if (novo->prox != NULL)
-                    {
                         novo->prox->ant = novo;
-                    }
+                    
                 }
                 else
                 {
@@ -92,10 +90,8 @@ LISTA_DUPLAMENTE *inserir_ordernado_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO i
                     novo->ant = temp->ant;
                     if (temp->ant != NULL)
                       temp->ant->prox = novo;
-                    else
-                    {
-                        *raiz = novo; // Atualiza a raiz se o novo nó for o primeiro
-                    }
+                    else *raiz = novo; // Atualiza a raiz se o novo nó for o primeiro
+                    
                     temp->ant = novo;
                 }
 
@@ -124,7 +120,6 @@ LISTA_DUPLAMENTE *buscar_duplamente(LISTA_DUPLAMENTE *raiz, ESTADO info)
     return temp;
 }
 
-// Function to remove a node
 LISTA_DUPLAMENTE *remover_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
 {
     LISTA_DUPLAMENTE *retorno = NULL;
@@ -134,10 +129,8 @@ LISTA_DUPLAMENTE *remover_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
         LISTA_DUPLAMENTE *temp = *raiz;
 
         while (temp != NULL && comparar_nome_estado(temp->estado, info) != 0)
-        {
-            temp = temp->prox;
-        }
-
+             temp = temp->prox;
+        
         if (temp != NULL)
         {
             if (temp->ant != NULL)
@@ -156,7 +149,6 @@ LISTA_DUPLAMENTE *remover_duplamente(LISTA_DUPLAMENTE **raiz, ESTADO info)
     return retorno;
 }
 
-// Function to display the list
 void exibirLista(LISTA_DUPLAMENTE *raiz)
 {
     while (raiz != NULL)
