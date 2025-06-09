@@ -86,7 +86,7 @@ char *digitar_string()
     limpar_buffer();
 #define TAM_PADRAO 20
 
-    int tam, cont = 0;
+    int tam, cont = 0, n = 0;
     char *nome = (char *)malloc(TAM_PADRAO * sizeof(char));
 
     if (fgets(nome, TAM_PADRAO * sizeof(char), stdin) != NULL)
@@ -94,7 +94,7 @@ char *digitar_string()
 
         tam = strlen(nome);
 
-        while (nome[tam - 1] != '\n')
+        while (nome[tam - 1] != '\n' && n == 0)
         {
             cont++;
             char *temp = (char *)realloc(nome, (TAM_PADRAO * cont) * sizeof(char));
@@ -105,7 +105,7 @@ char *digitar_string()
 
             if (fgets(nome + tam, ((TAM_PADRAO * cont) * sizeof(char)) - tam, stdin) == NULL)
             {
-                break;
+                n = 1; // Sinaliza que nao ha mais entrada
             }
 
             tam = strlen(nome);
