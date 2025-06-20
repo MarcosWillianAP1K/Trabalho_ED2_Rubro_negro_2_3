@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 //========================ALOCAÇÃO e LIBERAÇÃO========================
 
 RUBRO_NEGRO *alocar_no_rubro_negro()
@@ -15,7 +14,7 @@ RUBRO_NEGRO *alocar_no_rubro_negro()
     no->cor = VERMELHO;
     no->esquerda = NULL;
     no->direita = NULL;
-    
+
     return no;
 }
 
@@ -25,7 +24,7 @@ void liberar_no_rubro_negro(RUBRO_NEGRO **no, void (*liberar)(DADOS *))
     {
         if (liberar != NULL)
             liberar(&(*no)->info);
-        
+
         free(*no);
         *no = NULL;
     }
@@ -51,11 +50,11 @@ void liberar_rubro_negro_void(void **raiz, void (*liberar)(DADOS *))
 
 //========================BUSCA========================
 
-RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
-    if (raiz != NULL  && comparar != NULL)
+    if (raiz != NULL && comparar != NULL)
     {
         if (comparar(raiz->info, aux) == 0)
         {
@@ -72,7 +71,6 @@ RUBRO_NEGRO *buscar_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, short int (*compar
 
     return retorno;
 }
-
 
 //========================ROTACIONAR========================
 
@@ -102,7 +100,6 @@ void de_ladinho_para_esquerda(RUBRO_NEGRO **raiz)
     }
 }
 
-
 //========================COR========================
 
 COR cor(RUBRO_NEGRO *no)
@@ -110,7 +107,7 @@ COR cor(RUBRO_NEGRO *no)
     COR retorno = PRETO;
 
     if (no != NULL)
-      retorno = no->cor;
+        retorno = no->cor;
     return retorno;
 }
 
@@ -119,26 +116,28 @@ void trocar_cor(RUBRO_NEGRO *no)
     if (no != NULL)
     {
         if (no->cor == VERMELHO)
-          no->cor = PRETO;
-        else no->cor = VERMELHO;
+            no->cor = PRETO;
+        else
+            no->cor = VERMELHO;
 
         if (no->esquerda != NULL)
         {
             if (cor(no->esquerda) == VERMELHO)
                 no->esquerda->cor = PRETO;
-            else no->esquerda->cor = VERMELHO;
+            else
+                no->esquerda->cor = VERMELHO;
         }
 
         if (no->direita != NULL)
         {
             if (cor(no->direita) == VERMELHO)
-              no->direita->cor = PRETO;
-    
-            else no->direita->cor = VERMELHO;
+                no->direita->cor = PRETO;
+
+            else
+                no->direita->cor = VERMELHO;
         }
     }
 }
-
 
 //========================BALANCEAMENTO========================
 
@@ -146,18 +145,16 @@ void balancear(RUBRO_NEGRO **raiz)
 {
 
     if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->direita) == VERMELHO)
-      de_ladinho_para_esquerda(raiz);
+        de_ladinho_para_esquerda(raiz);
     if (cor((*raiz)->esquerda) == VERMELHO && cor((*raiz)->esquerda->esquerda))
-      de_ladinho_para_direita(raiz);
+        de_ladinho_para_direita(raiz);
     if (cor((*raiz)->esquerda) == VERMELHO && cor((*raiz)->direita) == VERMELHO)
-      trocar_cor(*raiz);
-    
+        trocar_cor(*raiz);
 }
-
 
 //========================INSERÇÃO========================
 
-RUBRO_NEGRO *inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -170,19 +167,18 @@ RUBRO_NEGRO *inserir_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS info, short
     else
     {
         if (comparar((*raiz)->info, info) > 0)
-          retorno = inserir_rubro_negro_recursivo(&(*raiz)->esquerda, info, comparar);
+            retorno = inserir_rubro_negro_recursivo(&(*raiz)->esquerda, info, comparar);
         else if (comparar((*raiz)->info, info) < 0)
-               retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
+            retorno = inserir_rubro_negro_recursivo(&(*raiz)->direita, info, comparar);
 
         if (retorno != NULL)
             balancear(raiz);
-        
     }
 
     return retorno;
 }
 
-RUBRO_NEGRO *inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -195,11 +191,11 @@ RUBRO_NEGRO *inserir_rubro_negro(RUBRO_NEGRO **raiz, DADOS info, short int (*com
     return retorno;
 }
 
-RUBRO_NEGRO *inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *inserir_rubro_negro_void(void **raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
     RUBRO_NEGRO *arvore = *raiz;
-   
+
     retorno = inserir_rubro_negro(&arvore, info, comparar);
     *raiz = arvore;
 
@@ -235,13 +231,12 @@ RUBRO_NEGRO *procura_Menor(RUBRO_NEGRO *atual)
 {
     while (atual->esquerda != NULL)
         atual = atual->esquerda;
-    
 
     return atual;
 }
 
 // Função para remover o menor elemento
-//TROCAR O RETORNO PARA AQUI INVES DE DAR FREE
+// TROCAR O RETORNO PARA AQUI INVES DE DAR FREE
 RUBRO_NEGRO *remover_no_Menor(RUBRO_NEGRO **raiz)
 {
     RUBRO_NEGRO *retorno = NULL;
@@ -250,16 +245,20 @@ RUBRO_NEGRO *remover_no_Menor(RUBRO_NEGRO **raiz)
     {
         retorno = *raiz;
         *raiz = NULL;
-        return retorno;
     }
-    if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->esquerda->esquerda) == PRETO)
-        move2EsquerdaVERMELHO(raiz);
+    else
+    {
+        if (cor((*raiz)->esquerda) == PRETO && cor((*raiz)->esquerda->esquerda) == PRETO)
+            move2EsquerdaVERMELHO(raiz);
 
-    remover_no_Menor(&(*raiz)->esquerda);
-    balancear(raiz);
+        retorno = remover_no_Menor(&(*raiz)->esquerda);
+        balancear(raiz);
+    }
+    
+    return retorno;
 }
 
-RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -303,8 +302,8 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short 
 
             retorno = remover_no_Menor(&(*raiz)->direita);
         }
-        else retorno = remover_rubro_negro_recursivo(&(*raiz)->direita, aux, comparar);
-    
+        else
+            retorno = remover_rubro_negro_recursivo(&(*raiz)->direita, aux, comparar);
     }
 
     balancear(raiz);
@@ -313,7 +312,7 @@ RUBRO_NEGRO *remover_rubro_negro_recursivo(RUBRO_NEGRO **raiz, DADOS aux, short 
 }
 
 // Retorna o dado do no removido, precisando liberar fora da função
-RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS aux, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -328,8 +327,7 @@ RUBRO_NEGRO *remover_rubro_negro(RUBRO_NEGRO **raiz, DADOS aux, short int (*comp
     return retorno;
 }
 
-
-RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS aux, short int (*comparar)(DADOS , DADOS ))
+RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS aux, short int (*comparar)(DADOS, DADOS))
 {
     RUBRO_NEGRO *retorno = NULL;
 
@@ -340,10 +338,9 @@ RUBRO_NEGRO *remover_rubro_negro_void(void **raiz, DADOS aux, short int (*compar
     return retorno;
 }
 
-
 //========================IMPRIMIR========================
 
-short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS ))
+short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS))
 {
     short int retorno = 0;
 
@@ -361,7 +358,7 @@ short int imprimir_rubro_negro(RUBRO_NEGRO *raiz, void (*imprimir)(DADOS ))
     return retorno;
 }
 
-short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, void (*imprimir)(DADOS ), short int (*comparar)(DADOS , DADOS ))
+short int imprimir_filtro_rubro_negro(RUBRO_NEGRO *raiz, DADOS aux, void (*imprimir)(DADOS), short int (*comparar)(DADOS, DADOS))
 {
     short int retorno = 0;
 

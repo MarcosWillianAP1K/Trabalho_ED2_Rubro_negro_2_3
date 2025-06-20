@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "4_5.h"
+#include "4-5.h"
 
 
 //================ CRIA NO ==================
@@ -104,8 +104,7 @@ void adiciona_chave_em_no_com_espaco_45(Arv45 *no_atual, int info_nova, Arv45 *s
 // O nó original é modificado para se tornar o nó esquerdo da divisão.
 // Retorna o novo nó direito criado.
 // chave_promovida_saida conterá a chave que sobe para o pai.
-Arv45 *quebra_no_45(Arv45 **no_original_ptr, int N_nova, Arv45 *Nc_novo_filho_dir,
-                    int *chave_promovida_saida)
+Arv45 *quebra_no_45(Arv45 **no_original_ptr, int N_nova, Arv45 *Nc_novo_filho_dir, int *chave_promovida_saida)
 {
     Arv45 *no_orig = *no_original_ptr;
     Arv45 *novo_no_dir = NULL; // Valor de retorno

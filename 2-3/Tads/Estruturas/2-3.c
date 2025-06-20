@@ -52,7 +52,6 @@ DADOS *buscar_23(AVR_23 *raiz, DADOS info, short int (*comparar)(DADOS, DADOS))
         if (comparar(info, raiz->info1) < 0)
         {
             retorno = buscar_23(raiz->esq, info, comparar);
-            retorno = &(raiz->info1);
         }
         else if (comparar(info, raiz->info1) == 0)
         {
@@ -401,6 +400,8 @@ DADOS remover_23_recursivo(AVR_23 **ponteiro_no_atual, DADOS valor, StatusRemoca
 
     if (no_atual != NULL)
     {
+        *status_final = UNDERFLOW;
+
         AVR_23 **proximo_ponteiro_recursao = NULL;
         short int valor_encontrado_neste_no = 0;
         short int indice_valor_removido = -1;
